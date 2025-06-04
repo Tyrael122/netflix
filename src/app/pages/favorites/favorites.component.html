@@ -1,0 +1,11 @@
+<div class="flex flex-row flex-wrap">
+  @for (movie of movies; track movie.id) {
+    <div>
+      <a [routerLink]="['movie', movie.id]">
+        <netflix-movie-poster-image [poster_path]="movie.poster_path"></netflix-movie-poster-image>
+        <p>{{ movie.title }}</p>
+        <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
+      </a>
+    </div>
+  }
+</div>

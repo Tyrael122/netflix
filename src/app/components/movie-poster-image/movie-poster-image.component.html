@@ -1,0 +1,5 @@
+@if (poster_path()) {
+  <img [ngSrc]="poster_path()!" width="300" height="450" alt="">
+} @else {
+  <p>No poster available.</p>
+}

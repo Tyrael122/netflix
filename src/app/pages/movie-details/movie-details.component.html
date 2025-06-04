@@ -1,0 +1,14 @@
+@if (movie) {
+  <netflix-movie-poster-image [poster_path]="movie.poster_path"></netflix-movie-poster-image>
+  <p>{{ movie.title }}</p>
+  <p>Overview: {{ movie.overview }}</p>
+  <p>Release Date: {{ movie.release_date | date }}</p>
+  <div class="flex flex-col">
+    @for (genre of movie.genres; track genre.id) {
+      <span class="badge badge-secondary">{{ genre.name }}</span>
+    }
+  </div>
+  <netflix-favorite-button [movie]="movie" ></netflix-favorite-button>
+} @else {
+  <p>Error loading movie details.</p>
+}

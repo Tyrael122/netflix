@@ -1,0 +1,22 @@
+@if (this.authService.isLoggedIn()) {
+  <div class="user-icon-logged-in" style="position: relative;">
+    <button class="flex items-center" (click)="showDropdown = !showDropdown" type="button">
+      <span class="icon">👤</span>
+      <span class="username">{{ this.authService.getCurrentUser()?.username }}</span>
+      <span class="dropdown-arrow">▼</span>
+    </button>
+    @if (showDropdown) {
+      <div class="dropdown-menu"
+           style="position: absolute; right: 0; top: 100%; background: white; border: 1px solid #ccc; z-index: 100;">
+        <button (click)="authService.logout()" class="dropdown-item">Logout</button>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="user-icon-logged-out">
+    <a routerLink="/login" class="flex items-center">
+      <span class="icon">🔒</span>
+      <span class="login-text">Not logged in</span>
+    </a>
+  </div>
+}
