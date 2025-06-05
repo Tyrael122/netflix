@@ -1,32 +1,87 @@
-<div class="container mx-auto p-4">
+<div class="container mx-auto px-4 pt-24 min-h-screen">
   <netflix-navbar></netflix-navbar>
 
-  <div class="flex flex-row flex-wrap">
+  <div class="max-w-4xl mx-auto">
+    <!-- Empty state messages -->
     @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
-      <p class="text-center w-full">No favorites yet.</p>
-      <p class="text-center w-full">
-        You can also save some temporarily — they’ll stay until you close the browser
-      </p>
-      <p class="text-center w-full">
-        <a [routerLink]="['/login']" class="text-blue-500 hover:underline">Log in</a> to save your favorites.
-      </p>
-    } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
-      <p class="text-center w-full">No favorites yet.</p>
-    } @else if (favoriteMovies.length > 0 && !authService.isLoggedIn()) {
-      <p class="text-center w-full">These favorites are temporary.</p>
-      <p class="text-center w-full">
-        <a [routerLink]="['/login']" class="text-blue-500 hover:underline">Log in</a> to save your favorites.
-      </p>
-    }
-
-    @for (movie of favoriteMovies; track movie.id) {
-      <div>
-        <a [routerLink]="['movie', movie.id]">
-          <netflix-movie-poster-image [poster_path]="movie.poster_path"></netflix-movie-poster-image>
-          <p>{{ movie.title }}</p>
-          <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
+      <div class="text-center py-16">
+        <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
+          <netflix-icon name="favorite-outline" size="48" class="text-gray-500"/>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-2">No favorites yet</h2>
+        <p class="text-gray-400 mb-6">
+          You can save some temporarily — they'll stay until you close the browser
+        </p>
+        <a
+          [routerLink]="['/login']"
+          class="inline-flex items-center px-6 py-2 bg-netflix-red hover:bg-red-700 text-white font-medium rounded transition-colors"
+        >
+          Log in to save permanently
         </a>
       </div>
+    } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
+      <div class="text-center py-16">
+        <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
+          <netflix-icon name="favorite-outline" size="48" class="text-gray-500"/>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-2">Your favorites list is empty</h2>
+        <p class="text-gray-400 mb-6">
+          Start adding movies to your favorites while browsing
+        </p>
+        <a
+          [routerLink]="['/']"
+          class="inline-flex items-center px-6 py-2 bg-netflix-red hover:bg-red-700 text-white font-medium rounded transition-colors"
+        >
+          Browse Movies
+        </a>
+      </div>
+    } @else if (favoriteMovies.length > 0 && !authService.isLoggedIn()) {
+      <div class="bg-gray-800/50 rounded-lg p-4 mb-8 flex items-start border-l-4 border-yellow-400">
+        <div class="flex items-start">
+          <netflix-icon name="info" size="20" class="text-yellow-400 mt-0.5 mr-3 flex-shrink-0"/>
+          <div>
+            <p class="text-yellow-400 font-medium mb-1">These favorites are temporary</p>
+            <p class="text-gray-300">
+              <a
+                [routerLink]="['/login']"
+                class="text-netflix-red hover:underline font-medium inline-flex items-center"
+              >
+                Log in
+              </a> to save your favorites permanently across devices.
+            </p>
+          </div>
+        </div>
+      </div>
     }
+
+    <!-- Favorites grid -->
+    @if (favoriteMovies.length > 0) {
+      <h1 class="text-3xl font-bold text-white mb-6">
+        @if (authService.isLoggedIn()) {
+          Your Favorites
+        } @else {
+          Temporary Favorites
+        }
+      </h1>
+    }
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      @for (movie of favoriteMovies; track movie.id) {
+        <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
+          <a [routerLink]="['movie', movie.id]" class="block">
+            <netflix-movie-poster-image
+              [poster_path]="movie.poster_path"
+              class="rounded-lg"
+            ></netflix-movie-poster-image>
+            <div class="mt-2">
+              <p class="text-white font-medium text-sm truncate">{{ movie.title }}</p>
+              <div class="absolute top-2 right-2">
+                <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
+              </div>
+            </div>
+          </a>
+        </div>
+      }
+    </div>
   </div>
 </div>

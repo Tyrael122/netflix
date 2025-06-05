@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Movie, PageableResponse} from '../../models/movie.model';
+import {MovieListing, MovieDetails, PageableResponse} from '../../models/movie.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 
@@ -16,9 +16,9 @@ export class MovieService {
   constructor(private http: HttpClient) {
   }
 
-  listPopularMovies(pageNumber: number): Observable<PageableResponse<Movie>> {
+  listPopularMovies(pageNumber: number): Observable<PageableResponse<MovieListing>> {
     const url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${pageNumber}`;
-    return this.http.get<PageableResponse<Movie>>(url, {headers: this.headers})
+    return this.http.get<PageableResponse<MovieListing>>(url, {headers: this.headers})
       .pipe(
         // map the poster_url to include the base URL
         map(pageableResponse => ({
@@ -31,10 +31,10 @@ export class MovieService {
       );
   }
 
-  getMovieDetails(movieId: string): Observable<Movie> {
+  getMovieDetails(movieId: string): Observable<MovieDetails> {
     const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
 
-    return this.http.get<Movie>(url, {headers: this.headers})
+    return this.http.get<MovieDetails>(url, {headers: this.headers})
       .pipe(
         map(movie => ({
           ...movie,

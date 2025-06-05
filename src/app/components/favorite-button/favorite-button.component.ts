@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {UserMovie} from '../../models/movie.model';
+import {UserMovieListing} from '../../models/movie.model';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
 
@@ -12,7 +12,7 @@ import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
   styleUrl: './favorite-button.component.css'
 })
 export class FavoriteButtonComponent {
-  movie = input.required<UserMovie>();
+  movie = input.required<UserMovieListing>();
   private userMovieService = inject(UserMovieService);
 
   onClick($event: MouseEvent) {

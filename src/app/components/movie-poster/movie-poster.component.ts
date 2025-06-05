@@ -1,6 +1,6 @@
 import {Component, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {UserMovie} from '../../models/movie.model';
+import {UserMovieListing} from '../../models/movie.model';
 import {FavoriteButtonComponent} from '../favorite-button/favorite-button.component';
 import {MoviePosterImageComponent} from '../movie-poster-image/movie-poster-image.component';
 
@@ -15,7 +15,7 @@ import {MoviePosterImageComponent} from '../movie-poster-image/movie-poster-imag
   styleUrl: './movie-poster.component.css'
 })
 export class MoviePosterComponent {
-  movie = input.required<UserMovie>()
+  movie = input.required<UserMovieListing>()
 
 
 

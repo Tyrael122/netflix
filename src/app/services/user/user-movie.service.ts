@@ -1,5 +1,11 @@
 import {inject, Injectable} from '@angular/core';
-import {Movie, PageableResponse, UserMovie} from '../../models/movie.model';
+import {
+  MovieDetails,
+  MovieListing,
+  PageableResponse,
+  UserMovieDetails,
+  UserMovieListing, UserMovieMetadata
+} from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
 import {FavoritesService} from '../favorites/favorites.service';
 import {from, map, mergeMap, Observable, toArray} from 'rxjs';
@@ -11,12 +17,12 @@ export class UserMovieService {
   private movieService = inject(MovieService);
   private favoritesService = inject(FavoritesService);
 
-  getPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovie>> {
+  getPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
     return this.movieService.listPopularMovies(pageNumber).pipe(
       // Map the response to convert Movie to UserMovie
       map(pageableResponse => {
-        const userMovies: UserMovie[] = pageableResponse.results.map(
-          movie => this.enrichMovieDataWithUserMetadata(movie)
+        const userMovies: UserMovieListing[] = pageableResponse.results.map(
+          movie => this.enrichMovieListingWithUserMetadata(movie)
         );
 
         return {
@@ -27,7 +33,7 @@ export class UserMovieService {
     )
   }
 
-  getFavoriteMovies(): Observable<UserMovie[]> {
+  getFavoriteMovies(): Observable<UserMovieDetails[]> {
     return from(this.favoritesService.getFavorites()).pipe(
       mergeMap(movieId =>
         this.movieService.getMovieDetails(movieId).pipe(
@@ -54,18 +60,31 @@ export class UserMovieService {
     });
   }
 
-  getMovieDetails(id: string): Observable<UserMovie> {
+  getMovieDetails(id: string): Observable<UserMovieDetails> {
     return this.movieService.getMovieDetails(id).pipe(
       map(movie => this.enrichMovieDataWithUserMetadata(movie))
     );
   }
 
-  private enrichMovieDataWithUserMetadata(movie: Movie): UserMovie {
+  private enrichMovieDataWithUserMetadata(movie: MovieDetails): UserMovieDetails {
     return {
       ...movie,
+      ...this.getUserMovieMetadata(movie)
+    }
+  };
+
+  private enrichMovieListingWithUserMetadata(movie: MovieListing): UserMovieListing {
+    return {
+      ...movie,
+      ...this.getUserMovieMetadata(movie)
+    }
+  }
+
+  private getUserMovieMetadata(movie: MovieListing): UserMovieMetadata {
+    return {
       isFavorite: this.favoritesService.isFavorite(movie.id),
       isWatchlist: false, // Placeholder, implement watchlist logic if needed
       isWatched: false // Placeholder, implement watched logic if needed
-    }
-  };
+    };
+  }
 }
