@@ -4,6 +4,7 @@ import {MoviePosterImageComponent} from '../../components/movie-poster-image/mov
 import {RouterLink} from '@angular/router';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {UserMovie} from '../../models/movie.model';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
   selector: 'netflix-favorites',
@@ -16,13 +17,14 @@ import {UserMovie} from '../../models/movie.model';
   styleUrl: './favorites.component.css'
 })
 export class FavoritesComponent implements OnInit {
-  movies: UserMovie[] = [];
+  favoriteMovies: UserMovie[] = [];
 
   private userMovieService = inject(UserMovieService);
+  protected authService = inject(AuthService);
 
   ngOnInit(): void {
     this.userMovieService.getFavoriteMovies().subscribe((movies: UserMovie[]) => {
-      this.movies = movies;
+      this.favoriteMovies = movies;
     })
   }
 }

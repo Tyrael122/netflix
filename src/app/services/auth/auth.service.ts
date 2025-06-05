@@ -1,50 +1,70 @@
 import {inject, Injectable} from '@angular/core';
-import {User} from '../../models/user.model';
+import {User, UserCredentials} from '../../models/user.model';
 import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private users: User[] = [];
-  private currentUser: User | null = null;
+  private users: User[] = []; // This should be stored in a database in a real application
+  private currentUser: User = this.createGuestUser();
 
   private router = inject(Router);
 
-  signup(user: User): boolean {
-    if (this.users.find(u => u.username === user.username)) return false;
-    this.users.push(user);
+  signup(userCredentials: UserCredentials): boolean {
+    if (!userCredentials.username || !userCredentials.password) return false;
 
-    this.currentUser = user; // Automatically log in the user after signup
+    // Check if the username already exists
+    const existingUser = this.users.find(u => u.credentials?.username === userCredentials.username);
+    if (existingUser) {
+      return false; // Username already exists
+    }
+
+    this.currentUser.credentials = userCredentials;
     this.router.navigate(['/']); // Redirect to home page after signup
 
     return true;
   }
 
-  login(user: User): boolean {
-    const found = this.users.find(
-      u => u.username === user.username && u.password === user.password
+  login(user: UserCredentials): boolean {
+    if (!user.username || !user.password) return false;
+
+    // Find the user by username and password
+    const found = this.users.find(u =>
+      u.credentials?.username === user.username &&
+      u.credentials?.password === user.password
     );
 
-    if (found) {
-      this.currentUser = found;
-      this.router.navigate(['/']); // Redirect to home page after login
-
-      return true;
+    if (!found) {
+      return false; // User not found
     }
-    return false;
+    this.currentUser = found;
+    this.router.navigate(['/']); // Redirect to home page after login
+
+    return true;
   }
 
   logout(): void {
     this.router.navigate(['/login']); // Redirect to login page after logout
-    this.currentUser = null;
+    this.currentUser = this.createGuestUser(); // Reset current user to guest
   }
 
   isLoggedIn(): boolean {
-    return this.currentUser !== null;
+    return !this.currentUser.isGuest;
   }
 
-  getCurrentUser(): User | null {
+  getCurrentUser(): User {
     return this.currentUser;
+  }
+
+  private createGuestUser(): User {
+    const user = {
+      id: crypto.randomUUID(),
+      isGuest: true
+    }
+
+    this.users.push(user);
+
+    return user;
   }
 }

@@ -13,4 +13,9 @@ import {RouterLink} from '@angular/router';
 export class UserIconComponent {
   protected authService = inject(AuthService);
   showDropdown: boolean = false;
+
+  getUsername() {
+    const user = this.authService.getCurrentUser();
+    return user?.credentials?.username || 'Guest';
+  }
 }

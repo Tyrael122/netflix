@@ -2,7 +2,7 @@
   <div class="user-icon-logged-in" style="position: relative;">
     <button class="flex items-center" (click)="showDropdown = !showDropdown" type="button">
       <span class="icon">👤</span>
-      <span class="username">{{ this.authService.getCurrentUser()?.username }}</span>
+      <span class="username">{{ getUsername() }}</span>
       <span class="dropdown-arrow">▼</span>
     </button>
     @if (showDropdown) {
