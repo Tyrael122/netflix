@@ -1,9 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {UserMovie} from '../../models/movie.model';
 import {RouterLink} from '@angular/router';
-import {MoviePosterImageComponent} from '../../components/movie-poster-image/movie-poster-image.component';
 import {UserMovieService} from '../../services/user/user-movie.service';
-import {FavoriteButtonComponent} from '../../components/favorite-button/favorite-button.component';
 import {FormsModule} from '@angular/forms';
 import {SearchBarComponent} from '../../components/search-bar/search-bar.component';
 import {UserIconComponent} from '../../components/user-icon/user-icon.component';
@@ -13,8 +11,6 @@ import {MoviePosterComponent} from '../../components/movie-poster/movie-poster.c
   selector: 'netflix-home',
   imports: [
     RouterLink,
-    MoviePosterImageComponent,
-    FavoriteButtonComponent,
     FormsModule,
     SearchBarComponent,
     UserIconComponent,

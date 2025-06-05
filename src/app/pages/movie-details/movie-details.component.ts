@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {Movie, UserMovie} from '../../models/movie.model';
+import {UserMovie} from '../../models/movie.model';
 import {ActivatedRoute} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {MoviePosterImageComponent} from '../../components/movie-poster-image/movie-poster-image.component';
