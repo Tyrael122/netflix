@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white pt-20">
+<div class="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white pt-12 sm:pt-20">
   <netflix-navbar></netflix-navbar>
 
   @if (movie) {
@@ -21,7 +21,7 @@
 
             <div class="flex items-center">
               <netflix-icon name="star" size="20" class="text-yellow-400 mr-1"/>
-              <span class="font-bold">{{ movie.vote_average?.toFixed(1) || 'N/A' }}</span>
+              <span class="font-bold">{{ movie.vote_average.toFixed(1) || 'N/A' }}</span>
               <span class="text-gray-400 ml-1">/10</span>
             </div>
           </div>
