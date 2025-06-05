@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, Input, input} from '@angular/core';
 import {UserMovieListing} from '../../models/movie.model';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
@@ -13,6 +13,8 @@ import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
 })
 export class FavoriteButtonComponent {
   movie = input.required<UserMovieListing>();
+  @Input() alwaysShow: boolean = false;
+
   private userMovieService = inject(UserMovieService);
 
   onClick($event: MouseEvent) {

@@ -3,15 +3,6 @@
 
   @if (movie) {
     <div class="container mx-auto px-4 pt-4 pb-16">
-      <!-- Back button -->
-      <button
-        (click)="goBack()"
-        class="flex items-center text-gray-300 hover:text-white mb-8 transition-colors"
-      >
-        <netflix-icon name="arrow-left" size="20" class="mr-2"/>
-        Back to Browse
-      </button>
-
       <!-- Movie content -->
       <div class="flex flex-col lg:flex-row gap-6">
         <!-- Poster column -->
@@ -24,6 +15,7 @@
           <div class="mt-4 flex justify-between items-center">
             <netflix-favorite-button
               [movie]="movie"
+              [alwaysShow]="true"
               class="text-3xl hover:scale-110 transition-transform"
             ></netflix-favorite-button>
 
