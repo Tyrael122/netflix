@@ -1,7 +1,12 @@
-<div>
-  <a [routerLink]="['movie', movie().id]">
-    <netflix-movie-poster-image [poster_path]="movie().poster_path"></netflix-movie-poster-image>
-    <p>{{ movie().title }}</p>
-    <netflix-favorite-button [movie]="movie()"></netflix-favorite-button>
+<div class="w-48 relative group">
+  <a [routerLink]="['movie', movie().id]" class="block">
+    <netflix-movie-poster-image [poster_path]="movie().poster_path" class="rounded-lg overflow-hidden shadow-lg"></netflix-movie-poster-image>
+
+    <div class="mt-2">
+      <p class="text-white font-medium truncate">{{ movie().title }}</p>
+      <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <netflix-favorite-button [movie]="movie()"></netflix-favorite-button>
+      </div>
+    </div>
   </a>
 </div>

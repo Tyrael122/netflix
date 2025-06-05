@@ -1,2 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+/* Ensure full height and remove default margins */
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #141414; /* Netflix black as fallback */
+}
+
+/* Make sure Angular root component fills screen */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #141414;
+}
+
+/* Netflix color definitions */
+.bg-netflix-black {
+  background-color: #141414;
+}
+.bg-netflix-red {
+  background-color: #e50914;
+}
+.text-netflix-red {
+  color: #e50914;
+}
+.border-netflix-red {
+  border-color: #e50914;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}

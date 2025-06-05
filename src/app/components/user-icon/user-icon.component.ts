@@ -1,11 +1,14 @@
 import {Component, inject} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
 import {RouterLink} from '@angular/router';
+import {SlicePipe, UpperCasePipe} from '@angular/common';
 
 @Component({
   selector: 'netflix-user-icon',
   imports: [
-    RouterLink
+    RouterLink,
+    SlicePipe,
+    UpperCasePipe
   ],
   templateUrl: './user-icon.component.html',
   styleUrl: './user-icon.component.css'

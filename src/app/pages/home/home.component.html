@@ -1,9 +1,13 @@
-<div class="container mx-auto p-4">
-  <netflix-navbar (onSearchChanged)="searchMovies($event)" ></netflix-navbar>
+<div class="min-h-screen bg-netflix-black">
+  <div class="container mx-auto px-4">
+    <netflix-navbar (onSearchChanged)="searchMovies($event)"
+                    class="sticky top-0 z-50 bg-netflix-black bg-opacity-90 backdrop-blur-sm"></netflix-navbar>
 
-  <div class="flex flex-row flex-wrap">
-    @for (movie of movies; track movie.id) {
-      <netflix-movie-poster [movie]="movie"></netflix-movie-poster>
-    }
+    <div class="flex flex-row flex-wrap justify-center gap-6 py-8">
+      @for (movie of movies; track movie.id) {
+        <netflix-movie-poster [movie]="movie"
+                              class="transform transition-transform duration-300 hover:scale-105 hover:z-10"></netflix-movie-poster>
+      }
+    </div>
   </div>
 </div>
