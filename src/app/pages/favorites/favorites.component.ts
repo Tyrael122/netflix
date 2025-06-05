@@ -5,13 +5,15 @@ import {RouterLink} from '@angular/router';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {UserMovie} from '../../models/movie.model';
 import {AuthService} from '../../services/auth/auth.service';
+import {NavbarComponent} from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'netflix-favorites',
   imports: [
     FavoriteButtonComponent,
     MoviePosterImageComponent,
-    RouterLink
+    RouterLink,
+    NavbarComponent
   ],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css'

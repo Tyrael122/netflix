@@ -21,6 +21,10 @@ export class AuthService {
     }
 
     this.currentUser.credentials = userCredentials;
+    this.currentUser.isGuest = false;
+
+    console.log('User signed up:', this.currentUser);
+
     this.router.navigate(['/']); // Redirect to home page after signup
 
     return true;

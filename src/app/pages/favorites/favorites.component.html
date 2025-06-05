@@ -1,28 +1,32 @@
-<div class="flex flex-row flex-wrap">
-  @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
-    <p class="text-center w-full">No favorites yet.</p>
-    <p class="text-center w-full">
-      You can also save some temporarily — they’ll stay until you close the browser
-    </p>
-    <p class="text-center w-full">
-      <a [routerLink]="['/login']" class="text-blue-500 hover:underline">Log in</a> to save your favorites.
-    </p>
-  } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
-    <p class="text-center w-full">No favorites yet.</p>
-  } @else if (favoriteMovies.length > 0 && !authService.isLoggedIn()) {
-    <p class="text-center w-full">These favorites are temporary.</p>
-    <p class="text-center w-full">
-      <a [routerLink]="['/login']" class="text-blue-500 hover:underline">Log in</a> to save your favorites.
-    </p>
-  }
+<div class="container mx-auto p-4">
+  <netflix-navbar></netflix-navbar>
 
-  @for (movie of favoriteMovies; track movie.id) {
-    <div>
-      <a [routerLink]="['movie', movie.id]">
-        <netflix-movie-poster-image [poster_path]="movie.poster_path"></netflix-movie-poster-image>
-        <p>{{ movie.title }}</p>
-        <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
-      </a>
-    </div>
-  }
+  <div class="flex flex-row flex-wrap">
+    @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
+      <p class="text-center w-full">No favorites yet.</p>
+      <p class="text-center w-full">
+        You can also save some temporarily — they’ll stay until you close the browser
+      </p>
+      <p class="text-center w-full">
+        <a [routerLink]="['/login']" class="text-blue-500 hover:underline">Log in</a> to save your favorites.
+      </p>
+    } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
+      <p class="text-center w-full">No favorites yet.</p>
+    } @else if (favoriteMovies.length > 0 && !authService.isLoggedIn()) {
+      <p class="text-center w-full">These favorites are temporary.</p>
+      <p class="text-center w-full">
+        <a [routerLink]="['/login']" class="text-blue-500 hover:underline">Log in</a> to save your favorites.
+      </p>
+    }
+
+    @for (movie of favoriteMovies; track movie.id) {
+      <div>
+        <a [routerLink]="['movie', movie.id]">
+          <netflix-movie-poster-image [poster_path]="movie.poster_path"></netflix-movie-poster-image>
+          <p>{{ movie.title }}</p>
+          <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
+        </a>
+      </div>
+    }
+  </div>
 </div>

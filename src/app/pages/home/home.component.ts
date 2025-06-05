@@ -1,20 +1,16 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {UserMovie} from '../../models/movie.model';
-import {RouterLink} from '@angular/router';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {FormsModule} from '@angular/forms';
-import {SearchBarComponent} from '../../components/search-bar/search-bar.component';
-import {UserIconComponent} from '../../components/user-icon/user-icon.component';
 import {MoviePosterComponent} from '../../components/movie-poster/movie-poster.component';
+import {NavbarComponent} from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'netflix-home',
   imports: [
-    RouterLink,
     FormsModule,
-    SearchBarComponent,
-    UserIconComponent,
-    MoviePosterComponent
+    MoviePosterComponent,
+    NavbarComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

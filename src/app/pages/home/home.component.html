@@ -1,15 +1,5 @@
 <div class="container mx-auto p-4">
-  <div class="flex justify-between items-center mb-4">
-    <netflix-search-bar (onSearchChanged)="searchMovies($event)"></netflix-search-bar>
-
-    <div class="flex items-center space-x-4">
-      <a routerLink="/favorites" class="flex items-center">
-        <span class="text-lg">Favorites</span>
-      </a>
-
-      <netflix-user-icon></netflix-user-icon>
-    </div>
-  </div>
+  <netflix-navbar (onSearchChanged)="searchMovies($event)" ></netflix-navbar>
 
   <div class="flex flex-row flex-wrap">
     @for (movie of movies; track movie.id) {

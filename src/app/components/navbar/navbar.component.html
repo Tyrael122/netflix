@@ -1,0 +1,15 @@
+<div class="flex justify-between items-center mb-4">
+  <netflix-search-bar (onSearchChanged)="searchMovies($event)"></netflix-search-bar>
+
+  <div class="flex items-center space-x-4">
+    <a routerLink="/" class="flex items-center">
+      <span class="text-lg">Home</span>
+    </a>
+
+    <a routerLink="/favorites" class="flex items-center">
+      <span class="text-lg">Favorites</span>
+    </a>
+
+    <netflix-user-icon></netflix-user-icon>
+  </div>
+</div>
