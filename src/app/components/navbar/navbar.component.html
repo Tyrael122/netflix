@@ -1,18 +1,19 @@
-<div class="flex justify-between items-center mb-8 p-4 bg-gradient-to-b from-black to-transparent fixed top-0 left-0 right-0 z-50">
-  <div class="flex items-center">
-    <span class="text-red-600 font-bold text-3xl mr-8">NETFLIX</span>
-    <netflix-search-bar (onSearchChanged)="searchMovies($event)"></netflix-search-bar>
+<div
+  class="flex flex-col sm:flex-row justify-between items-center mb-8 p-4 bg-gradient-to-b from-black to-transparent fixed top-0 left-0 right-0 z-50">
+  <div class="flex items-center w-full sm:w-auto mb-4 sm:mb-0">
+    <span class="text-red-600 font-bold text-2xl sm:text-3xl mr-4 sm:mr-8">NETFLIX</span>
+    <netflix-search-bar (onSearchChanged)="searchMovies($event)" class="w-full sm:w-auto"></netflix-search-bar>
   </div>
 
-  <div class="flex items-center space-x-6">
+  <div class="flex items-center space-x-4 sm:space-x-6">
     <a routerLink="/" class="flex items-center hover:text-red-500 transition-colors group">
-      <netflix-icon name="home" size="20" class="mr-1 text-gray-300 group-hover:text-red-500" />
-      <span class="text-lg font-medium">Home</span>
+      <netflix-icon name="home" size="20" class="mr-1 text-gray-300 group-hover:text-red-500"/>
+      <span class="hidden sm:inline text-lg font-medium">Home</span>
     </a>
 
     <a routerLink="/favorites" class="flex items-center hover:text-red-500 transition-colors group">
-      <netflix-icon name="favorite-outline" size="20" class="mr-1 text-gray-300 group-hover:text-red-500" />
-      <span class="text-lg font-medium">Favorites</span>
+      <netflix-icon name="favorite-outline" size="20" class="mr-1 text-gray-300 group-hover:text-red-500"/>
+      <span class="hidden sm:inline text-lg font-medium">Favorites</span>
     </a>
 
     <netflix-user-icon></netflix-user-icon>

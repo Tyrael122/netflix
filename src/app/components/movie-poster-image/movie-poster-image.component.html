@@ -4,10 +4,11 @@
     width="200"
     height="300"
     alt="Movie poster"
-    class="rounded-lg shadow-lg w-full h-[225px] sm:h-[270px] md:h-[300px] object-cover"
+    class="rounded-lg shadow-lg w-full h-auto object-cover"
+    priority
   >
 } @else {
-  <div class="w-full h-[225px] sm:h-[270px] md:h-[300px] bg-gray-800 rounded-lg flex items-center justify-center">
+  <div class="w-full aspect-[2/3] bg-gray-800 rounded-lg flex items-center justify-center">
     <p class="text-gray-500 text-sm">No poster available</p>
   </div>
 }
