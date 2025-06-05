@@ -1,7 +1,7 @@
-<div class="min-h-screen pt-12 sm:pt-20">
+<div class="min-h-screen pt-16 sm:pt-20">
   <netflix-navbar></netflix-navbar>
 
-  <div class="max-w-4xl mx-auto">
+  <div class="container mx-auto px-4 pt-4 pb-16">
     <!-- Empty state messages -->
     @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
       <div class="text-center py-16">
@@ -68,7 +68,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       @for (movie of favoriteMovies; track movie.id) {
         <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
-          <a [routerLink]="['movie', movie.id]" class="block">
+          <a [routerLink]="['/movie', movie.id]" class="block">
             <netflix-movie-poster-image
               [poster_path]="movie.poster_path"
               class="rounded-lg"
