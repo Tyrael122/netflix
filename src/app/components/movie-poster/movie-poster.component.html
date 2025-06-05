@@ -1,7 +1,12 @@
-<div>
-  <a [routerLink]="['movie', movie().id]">
+<div class="m-2 group relative transition-transform duration-300 hover:scale-105 hover:z-10 w-[150px] sm:w-[180px] md:w-[200px]">
+  <a [routerLink]="['movie', movie().id]" class="block">
     <netflix-movie-poster-image [poster_path]="movie().poster_path"></netflix-movie-poster-image>
-    <p>{{ movie().title }}</p>
-    <netflix-favorite-button [movie]="movie()"></netflix-favorite-button>
+    <div class="mt-2">
+      <p class="text-white font-medium text-sm sm:text-base truncate">{{ movie().title }}</p>
+      <!-- Just render the button; let it handle its own visibility -->
+      <div class="absolute top-2 right-2">
+        <netflix-favorite-button [movie]="movie()"></netflix-favorite-button>
+      </div>
+    </div>
   </a>
 </div>

@@ -1,7 +1,10 @@
-<input
-  [(ngModel)]="searchTerm"
-  (ngModelChange)="searchMovies()"
-  name="search"
-  placeholder="Search movies..."
-  class="search-bar"
-/>
+<div class="relative">
+  <netflix-icon name="search" size="18" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
+  <input
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="searchMovies()"
+    name="search"
+    placeholder="Search movies..."
+    class="pl-10 pr-4 py-2 rounded bg-gray-800 text-white w-64 focus:outline-none focus:ring-2 focus:ring-red-600 placeholder-gray-400 transition-all duration-200"
+  />
+</div>

@@ -1,11 +1,13 @@
 import {Component, output} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
 
 @Component({
   selector: 'netflix-search-bar',
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NetflixIconComponent
   ],
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.css'

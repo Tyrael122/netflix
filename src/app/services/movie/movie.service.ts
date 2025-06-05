@@ -25,7 +25,7 @@ export class MovieService {
           ...pageableResponse,
           results: pageableResponse.results.map(movie => ({
             ...movie,
-            poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/original${movie.poster_path}` : undefined
+            poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined
           }))
         }))
       );

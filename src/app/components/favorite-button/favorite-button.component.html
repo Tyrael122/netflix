@@ -1,3 +1,17 @@
-<span class="star" [class.filled]="movie().isFavorite" (click)="onClick($event)">
-    {{ movie().isFavorite ? '★' : '☆' }}
+<span
+  class="cursor-pointer transition-all duration-200 hover:scale-110"
+  [class.opacity-100]="movie().isFavorite"
+  [class.opacity-0]="!movie().isFavorite"
+  [class.group-hover:opacity-100]="!movie().isFavorite"
+  [class.text-red-600]="movie().isFavorite"
+  [class.text-gray-400]="!movie().isFavorite"
+  (click)="onClick($event)"
+>
+@if (movie().isFavorite) {
+  <!-- Solid heart (filled) -->
+  <netflix-icon name="favorite" size="24" class="fill-current"/>
+} @else {
+  <!-- Outline heart -->
+  <netflix-icon name="favorite-outline" size="24"/>
+}
 </span>

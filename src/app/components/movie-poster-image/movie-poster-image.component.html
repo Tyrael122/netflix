@@ -1,5 +1,13 @@
 @if (poster_path()) {
-  <img [ngSrc]="poster_path()!" width="300" height="450" alt="">
+  <img
+    [ngSrc]="poster_path()!"
+    width="200"
+    height="300"
+    alt="Movie poster"
+    class="rounded-lg shadow-lg w-full h-[225px] sm:h-[270px] md:h-[300px] object-cover"
+  >
 } @else {
-  <p>No poster available.</p>
+  <div class="w-full h-[225px] sm:h-[270px] md:h-[300px] bg-gray-800 rounded-lg flex items-center justify-center">
+    <p class="text-gray-500 text-sm">No poster available</p>
+  </div>
 }

@@ -2,13 +2,15 @@ import {Component, output} from '@angular/core';
 import {SearchBarComponent} from '../search-bar/search-bar.component';
 import {UserIconComponent} from '../user-icon/user-icon.component';
 import {RouterLink} from '@angular/router';
+import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
 
 @Component({
   selector: 'netflix-navbar',
   imports: [
     SearchBarComponent,
     UserIconComponent,
-    RouterLink
+    RouterLink,
+    NetflixIconComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
