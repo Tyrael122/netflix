@@ -1,10 +1,16 @@
 <div class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-50 backdrop-blur-sm text-white shadow-md">
 
   <!-- Logo -->
-  <div class="flex items-center gap-x-5">
-    <span routerLink="/" class="text-red-600 font-bold text-2xl sm:text-3xl cursor-pointer">NETFLIX</span>
+  <div class="flex items-center justify-around md:justify-start w-full md:gap-x-5">
+    <span routerLink="/" class="hidden md:block text-red-600 font-bold text-2xl sm:text-3xl cursor-pointer">NETFLIX</span>
 
-    <netflix-search-bar (onSearchChanged)="searchMovies($event)" class="ml-4 hidden md:flex"></netflix-search-bar>
+    <netflix-search-bar (onSearchChanged)="searchMovies($event)" class="md:ml-4"></netflix-search-bar>
+
+    <div class="md:hidden ml-4">
+      <button (click)="toggleMobileMenu()" class="text-gray-300 hover:text-red-500 focus:outline-none">
+        <netflix-icon name="menu" size="24"></netflix-icon>
+      </button>
+    </div>
   </div>
 
   <!-- Desktop Navigation -->
