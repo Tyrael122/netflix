@@ -24,13 +24,14 @@
           id="email"
           name="email"
           [(ngModel)]="email"
+          email
           required
           class="w-full p-3 bg-gray-700 rounded text-white placeholder-gray-400
                  focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600"
-          placeholder="Email or phone number"
+          placeholder="Email"
         />
         @if (loginForm.submitted && loginForm.form.controls['email']?.errors) {
-          <p class="mt-1 text-netflix-red text-sm">Please enter a valid email or phone number.</p>
+          <p class="mt-1 text-netflix-red text-sm">Please enter a valid email address.</p>
         }
       </div>
 
