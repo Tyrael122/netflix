@@ -1,66 +1,66 @@
-<!-- pagination.component.html -->
 <nav class="pagination-container" aria-label="Pagination">
-  <ul class="pagination">
+  <div class="flex items-center gap-2">
     <!-- First Page Button -->
-    <li class="page-item">
-      <button
-        class="page-link"
-        [disabled]="currentPage === 1"
-        (click)="goToFirst()"
-        aria-label="First page"
-      >
-        &laquo;
-      </button>
-    </li>
+    <button
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      [disabled]="currentPage === 1"
+      (click)="goToFirst()"
+      aria-label="First page"
+    >
+      &laquo;
+    </button>
 
     <!-- Previous Page Button -->
-    <li class="page-item">
-      <button
-        class="page-link"
-        [disabled]="currentPage === 1"
-        (click)="goToPrev()"
-        aria-label="Previous page"
-      >
-        &lsaquo;
-      </button>
-    </li>
+    <button
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      [disabled]="currentPage === 1"
+      (click)="goToPrev()"
+      aria-label="Previous page"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"/>
+      </svg>
+    </button>
 
     <!-- Dynamic Page Numbers -->
     @for (page of visiblePages; track page) {
-      <li class="page-item">
-        <button
-          class="page-link"
-          [class.active]="page === currentPage"
-          (click)="goToPage(page)"
-          [attr.aria-current]="page === currentPage ? 'page' : null"
-        >
-          {{ page }}
-        </button>
-      </li>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-full font-medium transition-colors"
+        [class.bg-red-600]="page === currentPage"
+        [class.bg-gray-800]="page !== currentPage"
+        [class.text-white]="true"
+        [class.hover:bg-gray-700]="page !== currentPage"
+        (click)="goToPage(page)"
+        [attr.aria-current]="page === currentPage ? 'page' : null"
+      >
+        {{ page }}
+      </button>
     }
 
     <!-- Next Page Button -->
-    <li class="page-item">
-      <button
-        class="page-link"
-        [disabled]="currentPage === totalPages"
-        (click)="goToNext()"
-        aria-label="Next page"
-      >
-        &rsaquo;
-      </button>
-    </li>
+    <button
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      [disabled]="currentPage === totalPages"
+      (click)="goToNext()"
+      aria-label="Next page"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"/>
+      </svg>
+    </button>
 
     <!-- Last Page Button -->
-    <li class="page-item">
-      <button
-        class="page-link"
-        [disabled]="currentPage === totalPages"
-        (click)="goToLast()"
-        aria-label="Last page"
-      >
-        &raquo;
-      </button>
-    </li>
-  </ul>
+    <button
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      [disabled]="currentPage === totalPages"
+      (click)="goToLast()"
+      aria-label="Last page"
+    >
+      &raquo;
+    </button>
+  </div>
 </nav>
