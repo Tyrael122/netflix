@@ -1,7 +1,9 @@
-<div class="flex items-center gap-2">
+<div class="flex justify-center items-center gap-2">
   <!-- Previous button -->
   <button
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+    (click)="previous()"
+    [disabled]="currentPage === 1"
+    class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd"
             d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -9,25 +11,29 @@
     </svg>
   </button>
 
-  <!-- Page numbers -->
-  <button class="w-10 h-10 flex items-center justify-center rounded-full bg-red-600 text-white font-medium">1</button>
-  <button
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors">
-    2
-  </button>
-  <button
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors">
-    3
-  </button>
-  <span class="text-white px-2">...</span>
-  <button
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors">
-    10
-  </button>
+  <!-- Page numbers - show as much pages as possible, filling the entire width of the container -->
+  @for (page of pages; track page.valueOf()) {
+    @if (page !== '...') {
+      <button
+        (click)="goToPage(page)"
+        [class.bg-red-600]="isActive(page)"
+        [class.bg-gray-800]="!isActive(page)"
+        class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full text-white font-medium hover:bg-gray-700 transition-colors sm:inline-flex">
+        {{ page }}
+      </button>
+    } @else if (page === '...') {
+      <span
+        class="text-white px-2 hidden sm:inline-block">
+        ...
+      </span>
+    }
+  }
 
   <!-- Next button -->
   <button
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors">
+    (click)="next()"
+    [disabled]="currentPage === totalPages"
+    class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd"
             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
