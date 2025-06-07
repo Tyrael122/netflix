@@ -1,19 +1,21 @@
-<div class="min-h-screen bg-black text-white">
-  <!-- Netflix Header -->
-  <header class="px-4 py-4 md:px-16">
+<div class="min-h-screen bg-gray-900">
+  <!-- Netflix Header with subtle background -->
+  <header class="relative px-4 py-4 md:px-16 bg-gradient-to-b from-black to-transparent z-10">
     <div class="flex justify-between items-center">
       <a routerLink="/" class="text-netflix-red font-bold text-3xl md:text-4xl">NETFLIX</a>
     </div>
   </header>
 
-  <!-- Login Form Container -->
-  <div class="flex items-center justify-center p-4 pb-16">
+  <!-- Main content with emphasized form -->
+  <main class="relative z-0 flex items-center justify-center p-4 pb-16 min-h-[calc(100vh-80px)]">
+    <!-- Form container with strong visual emphasis -->
     <form
       (ngSubmit)="login()"
       #loginForm="ngForm"
-      class="w-full max-w-md bg-black bg-opacity-75 rounded-lg px-12 py-10 md:px-16 md:py-12"
+      class="w-full max-w-md bg-gray-800 rounded-lg px-12 py-10 md:px-16 md:py-12
+             border border-gray-700 shadow-2xl"
     >
-      <h2 class="text-3xl font-bold mb-8">Sign In</h2>
+      <h2 class="text-3xl font-bold mb-8 text-white">Sign In</h2>
 
       <!-- Email Field -->
       <div class="mb-6">
@@ -23,7 +25,8 @@
           name="email"
           [(ngModel)]="email"
           required
-          class="w-full p-3 bg-gray-700 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-500"
+          class="w-full p-3 bg-gray-700 rounded text-white placeholder-gray-400
+                 focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600"
           placeholder="Email or phone number"
         />
         @if (loginForm.submitted && loginForm.form.controls['email']?.errors) {
@@ -40,7 +43,8 @@
           [(ngModel)]="password"
           required
           minlength="4"
-          class="w-full p-3 bg-gray-700 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-500"
+          class="w-full p-3 bg-gray-700 rounded text-white placeholder-gray-400
+                 focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600"
           placeholder="Password"
         />
         @if (loginForm.submitted && loginForm.form.controls['password']?.errors) {
@@ -48,29 +52,30 @@
         }
       </div>
 
-      <!-- Sign In Button -->
+      <!-- Sign In Button - More prominent -->
       <button
         type="submit"
-        class="w-full bg-netflix-red text-white py-3 rounded-md font-medium text-lg mt-8 hover:bg-red-700 transition-colors"
+        class="w-full bg-netflix-red text-white py-3 rounded-md font-bold text-lg mt-8
+               hover:bg-red-700 transition-colors"
       >
         Sign In
       </button>
 
-      <!-- Helper Links -->
-      <div class="flex items-center justify-between mt-4 text-gray-400">
+      <!-- Helper Links - More subtle -->
+      <div class="flex items-center justify-between mt-4 text-gray-400 text-sm">
         <div class="flex items-center">
-          <input type="checkbox" id="remember" class="mr-2 accent-gray-400">
-          <label for="remember" class="text-sm">Remember me</label>
+          <input type="checkbox" id="remember" class="mr-2 accent-gray-500">
+          <label for="remember">Remember me</label>
         </div>
-        <a href="#" class="text-sm hover:underline">Need help?</a>
+        <a href="#" class="hover:text-gray-300 transition-colors">Need help?</a>
       </div>
 
-      <!-- Sign Up Section -->
-      <div class="mt-12 text-gray-400">
-        <p class="mb-2">New to Netflix?
-          <a routerLink="/signup" class="text-white hover:underline">Sign up now</a>.
+      <!-- Sign Up Section - Better visual hierarchy -->
+      <div class="mt-16 text-gray-400">
+        <p>New to Netflix?
+          <a routerLink="/signup" class="text-white hover:underline font-medium">Sign up now</a>.
         </p>
       </div>
     </form>
-  </div>
+  </main>
 </div>
