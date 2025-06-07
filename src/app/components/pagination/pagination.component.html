@@ -1,43 +1,66 @@
-<div class="flex justify-center items-center gap-2">
-  <!-- Previous button -->
-  <button
-    (click)="previous()"
-    [disabled]="currentPage === 1"
-    class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd"
-            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-            clip-rule="evenodd"/>
-    </svg>
-  </button>
-
-  <!-- Page numbers - show as much pages as possible, filling the entire width of the container -->
-  @for (page of pages; track page.valueOf()) {
-    @if (page !== '...') {
+<!-- pagination.component.html -->
+<nav class="pagination-container" aria-label="Pagination">
+  <ul class="pagination">
+    <!-- First Page Button -->
+    <li class="page-item">
       <button
-        (click)="goToPage(page)"
-        [class.bg-red-600]="isActive(page)"
-        [class.bg-gray-800]="!isActive(page)"
-        class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full text-white font-medium hover:bg-gray-700 transition-colors sm:inline-flex">
-        {{ page }}
+        class="page-link"
+        [disabled]="currentPage === 1"
+        (click)="goToFirst()"
+        aria-label="First page"
+      >
+        &laquo;
       </button>
-    } @else if (page === '...') {
-      <span
-        class="text-white px-2 hidden sm:inline-block">
-        ...
-      </span>
-    }
-  }
+    </li>
 
-  <!-- Next button -->
-  <button
-    (click)="next()"
-    [disabled]="currentPage === totalPages"
-    class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clip-rule="evenodd"/>
-    </svg>
-  </button>
-</div>
+    <!-- Previous Page Button -->
+    <li class="page-item">
+      <button
+        class="page-link"
+        [disabled]="currentPage === 1"
+        (click)="goToPrev()"
+        aria-label="Previous page"
+      >
+        &lsaquo;
+      </button>
+    </li>
+
+    <!-- Dynamic Page Numbers -->
+    @for (page of visiblePages; track page) {
+      <li class="page-item">
+        <button
+          class="page-link"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)"
+          [attr.aria-current]="page === currentPage ? 'page' : null"
+        >
+          {{ page }}
+        </button>
+      </li>
+    }
+
+    <!-- Next Page Button -->
+    <li class="page-item">
+      <button
+        class="page-link"
+        [disabled]="currentPage === totalPages"
+        (click)="goToNext()"
+        aria-label="Next page"
+      >
+        &rsaquo;
+      </button>
+    </li>
+
+    <!-- Last Page Button -->
+    <li class="page-item">
+      <button
+        class="page-link"
+        [disabled]="currentPage === totalPages"
+        (click)="goToLast()"
+        aria-label="Last page"
+      >
+        &raquo;
+      </button>
+    </li>
+  </ul>
+</nav>
