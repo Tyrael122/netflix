@@ -1,4 +1,4 @@
-<netflix-navbar-container (searchChanged)="searchMovies($event)">
+<netflix-navbar-container (searchChanged)="onSearchChanged($event)">
   <div class="flex flex-row flex-wrap justify-center">
     @for (movie of movies; track movie.id) {
       <netflix-movie-poster [movie]="movie"></netflix-movie-poster>

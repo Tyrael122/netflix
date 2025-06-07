@@ -4,6 +4,7 @@ import {UserMovieService} from '../../services/user/user-movie.service';
 import {FormsModule} from '@angular/forms';
 import {MoviePosterComponent} from '../../components/movie-poster/movie-poster.component';
 import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
 
 @Component({
   selector: 'netflix-home',
@@ -18,12 +19,26 @@ import {NavbarContainerComponent} from '../../components/navbar-container/navbar
 export class HomeComponent implements OnInit {
   movies: UserMovieListing[] = [];
 
+  private searchSubject = new Subject<string>();
+
   userMovieService = inject(UserMovieService);
 
   ngOnInit() {
     this.userMovieService.getPopularMovies(1).subscribe(movieList => {
       this.movies = movieList.results;
     })
+
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    )
+      .subscribe(searchTerm => {
+        this.searchMovies(searchTerm);
+      });
+  }
+
+  onSearchChanged($event: string) {
+    this.searchSubject.next($event);
   }
 
   searchMovies(searchTerm: string) {
@@ -36,12 +51,10 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.userMovieService.getPopularMovies(1).subscribe(movieList => {
+    this.userMovieService.searchMovies(searchTerm).subscribe(movieList => {
       console.log(`Searching for movies with term: ${searchTerm}`);
 
-      this.movies = movieList.results.filter(movie =>
-        movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      this.movies = movieList.results;
     });
   }
 }

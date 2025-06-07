@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core';
 import {
-  MovieDetails,
   MovieListing,
   PageableResponse,
   UserMovieDetails,
@@ -23,7 +22,7 @@ export class UserMovieService {
       // Map the response to convert Movie to UserMovie
       map(pageableResponse => {
         const userMovies: UserMovieListing[] = pageableResponse.results.map(
-          movie => this.enrichMovieListingWithUserMetadata(movie)
+          movie => this.enrichMovieWithUserMetadata(movie)
         );
 
         return {
@@ -34,11 +33,26 @@ export class UserMovieService {
     )
   }
 
+  searchMovies(searchTerm: string): Observable<PageableResponse<UserMovieListing>> {
+    return this.movieService.searchMovies(searchTerm, 1).pipe(
+      map(pageableResponse => {
+        const userMovies: UserMovieListing[] = pageableResponse.results.map(
+          movie => this.enrichMovieWithUserMetadata(movie)
+        );
+
+        return {
+          ...pageableResponse,
+          results: userMovies
+        };
+      })
+    );
+  }
+
   getFavoriteMovies(): Observable<UserMovieDetails[]> {
     return from(this.favoritesService.getFavorites()).pipe(
       mergeMap(movieId =>
         this.movieService.getMovieDetails(movieId).pipe(
-          map(movie => this.enrichMovieDataWithUserMetadata(movie))
+          map(movie => this.enrichMovieWithUserMetadata(movie))
         )
       ),
       toArray() // Collect all emissions into a single array
@@ -63,18 +77,11 @@ export class UserMovieService {
 
   getMovieDetails(id: string): Observable<UserMovieDetails> {
     return this.movieService.getMovieDetails(id).pipe(
-      map(movie => this.enrichMovieDataWithUserMetadata(movie))
+      map(movie => this.enrichMovieWithUserMetadata(movie))
     );
   }
 
-  private enrichMovieDataWithUserMetadata(movie: MovieDetails): UserMovieDetails {
-    return {
-      ...movie,
-      ...this.getUserMovieMetadata(movie)
-    }
-  };
-
-  private enrichMovieListingWithUserMetadata(movie: MovieListing): UserMovieListing {
+  private enrichMovieWithUserMetadata<T extends MovieListing>(movie: T) {
     return {
       ...movie,
       ...this.getUserMovieMetadata(movie)

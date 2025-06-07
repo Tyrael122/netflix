@@ -20,13 +20,21 @@ export class MovieService {
     const url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${pageNumber}`;
     return this.http.get<PageableResponse<MovieListing>>(url, {headers: this.headers})
       .pipe(
-        // map the poster_url to include the base URL
         map(pageableResponse => ({
           ...pageableResponse,
-          results: pageableResponse.results.map(movie => ({
-            ...movie,
-            poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined
-          }))
+          results: pageableResponse.results.map(movie => this.parseMovieListing(movie))
+        }))
+      );
+  }
+
+  searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<MovieListing>> {
+    const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchTerm)}&language=en-US&page=${pageNumber}&include_adult=false`;
+
+    return this.http.get<PageableResponse<MovieListing>>(url, {headers: this.headers})
+      .pipe(
+        map(pageableResponse => ({
+          ...pageableResponse,
+          results: pageableResponse.results.map(movie => this.parseMovieListing(movie))
         }))
       );
   }
@@ -36,10 +44,18 @@ export class MovieService {
 
     return this.http.get<MovieDetails>(url, {headers: this.headers})
       .pipe(
-        map(movie => ({
-          ...movie,
-          poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/original${movie.poster_path}` : undefined
-        }))
+        map(movie => this.parseMovieListing(movie, 'original'))
       );
+  }
+
+  private parseMovieListing<T extends MovieListing>(movie: T, posterResolution: string = 'w500'): T {
+    return {
+      ...movie,
+      poster_path: this.parsePosterPath(movie.poster_path, posterResolution)
+    };
+  }
+
+  private parsePosterPath(posterPath: string | undefined, resolution: string): string | undefined {
+    return posterPath ? `https://image.tmdb.org/t/p/${resolution}${posterPath}` : undefined;
   }
 }
