@@ -5,13 +5,15 @@ import {FormsModule} from '@angular/forms';
 import {MoviePosterComponent} from '../../components/movie-poster/movie-poster.component';
 import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
 import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {PaginationComponent} from '../../components/pagination/pagination.component';
 
 @Component({
   selector: 'netflix-home',
   imports: [
     FormsModule,
     MoviePosterComponent,
-    NavbarContainerComponent
+    NavbarContainerComponent,
+    PaginationComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

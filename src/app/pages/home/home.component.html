@@ -4,4 +4,10 @@
       <netflix-movie-poster [movie]="movie"></netflix-movie-poster>
     }
   </div>
+  <div class="flex justify-center mt-8 pb-8">
+    <netflix-pagination
+      [totalPages]="10"
+      [currentPage]="5"
+    ></netflix-pagination>
+  </div>
 </netflix-navbar-container>
