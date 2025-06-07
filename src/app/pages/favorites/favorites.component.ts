@@ -5,8 +5,8 @@ import {RouterLink} from '@angular/router';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {UserMovieListing} from '../../models/movie.model';
 import {AuthService} from '../../services/auth/auth.service';
-import {NavbarComponent} from '../../components/navbar/navbar.component';
 import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.component';
+import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
 
 @Component({
   selector: 'netflix-favorites',
@@ -14,8 +14,8 @@ import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.c
     FavoriteButtonComponent,
     MoviePosterImageComponent,
     RouterLink,
-    NavbarComponent,
-    NetflixIconComponent
+    NetflixIconComponent,
+    NavbarContainerComponent
   ],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css'

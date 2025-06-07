@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MovieListing, MovieDetails, PageableResponse} from '../../models/movie.model';
+import {MovieDetails, MovieListing, PageableResponse} from '../../models/movie.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 

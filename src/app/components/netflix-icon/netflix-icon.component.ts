@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 
 @Component({
   selector: 'netflix-icon',
@@ -6,8 +6,7 @@ import {Component, Input} from '@angular/core';
   styleUrl: './netflix-icon.component.css',
 })
 export class NetflixIconComponent {
-  @Input() name: string = '';
-  @Input() size: string | number = "24";
-  @Input() iconClass: string = '';
-  @Input() fill: string = '';
+  name = input.required<string>()
+  size = input<string | number>('24px');
+  fill = input<string>('')
 }

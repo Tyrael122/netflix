@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {NetflixIconComponent} from './netflix-icon.component';
+import {NavbarContainerComponent} from './navbar-container.component';
 
-describe('NetflixIconComponent', () => {
-  let component: NetflixIconComponent;
-  let fixture: ComponentFixture<NetflixIconComponent>;
+describe('NavbarContainerComponent', () => {
+  let component: NavbarContainerComponent;
+  let fixture: ComponentFixture<NavbarContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NetflixIconComponent]
+      imports: [NavbarContainerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NetflixIconComponent);
+    fixture = TestBed.createComponent(NavbarContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

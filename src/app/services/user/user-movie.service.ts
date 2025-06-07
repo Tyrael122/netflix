@@ -4,7 +4,8 @@ import {
   MovieListing,
   PageableResponse,
   UserMovieDetails,
-  UserMovieListing, UserMovieMetadata
+  UserMovieListing,
+  UserMovieMetadata
 } from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
 import {FavoritesService} from '../favorites/favorites.service';

@@ -3,14 +3,14 @@ import {UserMovieListing} from '../../models/movie.model';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {FormsModule} from '@angular/forms';
 import {MoviePosterComponent} from '../../components/movie-poster/movie-poster.component';
-import {NavbarComponent} from '../../components/navbar/navbar.component';
+import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
 
 @Component({
   selector: 'netflix-home',
   imports: [
     FormsModule,
     MoviePosterComponent,
-    NavbarComponent
+    NavbarContainerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

@@ -1,11 +1,7 @@
-<div class="min-h-screen pt-16 sm:pt-20">
-  <netflix-navbar (onSearchChanged)="searchMovies($event)"></netflix-navbar>
-
-  <div class="container mx-auto px-4 pt-4 pb-16">
-    <div class="flex flex-row flex-wrap justify-center">
-      @for (movie of movies; track movie.id) {
-        <netflix-movie-poster [movie]="movie"></netflix-movie-poster>
-      }
-    </div>
+<netflix-navbar-container (searchChanged)="searchMovies($event)">
+  <div class="flex flex-row flex-wrap justify-center">
+    @for (movie of movies; track movie.id) {
+      <netflix-movie-poster [movie]="movie"></netflix-movie-poster>
+    }
   </div>
-</div>
+</netflix-navbar-container>

@@ -1,12 +1,12 @@
 import {Component, inject} from '@angular/core';
-import {UserMovieDetails, UserMovieListing} from '../../models/movie.model';
+import {UserMovieDetails} from '../../models/movie.model';
 import {ActivatedRoute} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {MoviePosterImageComponent} from '../../components/movie-poster-image/movie-poster-image.component';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {FavoriteButtonComponent} from '../../components/favorite-button/favorite-button.component';
 import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.component';
-import {NavbarComponent} from '../../components/navbar/navbar.component';
+import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
 
 @Component({
   selector: 'netflix-movie-details',
@@ -15,7 +15,7 @@ import {NavbarComponent} from '../../components/navbar/navbar.component';
     DatePipe,
     FavoriteButtonComponent,
     NetflixIconComponent,
-    NavbarComponent
+    NavbarContainerComponent
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
