@@ -1,0 +1,9 @@
+.bg-netflix-red {
+  background-color: #e50914;
+}
+.hover\:bg-red-700:hover {
+  background-color: #b2070f;
+}
+.text-netflix-red {
+  color: #e50914;
+}
