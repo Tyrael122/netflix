@@ -83,14 +83,14 @@
     </div>
   } @else {
     <!-- Error/loading state -->
-    <div class="text-center">
-      @if (isLoading) {
-        <netflix-loading-spinner-indicator></netflix-loading-spinner-indicator>
-      } @else {
+    @if (isLoading) {
+      <netflix-loading-spinner-indicator></netflix-loading-spinner-indicator>
+    } @else {
+      <div class="text-center">
         <netflix-icon name="alert-triangle" size="48" class="mx-auto text-yellow-500 mb-4"/>
         <h2 class="text-2xl font-bold mb-2">Error loading movie details</h2>
         <p class="text-gray-400 mb-6">We couldn't load the movie information.</p>
-      }
-    </div>
+      </div>
+    }
   }
 </netflix-navbar-container>

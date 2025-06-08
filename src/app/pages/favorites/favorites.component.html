@@ -1,7 +1,7 @@
 <netflix-navbar-container>
   <!-- Empty state messages -->
   @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
-    <div class="text-center py-16">
+    <div class="text-center">
       <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
         <netflix-icon name="favorite-outline" size="48" class="text-gray-500"/>
       </div>
@@ -17,7 +17,7 @@
       </a>
     </div>
   } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
-    <div class="text-center py-16">
+    <div class="text-center">
       <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
         <netflix-icon name="favorite-outline" size="48" class="text-gray-500"/>
       </div>
@@ -60,24 +60,24 @@
         Temporary Favorites
       }
     </h1>
-  }
 
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-    @for (movie of favoriteMovies; track movie.id) {
-      <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
-        <a [routerLink]="['/movie', movie.id]" class="block">
-          <netflix-movie-poster-image
-            [poster_path]="movie.poster_path"
-            class="rounded-lg"
-          ></netflix-movie-poster-image>
-          <div class="mt-2">
-            <p class="text-white font-medium text-sm truncate">{{ movie.title }}</p>
-            <div class="absolute top-2 right-2">
-              <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      @for (movie of favoriteMovies; track movie.id) {
+        <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
+          <a [routerLink]="['/movie', movie.id]" class="block">
+            <netflix-movie-poster-image
+              [poster_path]="movie.poster_path"
+              class="rounded-lg"
+            ></netflix-movie-poster-image>
+            <div class="mt-2">
+              <p class="text-white font-medium text-sm truncate">{{ movie.title }}</p>
+              <div class="absolute top-2 right-2">
+                <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
+              </div>
             </div>
-          </div>
-        </a>
-      </div>
-    }
-  </div>
+          </a>
+        </div>
+      }
+    </div>
+  }
 </netflix-navbar-container>
