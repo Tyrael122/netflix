@@ -33,8 +33,8 @@ export class UserMovieService {
     )
   }
 
-  searchMovies(searchTerm: string): Observable<PageableResponse<UserMovieListing>> {
-    return this.movieService.searchMovies(searchTerm, 1).pipe(
+  searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
+    return this.movieService.searchMovies(searchTerm, pageNumber).pipe(
       map(pageableResponse => {
         const userMovies: UserMovieListing[] = pageableResponse.results.map(
           movie => this.enrichMovieWithUserMetadata(movie)

@@ -1,13 +1,17 @@
 <netflix-navbar-container (searchChanged)="onSearchChanged($event)">
-  <div class="flex flex-row flex-wrap justify-center">
+  <div class="flex flex-row flex-wrap justify-center"
+       infiniteScroll
+       [infiniteScrollDistance]="1"
+       [infiniteScrollThrottle]="300"
+       (scrolled)="loadMovies()"
+       [infiniteScrollDisabled]="isLoading || !hasMore">
+
     @for (movie of movies; track movie.id) {
       <netflix-movie-poster [movie]="movie"></netflix-movie-poster>
     }
-  </div>
-  <div class="flex justify-center mt-8 pb-8">
-    <netflix-pagination
-      [totalPages]="10"
-      [currentPage]="5"
-    ></netflix-pagination>
+
+    @if (isLoading) {
+      <netflix-loading-spinner-indicator></netflix-loading-spinner-indicator>
+    }
   </div>
 </netflix-navbar-container>

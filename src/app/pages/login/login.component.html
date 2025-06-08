@@ -30,7 +30,7 @@
                  focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600"
           placeholder="Email"
         />
-        @if (loginForm.submitted && loginForm.form.controls['email']?.errors) {
+        @if (loginForm.submitted && loginForm.form.controls['email'].errors) {
           <p class="mt-1 text-netflix-red text-sm">Please enter a valid email address.</p>
         }
       </div>
@@ -48,7 +48,7 @@
                  focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600"
           placeholder="Password"
         />
-        @if (loginForm.submitted && loginForm.form.controls['password']?.errors) {
+        @if (loginForm.submitted && loginForm.form.controls['password'].errors) {
           <p class="mt-1 text-netflix-red text-sm">Your password must contain between 4 and 60 characters.</p>
         }
       </div>

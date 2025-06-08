@@ -85,19 +85,11 @@
     <!-- Error/loading state -->
     <div class="text-center">
       @if (isLoading) {
-        <div class="flex justify-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-netflix-red"></div>
-        </div>
+        <netflix-loading-spinner-indicator></netflix-loading-spinner-indicator>
       } @else {
         <netflix-icon name="alert-triangle" size="48" class="mx-auto text-yellow-500 mb-4"/>
         <h2 class="text-2xl font-bold mb-2">Error loading movie details</h2>
-        <p class="text-gray-400 mb-6">We couldn't load the movie information. Please try again.</p>
-        <button
-          (click)="retry()"
-          class="px-6 py-2 bg-netflix-red hover:bg-red-700 rounded font-medium transition-colors"
-        >
-          Retry
-        </button>
+        <p class="text-gray-400 mb-6">We couldn't load the movie information.</p>
       }
     </div>
   }
