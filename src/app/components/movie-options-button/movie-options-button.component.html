@@ -1,7 +1,9 @@
 <div class="relative" netflixSingleDropdownOpen #dropdown="netflixSingleDropdownOpen">
   <span
     class="cursor-pointer inline-flex items-center justify-center rounded-full p-1
-      bg-black/60"
+      bg-black/60 md:group-hover:opacity-100 transition-opacity duration-300"
+    [class.opacity-100]="dropdown.isOpen"
+    [class.md:opacity-0]="!dropdown.isOpen"
     (click)="dropdown.toggle($event)"
   >
     <netflix-icon name="kebab" [size]="size()"/>
@@ -31,8 +33,7 @@
 
       <!-- Modal Content -->
       <div
-        class="fixed bottom-0 left-0 right-0 bg-gray-800 rounded-t-lg shadow-xl"
-        [class.translate-y-full]="!dropdown.isOpen">
+        class="fixed bottom-0 left-0 right-0 bg-gray-800 rounded-t-lg shadow-xl">
         <div class="py-2 px-2">
           @for (option of options(); track option.label) {
             <div class="flex flex-row items-center p-3 gap-x-2
