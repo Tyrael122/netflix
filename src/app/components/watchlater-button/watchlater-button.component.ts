@@ -1,27 +1,27 @@
 import {Component, inject, Input, input} from '@angular/core';
+import {NetflixIconComponent} from "../netflix-icon/netflix-icon.component";
 import {UserMovieListing} from '../../models/movie.model';
-import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
-import {FavoritesService} from '../../services/favorites/favorites.service';
+import {WatchlaterService} from '../../services/watchlater/watchlater.service';
 
 @Component({
-  selector: 'netflix-favorite-button',
+  selector: 'netflix-watchlater-button',
   imports: [
     NetflixIconComponent
   ],
-  templateUrl: './favorite-button.component.html',
-  styleUrl: './favorite-button.component.css'
+  templateUrl: './watchlater-button.component.html',
+  styleUrl: './watchlater-button.component.css'
 })
-export class FavoriteButtonComponent {
+export class WatchlaterButtonComponent {
   movie = input.required<UserMovieListing>();
   @Input() alwaysShow: boolean = false;
 
-  private favoritesService = inject(FavoritesService);
+  private watchlaterService = inject(WatchlaterService);
 
   onClick(event: MouseEvent) {
     event.stopPropagation(); // Prevent the click from propagating to the poster link
     event.preventDefault(); // Prevent default action if needed
 
     const movie = this.movie();
-    movie.isFavorite = this.favoritesService.toggleFavorite(movie.id);
+    movie.isWatchlater = this.watchlaterService.toggleWatchlater(movie.id);
   }
 }

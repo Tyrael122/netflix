@@ -31,9 +31,9 @@ export interface MovieDetails extends MovieListing {
 
 export interface UserMovieMetadata {
   isFavorite: boolean;
-  isWatchlist: boolean;
+  isWatchlater: boolean;
   isWatched: boolean;
 }
 
 export type UserMovieListing = MovieListing & UserMovieMetadata;
-export type UserMovieDetails =  MovieDetails & UserMovieMetadata;
+export type UserMovieDetails = MovieDetails & UserMovieMetadata;

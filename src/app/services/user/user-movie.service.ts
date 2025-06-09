@@ -59,22 +59,6 @@ export class UserMovieService {
     );
   }
 
-  removeFromFavorites(id: string): Observable<void> {
-    return new Observable<void>(subscriber => {
-      this.favoritesService.removeFavorite(id);
-      subscriber.next();
-      subscriber.complete();
-    });
-  }
-
-  addToFavorites(id: string): Observable<void> {
-    return new Observable<void>(subscriber => {
-      this.favoritesService.addFavorite(id);
-      subscriber.next();
-      subscriber.complete();
-    });
-  }
-
   getMovieDetails(id: string): Observable<UserMovieDetails> {
     return this.movieService.getMovieDetails(id).pipe(
       map(movie => this.enrichMovieWithUserMetadata(movie))
@@ -91,7 +75,7 @@ export class UserMovieService {
   private getUserMovieMetadata(movie: MovieListing): UserMovieMetadata {
     return {
       isFavorite: this.favoritesService.isFavorite(movie.id),
-      isWatchlist: false, // Placeholder, implement watchlist logic if needed
+      isWatchlater: false, // Placeholder, implement watchlist logic if needed
       isWatched: false // Placeholder, implement watched logic if needed
     };
   }

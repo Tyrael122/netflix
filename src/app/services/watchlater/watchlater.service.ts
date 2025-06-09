@@ -4,52 +4,51 @@ import {AuthService} from '../auth/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class FavoritesService {
-  private favoritesMap = new Map<string, string[]>(); // userId -> favorites
+export class WatchlaterService {
+  private watchlaterMap = new Map<string, string[]>(); // userId -> movie ids
 
   private authService = inject(AuthService);
 
-  getFavorites(): string[] {
+  getWatchlater(): string[] {
     const user = this.authService.getCurrentUser();
     if (!user) return [];
-    return this.favoritesMap.get(user.id) ?? [];
+    return this.watchlaterMap.get(user.id) ?? [];
   }
 
-  toggleFavorite(id: string): boolean {
-    if (this.isFavorite(id)) {
-      this.removeFavorite(id);
+  toggleWatchlater(id: string): boolean {
+    if (this.isWatchlater(id)) {
+      this.removeWatchlater(id);
       return false; // Removed from favorites
     } else {
-      this.addFavorite(id);
+      this.addWatchlater(id);
       return true; // Added to favorites
     }
   }
 
-  addFavorite(movieId: string): void {
+  addWatchlater(movieId: string): void {
     const user = this.authService.getCurrentUser();
     if (!user) return;
 
-    const list = this.favoritesMap.get(user.id) ?? [];
+    const list = this.watchlaterMap.get(user.id) ?? [];
     if (!list.includes(movieId)) {
       list.push(movieId);
-      this.favoritesMap.set(user.id, list);
+      this.watchlaterMap.set(user.id, list);
     }
   }
 
-  removeFavorite(movieId: string): void {
+  removeWatchlater(movieId: string): void {
     const user = this.authService.getCurrentUser();
     if (!user) return;
 
-    const list = this.favoritesMap.get(user.id) ?? [];
-    this.favoritesMap.set(user.id, list.filter(i => i !== movieId));
+    const list = this.watchlaterMap.get(user.id) ?? [];
+    this.watchlaterMap.set(user.id, list.filter(i => i !== movieId));
   }
 
-  isFavorite(id: string) {
+  isWatchlater(id: string) {
     const user = this.authService.getCurrentUser();
     if (!user) return false;
 
-    const list = this.favoritesMap.get(user.id) ?? [];
+    const list = this.watchlaterMap.get(user.id) ?? [];
     return list.includes(id);
   }
 }
-

@@ -10,7 +10,7 @@ import {NavbarContainerComponent} from '../../components/navbar-container/navbar
 import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
-import {MovieRatingComponent} from './movie-rating/movie-rating.component';
+import {MovieRatingComponent} from '../../components/movie-rating/movie-rating.component';
 
 @Component({
   selector: 'netflix-movie-details',

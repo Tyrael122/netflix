@@ -1,5 +1,5 @@
-import {Component, input, Input} from '@angular/core';
-import {NetflixIconComponent} from '../../../components/netflix-icon/netflix-icon.component';
+import {Component, input, Input, signal} from '@angular/core';
+import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
 
 @Component({
   selector: 'netflix-movie-rating',
@@ -11,4 +11,5 @@ import {NetflixIconComponent} from '../../../components/netflix-icon/netflix-ico
 })
 export class MovieRatingComponent {
   vote_average = input.required<number>()
+  size = input<string | number>('20px');
 }

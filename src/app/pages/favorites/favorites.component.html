@@ -3,7 +3,7 @@
   @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
     <div class="text-center">
       <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
-        <netflix-icon name="favorite-outline" size="48" class="text-gray-500"/>
+        <netflix-icon name="favorite" size="48" class="text-gray-500"/>
       </div>
       <h2 class="text-2xl font-bold text-white mb-2">No favorites yet</h2>
       <p class="text-gray-400 mb-6">
@@ -19,7 +19,7 @@
   } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
     <div class="text-center">
       <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
-        <netflix-icon name="favorite-outline" size="48" class="text-gray-500"/>
+        <netflix-icon name="favorite" size="48" class="text-gray-500"/>
       </div>
       <h2 class="text-2xl font-bold text-white mb-2">Your favorites list is empty</h2>
       <p class="text-gray-400 mb-6">

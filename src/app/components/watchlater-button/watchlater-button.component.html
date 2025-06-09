@@ -1,0 +1,11 @@
+<span
+  class="cursor-pointer inline-flex items-center justify-center rounded-full p-1 bg-black/50"
+  [class.opacity-100]="alwaysShow"
+  [class.opacity-0]="!movie().isWatchlater"
+  [class.group-hover:opacity-100]="!movie().isWatchlater"
+  [class.text-red-600]="movie().isWatchlater"
+  [class.text-gray-400]="!movie().isWatchlater"
+  (click)="onClick($event)"
+>
+  <netflix-icon name="watch-later" size="24"/>
+</span>

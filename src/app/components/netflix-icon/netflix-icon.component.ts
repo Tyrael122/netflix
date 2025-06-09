@@ -8,5 +8,5 @@ import {Component, input} from '@angular/core';
 export class NetflixIconComponent {
   name = input.required<string>()
   size = input<string | number>('24px');
-  fill = input<string>('')
+  fill = input<string>('none')
 }
