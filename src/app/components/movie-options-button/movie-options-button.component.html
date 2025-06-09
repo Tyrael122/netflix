@@ -1,7 +1,23 @@
-<span
-  class="cursor-pointer inline-flex items-center justify-center rounded-full p-1
-    bg-black/60 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
-  (click)="openMenu($event)"
->
-  <netflix-icon name="kebab" [size]="size()"/>
-</span>
+<div class="relative" netflixSingleDropdownOpen #dropdown="netflixSingleDropdownOpen">
+    <span
+      class="cursor-pointer inline-flex items-center justify-center rounded-full p-1
+        bg-black/60 md:group-hover:opacity-100 transition-opacity duration-300"
+      [class.opacity-100]="dropdown.isOpen"
+      [class.md:opacity-0]="!dropdown.isOpen"
+      (click)="dropdown.toggle($event)"
+    >
+      <netflix-icon name="kebab" [size]="size()"/>
+    </span>
+
+  @if (dropdown.isOpen) {
+    <div
+      class="hidden md:block absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-50"
+    >
+      <div class="py-1">
+        <a href="#" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Option 1</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Option 2</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700">Option 3</a>
+      </div>
+    </div>
+  }
+</div>

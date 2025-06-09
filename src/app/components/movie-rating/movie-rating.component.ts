@@ -1,4 +1,4 @@
-import {Component, input, Input, signal} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
 
 @Component({

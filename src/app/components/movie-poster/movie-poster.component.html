@@ -11,7 +11,7 @@
         <netflix-movie-rating class="text-xs" size="14" [vote_average]="movie().vote_average"></netflix-movie-rating>
       </div>
       <div class="absolute top-2 right-2">
-        <netflix-movie-options-button size="14"></netflix-movie-options-button>
+        <netflix-movie-options-button [movie]="movie()" size="14"></netflix-movie-options-button>
       </div>
     </div>
   </a>
