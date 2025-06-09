@@ -32,12 +32,15 @@ export class SingleDropdownOpenDirective {
     }
   }
 
-  open() {
+  private open() {
     this.isOpen = true;
     SingleDropdownOpenDirective.openDropdown = this;
   }
 
-  close() {
+  close($event?: MouseEvent) {
+    $event?.preventDefault();
+    $event?.stopPropagation();
+
     this.isOpen = false;
     if (SingleDropdownOpenDirective.openDropdown === this) {
       SingleDropdownOpenDirective.openDropdown = null;
