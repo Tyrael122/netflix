@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
+import {Directive, ElementRef, HostListener, inject} from '@angular/core';
 
 @Directive({
   selector: '[netflixSingleDropdownOpen]',
@@ -9,14 +9,14 @@ export class SingleDropdownOpenDirective {
 
   isOpen = false;
 
+  el = inject(ElementRef);
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
     if (!this.el.nativeElement.contains(event.target)) {
       this.close();
     }
   }
-
-  constructor(private el: ElementRef) {}
 
   toggle($event: MouseEvent) {
     $event.preventDefault();
