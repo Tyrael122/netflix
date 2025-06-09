@@ -1,7 +1,7 @@
 <div class="relative" netflixSingleDropdownOpen #dropdown="netflixSingleDropdownOpen">
   <span
     class="cursor-pointer inline-flex items-center justify-center rounded-full p-1
-      bg-black/60 md:group-hover:opacity-100 transition-opacity duration-300"
+      bg-black/60"
     [class.opacity-100]="dropdown.isOpen"
     [class.md:opacity-0]="!dropdown.isOpen"
     (click)="dropdown.toggle($event)"
@@ -12,7 +12,7 @@
   @if (dropdown.isOpen) {
     <!-- Desktop Dropdown -->
     <div
-      class="hidden md:fixed absolute right-0 w-48 bg-gray-800 rounded-md shadow-lg z-50"
+      class="hidden md:block absolute right-0 w-48 bg-gray-800 rounded-md shadow-lg z-50"
     >
       <div class="py-2 px-2">
         @for (option of options(); track option.label) {
@@ -27,13 +27,13 @@
     </div>
 
     <!-- Mobile Modal (shown only on mobile) -->
-    <div class="fixed md:hidden inset-0 z-50 overflow-y-auto">
+    <div class="block md:hidden fixed inset-0 z-50 overflow-y-auto">
       <!-- Overlay -->
       <div class="fixed inset-0 bg-black/50" (click)="dropdown.close($event)"></div>
 
       <!-- Modal Content -->
       <div
-        class="fixed bottom-0 left-0 right-0 bg-gray-800 rounded-t-lg shadow-xl transform transition-transform duration-300"
+        class="fixed bottom-0 left-0 right-0 bg-gray-800 rounded-t-lg shadow-xl"
         [class.translate-y-full]="!dropdown.isOpen">
         <div class="py-2 px-2">
           @for (option of options(); track option.label) {
