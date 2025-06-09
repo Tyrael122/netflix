@@ -2,8 +2,6 @@
   <span
     class="cursor-pointer inline-flex items-center justify-center rounded-full p-1
       bg-black/60"
-    [class.opacity-100]="dropdown.isOpen"
-    [class.md:opacity-0]="!dropdown.isOpen"
     (click)="dropdown.toggle($event)"
   >
     <netflix-icon name="kebab" [size]="size()"/>
