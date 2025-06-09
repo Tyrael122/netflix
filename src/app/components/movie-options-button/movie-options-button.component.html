@@ -12,7 +12,7 @@
   <!-- Desktop Dropdown -->
   @if (dropdown.isOpen) {
     <div
-      class="hidden lg:block absolute right-0 w-48 bg-gray-800 rounded-md shadow-lg z-50"
+      class="hidden md:block absolute right-0 w-48 bg-gray-800 rounded-md shadow-lg z-50"
     >
       <div class="py-2 px-2">
         @for (option of options(); track option.label) {
@@ -29,7 +29,7 @@
 
   <!-- Mobile Modal (shown only on mobile) -->
   @if (dropdown.isOpen) {
-    <div class="lg:hidden fixed inset-0 z-50 overflow-y-auto transition-opacity duration-300"
+    <div class="md:hidden fixed inset-0 z-50 overflow-y-auto transition-opacity duration-300"
          [class.opacity-0]="!dropdown.isOpen"
          [class.pointer-events-none]="!dropdown.isOpen">
       <!-- Overlay -->
