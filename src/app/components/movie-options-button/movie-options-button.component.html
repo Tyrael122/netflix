@@ -31,19 +31,12 @@
       <div class="fixed inset-0 bg-black/50" (click)="dropdown.close($event)"></div>
 
       <!-- Modal Content -->
-      <div class="fixed bottom-0 left-0 right-0 bg-gray-800 rounded-t-lg shadow-xl transform transition-transform duration-300"
-           [class.translate-y-full]="!dropdown.isOpen">
-        <div class="py-2 pb-4 px-4">
-          <!-- Close Button -->
-          <button
-            class="absolute top-2 right-2 p-2 text-gray-400 hover:text-white"
-            (click)="dropdown.close($event)"
-          >
-            <netflix-icon name="close" [size]="24"/>
-          </button>
-
+      <div
+        class="fixed bottom-0 left-0 right-0 bg-gray-800 rounded-t-lg shadow-xl transform transition-transform duration-300"
+        [class.translate-y-full]="!dropdown.isOpen">
+        <div class="py-4 px-4">
           <!-- Options -->
-          <div class="pt-6 space-y-4">
+          <div class="space-y-4">
             <a href="#" class="block text-sm text-gray-200 hover:bg-gray-700 rounded">Option 1</a>
             <a href="#" class="block text-sm text-gray-200 hover:bg-gray-700 rounded">Option 2</a>
             <a href="#" class="block text-sm text-gray-200 hover:bg-gray-700 rounded">Option 3</a>
