@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {MoviePosterImageComponent} from '../../../../components/movie-poster-image/movie-poster-image.component';
 
 @Component({
@@ -11,6 +11,8 @@ import {MoviePosterImageComponent} from '../../../../components/movie-poster-ima
 })
 export class SimilarTabComponent {
 
-  @Input() navigateToMovie: (id: string) => void = () => {};
   similarMovies: any[] = [];
+
+  navigateToMovie(id: string): void {
+  }
 }

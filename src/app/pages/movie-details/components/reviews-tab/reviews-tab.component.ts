@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
 import {FormsModule} from '@angular/forms';
 import {DatePipe} from '@angular/common';
@@ -24,10 +24,8 @@ interface Review {
 })
 export class ReviewsTabComponent {
 
-  @Input() userRating: number = 4;
-  userTextReview: any;
-  @Output() ngModelChange = new EventEmitter<any>();
-  @Input() submitReview: () => void = () => {};
+  userRating: number = 4
+  userTextReview: string = '';
 
   hoverRating: number = 0;
 
@@ -75,5 +73,19 @@ export class ReviewsTabComponent {
         textarea.focus();
       }
     }, 500);
+  }
+
+  submitReview() {
+    if (!this.userTextReview || this.userTextReview.trim() === '') {
+      return;
+    }
+  }
+
+  updateReviewText($event: HTMLTextAreaElement) {
+    this.userTextReview = $event.value;
+  }
+
+  updateUserRating(star: number) {
+    this.userRating = star;
   }
 }
