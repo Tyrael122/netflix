@@ -22,6 +22,7 @@
 
       <!-- Details column -->
       <div class="flex-grow">
+        <!-- Movie title and basic info -->
         <div class="mb-4">
           <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">{{ movie.title }}</h1>
 
@@ -36,43 +37,52 @@
           <div class="flex flex-wrap gap-1 sm:gap-2 mb-4">
             @for (genre of movie.genres; track genre.id) {
               <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-netflix-red rounded-full text-xs sm:text-sm font-medium">
-                        {{ genre.name }}
-                      </span>
+                {{ genre.name }}
+              </span>
             }
           </div>
         </div>
 
-        <div class="mb-8">
-          <h2 class="text-xl font-bold mb-3">Overview</h2>
-          <p class="text-gray-300 leading-relaxed max-w-3xl">{{ movie.overview || 'No overview available.' }}</p>
+        <!-- Tabs navigation -->
+        <div class="border-b border-gray-700 mb-6">
+          <nav class="flex space-x-8">
+            <button
+              (click)="activeTab = 'details'"
+              [class]="activeTab === 'details' ? 'border-netflix-red text-white border-b-2 px-1 py-2 font-medium' : 'text-gray-400 hover:text-white px-1 py-2 font-medium'"
+            >
+              Details
+            </button>
+            <button
+              (click)="activeTab = 'reviews'"
+              [class]="activeTab === 'reviews' ? 'border-netflix-red text-white border-b-2 px-1 py-2 font-medium' : 'text-gray-400 hover:text-white px-1 py-2 font-medium'"
+            >
+              Reviews
+            </button>
+            <button
+              (click)="activeTab = 'similar'"
+              [class]="activeTab === 'similar' ? 'border-netflix-red text-white border-b-2 px-1 py-2 font-medium' : 'text-gray-400 hover:text-white px-1 py-2 font-medium'"
+            >
+              Similar Movies
+            </button>
+          </nav>
         </div>
 
-        <!-- Additional details -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          @if (movie.tagline) {
-            <div>
-              <h3 class="text-lg font-semibold mb-2">Tagline</h3>
-              <p class="text-gray-400 italic">"{{ movie.tagline }}"</p>
-            </div>
+        <!-- Tab content -->
+        <div>
+          <!-- Details tab -->
+          @if (activeTab === 'details') {
+            <netflix-details-tab [movie]="movie"></netflix-details-tab>
           }
 
-          <div>
-            <h3 class="text-lg font-semibold mb-2">Status</h3>
-            <p class="text-gray-400">{{ movie.status || 'Unknown' }}</p>
-          </div>
+          <!-- Reviews tab -->
+          @if (activeTab === 'reviews') {
+            <netflix-reviews-tab [userRating]="userRating" [(ngModel)]="userReviewText"
+                                 [submitReview]="submitReview"></netflix-reviews-tab>
+          }
 
-          @if (movie.production_companies?.length) {
-            <div>
-              <h3 class="text-lg font-semibold mb-2">Production</h3>
-              <div class="flex flex-wrap gap-2">
-                @for (company of movie.production_companies; track company.id) {
-                  <span class="text-gray-400">{{ company.name }}</span>
-                  @if (!$last) {
-                    <span class="text-gray-600">•</span>
-                  }
-                }
-              </div>
-            </div>
+          <!-- Similar movies tab -->
+          @if (activeTab === 'similar') {
+            <netflix-similar-tab [navigateToMovie]="navigateToMovie"></netflix-similar-tab>
           }
         </div>
       </div>

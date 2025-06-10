@@ -1,12 +1,12 @@
 import {Component, inject, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {UserMovieListing} from '../../models/movie.model';
-import {MoviePosterImageComponent} from '../movie-poster-image/movie-poster-image.component';
-import {MovieRatingComponent} from '../movie-rating/movie-rating.component';
+import {UserMovieListing} from '../../../../models/movie.model';
+import {MoviePosterImageComponent} from '../../../../components/movie-poster-image/movie-poster-image.component';
+import {MovieRatingComponent} from '../../../movie-details/components/movie-rating/movie-rating.component';
 import {DatePipe} from '@angular/common';
 import {MovieOption, MovieOptionsButtonComponent} from '../movie-options-button/movie-options-button.component';
-import {FavoritesService} from '../../services/favorites/favorites.service';
-import {WatchlaterService} from '../../services/watchlater/watchlater.service';
+import {FavoritesService} from '../../../../services/favorites/favorites.service';
+import {WatchlaterService} from '../../../../services/watchlater/watchlater.service';
 
 @Component({
   selector: 'netflix-movie-poster',

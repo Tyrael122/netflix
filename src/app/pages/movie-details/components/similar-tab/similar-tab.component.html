@@ -1,0 +1,18 @@
+<div>
+  <h2 class="text-xl font-bold mb-4">Similar Movies</h2>
+  @if (similarMovies && similarMovies.length > 0) {
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      @for (similar of similarMovies; track similar.id) {
+        <div class="cursor-pointer" (click)="navigateToMovie(similar.id)">
+          <netflix-movie-poster-image
+            [poster_path]="similar.poster_path"
+            class="rounded-lg shadow-md w-full h-auto hover:scale-105 transition-transform"
+          ></netflix-movie-poster-image>
+          <h3 class="mt-2 text-sm font-medium truncate">{{ similar.title }}</h3>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="text-gray-400 italic">No similar movies found.</p>
+  }
+</div>

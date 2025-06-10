@@ -10,7 +10,11 @@ import {NavbarContainerComponent} from '../../components/navbar-container/navbar
 import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
-import {MovieRatingComponent} from '../../components/movie-rating/movie-rating.component';
+import {MovieRatingComponent} from './components/movie-rating/movie-rating.component';
+import {FormsModule} from '@angular/forms';
+import {ReviewsTabComponent} from './components/reviews-tab/reviews-tab.component';
+import {SimilarTabComponent} from './components/similar-tab/similar-tab.component';
+import {DetailsTabComponent} from './components/details-tab/details-tab.component';
 
 @Component({
   selector: 'netflix-movie-details',
@@ -21,7 +25,11 @@ import {MovieRatingComponent} from '../../components/movie-rating/movie-rating.c
     NetflixIconComponent,
     NavbarContainerComponent,
     LoadingSpinnerIndicatorComponent,
-    MovieRatingComponent
+    MovieRatingComponent,
+    FormsModule,
+    ReviewsTabComponent,
+    SimilarTabComponent,
+    DetailsTabComponent
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
@@ -33,6 +41,13 @@ export class MovieDetailsComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   isLoading: boolean = true;
 
+  activeTab: string = 'details';
+  newReview: any;
+  reviews: any[] = [];
+  userReviewText: any;
+  userRating: number = 4;
+  similarMovies: UserMovieDetails[] = [];
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.movieService.getMovieDetails(params['id']).subscribe({
@@ -40,5 +55,12 @@ export class MovieDetailsComponent implements OnInit {
         complete: () => this.isLoading = false
       });
     });
+  }
+
+  submitReview() {
+  }
+
+  navigateToMovie(id: string) {
+
   }
 }

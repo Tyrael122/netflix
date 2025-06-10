@@ -1,0 +1,61 @@
+<div>
+  <h2 class="text-xl font-bold mb-4">User Reviews</h2>
+
+  <!-- Add review form -->
+  <div class="bg-gray-800 p-4 rounded-lg mb-6">
+    <h3 class="text-lg font-semibold mb-3">Write a Review</h3>
+    <div class="mb-3">
+      <label class="block text-gray-300 mb-1">Rating</label>
+      <div class="flex space-x-1">
+        @for (star of [1, 2, 3, 4, 5]; track star) {
+          <button (click)="userRating = star">
+            <netflix-icon
+              [name]="star <= userRating ? 'star-filled' : 'star'"
+              class="text-2xl text-yellow-400"
+            ></netflix-icon>
+          </button>
+        }
+      </div>
+    </div>
+    <textarea
+      [ngModel]="ngModel"
+      (ngModelChange)="ngModelChange.emit($event)"
+      placeholder="Share your thoughts about this movie..."
+      class="w-full bg-gray-700 text-white p-3 rounded mb-3 min-h-[100px]"
+    ></textarea>
+    <button
+      (click)="submitReview()"
+      class="bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Submit Review
+    </button>
+  </div>
+
+  <!-- Reviews list -->
+  <div class="space-y-6">
+    @if (reviews && reviews.length > 0) {
+      @for (review of reviews; track review.id) {
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <div class="flex items-center mb-2">
+            <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3">
+              <netflix-icon name="user" class="text-gray-300"></netflix-icon>
+            </div>
+            <span class="font-medium">{{ review.author }}</span>
+            <div class="flex ml-auto">
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                <netflix-icon
+                  [name]="star <= review.rating ? 'star-filled' : 'star'"
+                  class="text-sm text-yellow-400 ml-1"
+                ></netflix-icon>
+              }
+            </div>
+          </div>
+          <p class="text-gray-300">{{ review.content }}</p>
+          <div class="text-gray-500 text-sm mt-2">{{ review.created_at | date }}</div>
+        </div>
+      }
+    } @else {
+      <p class="text-gray-400 italic">No reviews yet. Be the first to review!</p>
+    }
+  </div>
+</div>

@@ -8,6 +8,13 @@ body {
   color: #e5e5e5;
 }
 
+.bg-netflix-red {
+  background-color: #e50914;
+}
+.bg-netflix-red:hover {
+  background-color: #f40612;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
