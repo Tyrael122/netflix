@@ -10,11 +10,11 @@ import {NavbarContainerComponent} from '../../components/navbar-container/navbar
 import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
-import {MovieRatingComponent} from './components/movie-rating/movie-rating.component';
 import {FormsModule} from '@angular/forms';
 import {ReviewsTabComponent} from './components/reviews-tab/reviews-tab.component';
-import {SimilarTabComponent} from './components/similar-tab/similar-tab.component';
 import {DetailsTabComponent} from './components/details-tab/details-tab.component';
+import {SimilarTabComponent} from './components/similar-tab/similar-tab.component';
+import {MovieRatingComponent} from './components/movie-rating/movie-rating.component';
 
 @Component({
   selector: 'netflix-movie-details',
@@ -25,11 +25,11 @@ import {DetailsTabComponent} from './components/details-tab/details-tab.componen
     NetflixIconComponent,
     NavbarContainerComponent,
     LoadingSpinnerIndicatorComponent,
-    MovieRatingComponent,
     FormsModule,
     ReviewsTabComponent,
+    DetailsTabComponent,
     SimilarTabComponent,
-    DetailsTabComponent
+    MovieRatingComponent,
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
@@ -44,7 +44,7 @@ export class MovieDetailsComponent implements OnInit {
   activeTab: string = 'details';
   newReview: any;
   reviews: any[] = [];
-  userReviewText: any;
+  userReviewText: string = '';
   userRating: number = 4;
   similarMovies: UserMovieDetails[] = [];
 

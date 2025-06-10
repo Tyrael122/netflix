@@ -18,7 +18,7 @@
       </div>
     </div>
     <textarea
-      [ngModel]="ngModel"
+      [ngModel]="userTextReview"
       (ngModelChange)="ngModelChange.emit($event)"
       placeholder="Share your thoughts about this movie..."
       class="w-full bg-gray-700 text-white p-3 rounded mb-3 min-h-[100px]"
@@ -44,8 +44,9 @@
             <div class="flex ml-auto">
               @for (star of [1, 2, 3, 4, 5]; track star) {
                 <netflix-icon
-                  [name]="star <= review.rating ? 'star-filled' : 'star'"
+                  name="star"
                   class="text-sm text-yellow-400 ml-1"
+                  [fill]="star <= review.rating ? 'currentColor' : 'none'"
                 ></netflix-icon>
               }
             </div>
