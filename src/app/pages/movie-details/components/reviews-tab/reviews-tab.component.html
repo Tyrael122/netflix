@@ -1,62 +1,125 @@
 <div>
-  <h2 class="text-xl font-bold mb-4">User Reviews</h2>
+  <h2 class="text-2xl font-bold mb-3 text-white">User Reviews</h2>
 
   <!-- Add review form -->
-  <div class="bg-gray-800 p-4 rounded-lg mb-6">
-    <h3 class="text-lg font-semibold mb-3">Write a Review</h3>
-    <div class="mb-3">
-      <label class="block text-gray-300 mb-1">Rating</label>
-      <div class="flex space-x-1">
+  <div #reviewForm class="bg-gray-800 p-4 rounded-xl mb-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+    <h3 class="text-xl font-semibold mb-4 text-white">Share Your Thoughts</h3>
+
+    <!-- Rating Section -->
+    <div class="mb-4">
+      <label class="block text-gray-300 mb-2 text-sm font-medium">Your Rating</label>
+      <div class="flex space-x-2 w-min" (mouseleave)="hoverRating = 0">
         @for (star of [1, 2, 3, 4, 5]; track star) {
-          <button (click)="userRating = star">
+          <button
+            (click)="userRating = star"
+            (mouseenter)="hoverRating = star"
+            class="transition-transform duration-150 hover:scale-110"
+          >
             <netflix-icon
-              [name]="star <= userRating ? 'star-filled' : 'star'"
-              class="text-2xl text-yellow-400"
+              [name]="'star'"
+              [class.text-yellow-400]="star <= (hoverRating || userRating)"
+              [class.text-gray-500]="star > (hoverRating || userRating)"
+              [fill]="star <= (hoverRating || userRating) ? 'currentColor' : 'none'"
+              class="text-3xl transition-colors duration-200"
             ></netflix-icon>
           </button>
         }
       </div>
+      <div class="text-xs text-gray-400 mt-1">
+        @if (hoverRating > 0) {
+          {{ ['Terrible', 'Bad', 'Average', 'Good', 'Excellent'][hoverRating - 1] }}
+        } @else if (userRating > 0) {
+          {{ ['Terrible', 'Bad', 'Average', 'Good', 'Excellent'][userRating - 1] }}
+        } @else {
+          Select your rating
+        }
+      </div>
     </div>
-    <textarea
-      [ngModel]="userTextReview"
-      (ngModelChange)="ngModelChange.emit($event)"
-      placeholder="Share your thoughts about this movie..."
-      class="w-full bg-gray-700 text-white p-3 rounded mb-3 min-h-[100px]"
-    ></textarea>
-    <button
-      (click)="submitReview()"
-      class="bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Submit Review
-    </button>
+
+    <!-- Review Text -->
+    <div class="mb-4">
+      <label class="block text-gray-300 mb-2 text-sm font-medium">Your Review</label>
+      <textarea
+        [ngModel]="userTextReview"
+        (ngModelChange)="ngModelChange.emit($event)"
+        placeholder="What did you think of this movie? Share your detailed thoughts..."
+        class="w-full bg-gray-700 text-white p-4 rounded-lg min-h-[120px] border border-transparent focus:border-netflix-red focus:ring-1 focus:ring-netflix-red transition-all duration-200"
+      ></textarea>
+      <div class="text-xs text-gray-400 text-right">
+        {{ userTextReview?.length || 0 }}/500
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-end">
+      <button
+        (click)="submitReview()"
+        [disabled]="!userRating || !userTextReview"
+        class="flex items-center gap-x-3 bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+      >
+        <span>Post Review</span>
+        <netflix-icon name="send"></netflix-icon>
+      </button>
+    </div>
   </div>
 
   <!-- Reviews list -->
   <div class="space-y-6">
     @if (reviews && reviews.length > 0) {
       @for (review of reviews; track review.id) {
-        <div class="bg-gray-800 p-4 rounded-lg">
-          <div class="flex items-center mb-2">
-            <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3">
-              <netflix-icon name="user" class="text-gray-300"></netflix-icon>
+        <div class="bg-gray-800 p-4 space-y-4 rounded-xl">
+          <div class="space-y-6">
+            <div class="flex items-center gap-x-3">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-br to-red-600 flex items-center justify-center flex-shrink-0">
+                <netflix-icon name="user" class="text-white text-lg"></netflix-icon>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center gap-x-2">
+                  <span class="font-medium text-white">{{ review.author }}</span>
+                  <span class="text-gray-500">•</span>
+                  <span class="text-gray-400 text-sm">{{ review.created_at | date:'mediumDate' }}</span>
+                </div>
+                <div class="flex gap-x-0.5">
+                  @for (star of [1, 2, 3, 4, 5]; track star) {
+                    <netflix-icon
+                      name="star"
+                      size="16"
+                      class="text-sm text-yellow-400"
+                      [fill]="star <= review.rating ? 'currentColor' : 'none'"
+                    ></netflix-icon>
+                  }
+                </div>
+              </div>
             </div>
-            <span class="font-medium">{{ review.author }}</span>
-            <div class="flex ml-auto">
-              @for (star of [1, 2, 3, 4, 5]; track star) {
-                <netflix-icon
-                  name="star"
-                  class="text-sm text-yellow-400 ml-1"
-                  [fill]="star <= review.rating ? 'currentColor' : 'none'"
-                ></netflix-icon>
-              }
-            </div>
+            <p class="text-gray-300">{{ review.content }}</p>
           </div>
-          <p class="text-gray-300">{{ review.content }}</p>
-          <div class="text-gray-500 text-sm mt-2">{{ review.created_at | date }}</div>
+
+          <!-- Review Actions -->
+          <div class="flex items-end space-x-6 pt-3 border-t border-gray-700 text-sm">
+            <button class="text-gray-400 hover:text-white flex items-center gap-x-2">
+              <netflix-icon name="thumbs-up" size="16"></netflix-icon>
+              <span>Helpful ({{ review.likes || 0 }})</span>
+            </button>
+            <button class="text-gray-400 hover:text-white flex items-center gap-x-2">
+              <netflix-icon name="reply" size="18"></netflix-icon>
+              <span>Reply</span>
+            </button>
+          </div>
         </div>
       }
     } @else {
-      <p class="text-gray-400 italic">No reviews yet. Be the first to review!</p>
+      <div class="bg-gray-800 p-8 rounded-xl text-center">
+        <netflix-icon name="no-video" class="text-4xl text-gray-600 mx-auto mb-3"></netflix-icon>
+        <p class="text-gray-400">No reviews yet. Be the first to share your thoughts!</p>
+        <button
+          (click)="scrollToReviewForm()"
+          class="mt-4 text-netflix-red hover:text-red-400 font-medium inline-flex items-center"
+        >
+          Write a review
+          <netflix-icon name="arrow-right" class="ml-1"></netflix-icon>
+        </button>
+      </div>
     }
   </div>
 </div>
