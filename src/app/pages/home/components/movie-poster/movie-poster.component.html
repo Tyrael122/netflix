@@ -1,3 +1,4 @@
+<!-- movie-poster.component.html -->
 <div
   class="p-2 m-1 relative w-[150px] sm:w-[180px] md:w-[200px]
           group transition-colors duration-300 hover:bg-white/5 rounded-lg">
@@ -12,8 +13,20 @@
         <netflix-movie-rating class="text-xs" size="14" [vote_average]="movie().vote_average"></netflix-movie-rating>
       </div>
       <div class="absolute top-4 right-4">
-        <netflix-movie-options-button [options]="movieOptions" size="14"></netflix-movie-options-button>
+        <netflix-movie-options-button
+          [options]="movieOptions"
+          size="14">
+        </netflix-movie-options-button>
       </div>
     </div>
   </a>
+
+  <!-- Add to Playlist Modal -->
+  @if (showAddToPlaylistModal) {
+    <netflix-add-to-playlist-modal
+      [movie]="movie()"
+      (close)="showAddToPlaylistModal = false"
+      (addToPlaylist)="onAddToPlaylist($event)">
+    </netflix-add-to-playlist-modal>
+  }
 </div>

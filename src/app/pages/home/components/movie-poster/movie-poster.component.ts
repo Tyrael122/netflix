@@ -7,6 +7,7 @@ import {DatePipe} from '@angular/common';
 import {MovieOption, MovieOptionsButtonComponent} from '../movie-options-button/movie-options-button.component';
 import {FavoritesService} from '../../../../services/favorites/favorites.service';
 import {WatchlaterService} from '../../../../services/watchlater/watchlater.service';
+import {AddToPlaylistModalComponent} from '../add-to-playlist-modal/add-to-playlist-modal.component';
 
 @Component({
   selector: 'netflix-movie-poster',
@@ -15,7 +16,8 @@ import {WatchlaterService} from '../../../../services/watchlater/watchlater.serv
     MoviePosterImageComponent,
     MovieRatingComponent,
     DatePipe,
-    MovieOptionsButtonComponent
+    MovieOptionsButtonComponent,
+    AddToPlaylistModalComponent
   ],
   templateUrl: './movie-poster.component.html',
   styleUrl: './movie-poster.component.css'
@@ -25,6 +27,7 @@ export class MoviePosterComponent {
 
   favoritesService = inject(FavoritesService);
   watchlaterService = inject(WatchlaterService);
+  showAddToPlaylistModal: boolean = false;
 
   get movieOptions(): MovieOption[] {
     const watchLaterLabel = this.movie().isWatchlater ? 'Remove from watch later' : 'Add to watch later';
@@ -59,5 +62,10 @@ export class MoviePosterComponent {
 
   addToPlaylist() {
     console.log('Add to playlist clicked');
+    this.showAddToPlaylistModal = true;
+  }
+
+  onAddToPlaylist($event: { playlistIds: string[]; newPlaylistName?: string }) {
+
   }
 }
