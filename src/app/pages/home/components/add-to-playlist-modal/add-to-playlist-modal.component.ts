@@ -1,5 +1,4 @@
-// add-to-playlist-modal.component.ts
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, inject, input, OnInit, output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {UserMovieListing} from '../../../../models/movie.model';
@@ -13,17 +12,18 @@ import {Observable} from 'rxjs';
   templateUrl: './add-to-playlist-modal.component.html',
   styleUrls: ['./add-to-playlist-modal.component.css']
 })
-export class AddToPlaylistModalComponent {
-  @Input() movie!: UserMovieListing;
-  @Output() close = new EventEmitter<void>();
-  @Output() addToPlaylist = new EventEmitter<{ playlistIds: string[], newPlaylistName?: string }>();
+export class AddToPlaylistModalComponent implements OnInit {
+  movie = input.required<UserMovieListing>();
+  onCloseModal = output();
 
-  playlists: Observable<Playlist[]>
+  playlistService = inject(PlaylistService);
+
+  playlists: Observable<Playlist[]> | undefined
   selectedPlaylists: string[] = [];
   newPlaylistName = '';
   showNewPlaylistField = false;
 
-  constructor(private playlistService: PlaylistService) {
+  ngOnInit() {
     this.playlists = this.playlistService.getPlaylists();
   }
 
@@ -37,24 +37,24 @@ export class AddToPlaylistModalComponent {
 
   createAndAddToPlaylist() {
     if (this.newPlaylistName.trim()) {
-      this.addToPlaylist.emit({
-        playlistIds: this.selectedPlaylists,
-        newPlaylistName: this.newPlaylistName
-      });
-      this.closeModal();
+      const newPlaylist = this.playlistService.createPlaylist(this.newPlaylistName, this.movie().id);
+      this.selectedPlaylists.push(newPlaylist.id);
+      this.newPlaylistName = '';
     }
   }
 
   confirmSelection() {
     if (this.selectedPlaylists.length > 0) {
-      this.addToPlaylist.emit({
-        playlistIds: this.selectedPlaylists
+      this.selectedPlaylists.forEach(playlistId => {
+        this.playlistService.addToPlaylist(playlistId, this.movie().id);
       });
+
       this.closeModal();
     }
   }
 
   closeModal() {
-    this.close.emit();
+    console.log('Closing Add to Playlist Modal');
+    this.onCloseModal.emit();
   }
 }

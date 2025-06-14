@@ -1,9 +1,8 @@
-import {Component, effect, inject, input, OnInit} from '@angular/core';
+import {Component, effect, inject, input} from '@angular/core';
 import {MoviePosterImageComponent} from '../../../../components/movie-poster-image/movie-poster-image.component';
 import {MovieListing} from '../../../../models/movie.model';
-import {MovieService} from '../../../../services/movie/movie.service';
 import {UserMovieService} from '../../../../services/user/user-movie.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'netflix-similar-tab',

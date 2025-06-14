@@ -47,7 +47,7 @@ export class MoviePosterComponent {
       {
         icon: 'bookmark',
         label: 'Add to playlist',
-        action: () => this.addToPlaylist()
+        action: () => this.toggleAddToPlaylistModal()
       }
     ];
   }
@@ -60,12 +60,7 @@ export class MoviePosterComponent {
     this.movie().isFavorite = this.favoritesService.toggleFavorite(this.movie().id);
   }
 
-  addToPlaylist() {
-    console.log('Add to playlist clicked');
-    this.showAddToPlaylistModal = true;
-  }
-
-  onAddToPlaylist($event: { playlistIds: string[]; newPlaylistName?: string }) {
-
+  toggleAddToPlaylistModal() {
+    this.showAddToPlaylistModal = !this.showAddToPlaylistModal;
   }
 }

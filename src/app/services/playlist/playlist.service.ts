@@ -1,4 +1,3 @@
-// services/playlist.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -7,9 +6,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PlaylistService {
   private playlists = new BehaviorSubject<Playlist[]>([
-    { id: '1', name: 'Favorites', movieIds: [] },
-    { id: '2', name: 'Watch Later', movieIds: [] },
-    { id: '3', name: 'Action Movies', movieIds: [] }
+    // { id: '1', name: 'Favorites', movieIds: [] },
+    // { id: '2', name: 'Watch Later', movieIds: [] },
+    // { id: '3', name: 'Action Movies', movieIds: [] }
   ]);
 
   getPlaylists() {
