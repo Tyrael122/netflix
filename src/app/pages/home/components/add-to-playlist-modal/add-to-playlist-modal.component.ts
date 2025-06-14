@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {UserMovieListing} from '../../../../models/movie.model';
 import {Playlist, PlaylistService} from '../../../../services/playlist/playlist.service';
-import {Observable} from 'rxjs';
+import {map, Observable, of} from 'rxjs';
 
 @Component({
   selector: 'netflix-add-to-playlist-modal',
@@ -18,13 +18,23 @@ export class AddToPlaylistModalComponent implements OnInit {
 
   playlistService = inject(PlaylistService);
 
-  playlists: Observable<Playlist[]> | undefined
+  playlists: Observable<Playlist[]> = of();
+
   selectedPlaylists: string[] = [];
   newPlaylistName = '';
   showNewPlaylistField = false;
 
   ngOnInit() {
-    this.playlists = this.playlistService.getPlaylists();
+    this.playlists = this.playlistService.getPlaylists().pipe(
+      map(playlists => {
+          this.selectedPlaylists = playlists
+            .filter(playlist => playlist.movieIds.includes(this.movie().id))
+            .map(playlist => playlist.id);
+
+          return playlists;
+        }
+      )
+    );
   }
 
   togglePlaylistSelection(playlistId: string) {
@@ -45,16 +55,12 @@ export class AddToPlaylistModalComponent implements OnInit {
 
   confirmSelection() {
     if (this.selectedPlaylists.length > 0) {
-      this.selectedPlaylists.forEach(playlistId => {
-        this.playlistService.addToPlaylist(playlistId, this.movie().id);
-      });
-
+      this.playlistService.updateMoviePlaylists(this.movie().id, this.selectedPlaylists);
       this.closeModal();
     }
   }
 
   closeModal() {
-    console.log('Closing Add to Playlist Modal');
     this.onCloseModal.emit();
   }
 }
