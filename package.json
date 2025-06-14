@@ -20,12 +20,10 @@
     "@angular/platform-server": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.0",
-    "@tailwindcss/postcss": "^4.1.8",
+    "@tailwindcss/postcss": "^4.1.10",
     "express": "^4.18.2",
     "ngx-infinite-scroll": "^19.0.0",
-    "postcss": "^8.5.4",
     "rxjs": "~7.8.0",
-    "tailwindcss": "^4.1.8",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
@@ -42,7 +40,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.5",
+    "tailwindcss": "^4.1.10",
     "typescript": "~5.8.3"
   }
 }

@@ -2,21 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 @import "tailwindcss";
 
+/* Netflix Theme Configuration */
+@theme {
+  /* Colors */
+  --color-netflix-black: #141414;
+  --color-netflix-dark-gray: #2a2a2a;
+  --color-netflix-light-gray: #808080;
+  --color-netflix-red: #e50914;
+  --color-netflix-light-red: #f40612;
+
+  /* Spacing (optional) */
+  --spacing-modal: 1rem;
+  --spacing-input: 0.5rem;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #141414;
+  background-color: var(--color-netflix-black);
   color: #e5e5e5;
-}
-
-.netflix-red {
-  color: #e50914;
-}
-
-.bg-netflix-red {
-  background-color: #e50914;
-}
-.bg-netflix-red:hover {
-  background-color: #f40612;
 }
 
 /* Custom scrollbar */
