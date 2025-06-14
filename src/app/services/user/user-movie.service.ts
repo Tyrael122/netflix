@@ -48,6 +48,15 @@ export class UserMovieService {
     );
   }
 
+  getSimilarMovies(id: string): Observable<UserMovieListing[]> {
+    return this.movieService.getSimilarMovies(id).pipe(
+      map(pageableResponse =>
+        pageableResponse.results.map(
+          movie => this.enrichMovieWithUserMetadata(movie))
+      )
+    );
+  }
+
   getFavoriteMovies(): Observable<UserMovieDetails[]> {
     return from(this.favoritesService.getFavorites()).pipe(
       mergeMap(movieId =>

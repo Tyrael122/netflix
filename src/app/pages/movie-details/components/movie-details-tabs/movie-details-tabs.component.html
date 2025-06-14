@@ -36,6 +36,6 @@
 
   <!-- Similar movies tab -->
   @if (activeTab === 'similar') {
-    <netflix-similar-tab></netflix-similar-tab>
+    <netflix-similar-tab [movie]="movie()"></netflix-similar-tab>
   }
 </div>

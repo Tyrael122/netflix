@@ -25,7 +25,7 @@ export class AuthService {
 
     console.log('User signed up:', this.currentUser);
 
-    this.router.navigate(['/']); // Redirect to home page after signup
+    this.navigateToHomepage();
 
     return true;
   }
@@ -43,14 +43,16 @@ export class AuthService {
       return false; // User not found
     }
     this.currentUser = found;
-    this.router.navigate(['/']); // Redirect to home page after login
+    this.navigateToHomepage(); // Redirect to home page after login
 
     return true;
   }
 
   logout(): void {
-    this.router.navigate(['/login']); // Redirect to login page after logout
-    this.currentUser = this.createGuestUser(); // Reset current user to guest
+    this.router.navigate(['/login']).catch(
+      err => console.error('Navigation error:', err)
+    );
+    this.currentUser = this.createGuestUser();
   }
 
   isLoggedIn(): boolean {
@@ -70,5 +72,11 @@ export class AuthService {
     this.users.push(user);
 
     return user;
+  }
+
+  private navigateToHomepage() {
+    this.router.navigate(['/']).catch(
+      err => console.error('Navigation error:', err)
+    );
   }
 }
