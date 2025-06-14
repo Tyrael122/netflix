@@ -1,91 +1,69 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
+import {Component, ElementRef, inject, input, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DatePipe} from '@angular/common';
-
-interface Review {
-  id: string;
-  author: string;
-  rating: number;
-  content: string;
-  likes: number;
-  created_at: string;
-}
+import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
+import {Review, ReviewDraft, ReviewService} from '../../../../services/review/review.service';
+import {MovieListing} from '../../../../models/movie.model';
 
 @Component({
   selector: 'netflix-reviews-tab',
-  imports: [
-    NetflixIconComponent,
-    FormsModule,
-    DatePipe
-  ],
+  standalone: true,
+  imports: [NetflixIconComponent, FormsModule, DatePipe],
   templateUrl: './reviews-tab.component.html',
-  styleUrl: './reviews-tab.component.css'
+  styleUrls: ['./reviews-tab.component.css']
 })
 export class ReviewsTabComponent {
+  movie = input.required<MovieListing>();
 
-  userRating: number = 4
-  userTextReview: string = '';
+  @ViewChild('reviewForm') reviewForm!: ElementRef<HTMLFormElement>;
 
+  readonly reviewService = inject(ReviewService);
   hoverRating: number = 0;
 
-  // reviews: Review[] = [
-  //   {
-  //     id: '1',
-  //     author: 'Alice',
-  //     rating: 5,
-  //     content: 'Absolutely loved this movie! The story and visuals were amazing.',
-  //     likes: 10,
-  //     created_at: '2024-06-01T14:23:00Z'
-  //   },
-  //   {
-  //     id: '2',
-  //     author: 'Bob',
-  //     rating: 4,
-  //     content: 'Great performances and direction. Worth watching.',
-  //     likes: 5,
-  //     created_at: '2024-06-02T10:15:00Z'
-  //   },
-  //   {
-  //     id: '3',
-  //     author: 'Charlie',
-  //     rating: 3,
-  //     content: 'It was entertaining, but the pacing was a bit slow in the middle.',
-  //     likes: 2,
-  //     created_at: '2024-06-03T18:45:00Z'
-  //   }
-  // ]
+  get currentReview(): ReviewDraft {
+    return this.reviewService.currentReview;
+  }
 
-  reviews: Review[] = [];
+  get reviews(): Review[] {
+    return this.reviewService.getReviewsList(this.movie().id);
+  }
 
-  @ViewChild('reviewForm') reviewForm!: ElementRef;
-
-  scrollToReviewForm() {
+  scrollToReviewForm(): void {
     this.reviewForm.nativeElement.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });
 
-    // Add focus to textarea after scroll
     setTimeout(() => {
       const textarea = this.reviewForm.nativeElement.querySelector('textarea');
-      if (textarea) {
-        textarea.focus();
-      }
+      textarea?.focus();
     }, 500);
   }
 
-  submitReview() {
-    if (!this.userTextReview || this.userTextReview.trim() === '') {
-      return;
+  canSubmitReview() {
+    return this.currentReview.rating > 0 && this.currentReview.text.trim().length > 0;
+  }
+
+  submitReview(): void {
+    this.reviewService.submitCurrentReview(this.movie().id);
+  }
+
+  updateReviewText(text: string): void {
+    if (text.length > 500) {
+      text = text.slice(0, 500);
     }
+
+    this.reviewService.updateCurrentReview(prev => ({...prev, text}));
   }
 
-  updateReviewText($event: HTMLTextAreaElement) {
-    this.userTextReview = $event.value;
+  updateUserRating(rating: number): void {
+    this.reviewService.updateCurrentReview(prev => ({
+      ...prev,
+      rating
+    }));
   }
 
-  updateUserRating(star: number) {
-    this.userRating = star;
+  likeReview(review: Review): void {
+    this.reviewService.likeReview(this.movie().id, review.id);
   }
 }

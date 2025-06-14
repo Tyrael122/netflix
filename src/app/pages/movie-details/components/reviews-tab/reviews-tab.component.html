@@ -6,7 +6,7 @@
     <h3 class="text-xl font-semibold mb-4 text-white">Share Your Thoughts</h3>
 
     <!-- Rating Section -->
-    <div class="mb-4">
+    <div class="mb-6">
       <label class="block text-gray-300 mb-2 text-sm font-medium">Your Rating</label>
       <div class="flex space-x-2 w-min" (mouseleave)="hoverRating = 0">
         @for (star of [1, 2, 3, 4, 5]; track star) {
@@ -17,9 +17,9 @@
           >
             <netflix-icon
               [name]="'star'"
-              [class.text-yellow-400]="star <= (hoverRating || userRating)"
-              [class.text-gray-500]="star > (hoverRating || userRating)"
-              [fill]="star <= (hoverRating || userRating) ? 'currentColor' : 'none'"
+              [class.text-yellow-400]="star <= (hoverRating || currentReview.rating)"
+              [class.text-gray-500]="star > (hoverRating || currentReview.rating)"
+              [fill]="star <= (hoverRating || currentReview.rating) ? 'currentColor' : 'none'"
               class="text-3xl transition-colors duration-200"
             ></netflix-icon>
           </button>
@@ -28,8 +28,8 @@
       <div class="text-xs text-gray-400 mt-1">
         @if (hoverRating > 0) {
           {{ ['Terrible', 'Bad', 'Average', 'Good', 'Excellent'][hoverRating - 1] }}
-        } @else if (userRating > 0) {
-          {{ ['Terrible', 'Bad', 'Average', 'Good', 'Excellent'][userRating - 1] }}
+        } @else if (currentReview.rating > 0) {
+          {{ ['Terrible', 'Bad', 'Average', 'Good', 'Excellent'][currentReview.rating - 1] }}
         } @else {
           Select your rating
         }
@@ -37,16 +37,16 @@
     </div>
 
     <!-- Review Text -->
-    <div class="mb-4">
+    <div class="mb-6">
       <label class="block text-gray-300 mb-2 text-sm font-medium">Your Review</label>
       <textarea
-        [ngModel]="userTextReview"
+        [ngModel]="currentReview.text"
         (ngModelChange)="updateReviewText($event)"
         placeholder="What did you think of this movie? Share your detailed thoughts..."
         class="w-full bg-gray-700 text-white p-4 rounded-lg min-h-[120px] border border-transparent focus:border-netflix-red focus:ring-1 focus:ring-netflix-red transition-all duration-200"
       ></textarea>
       <div class="text-xs text-gray-400 text-right">
-        {{ userTextReview?.length || 0 }}/500
+        {{ currentReview.text.length || 0 }}/500
       </div>
     </div>
 
@@ -54,7 +54,7 @@
     <div class="flex justify-end">
       <button
         (click)="submitReview()"
-        [disabled]="!userRating || !userTextReview"
+        [disabled]="!canSubmitReview()"
         class="flex items-center gap-x-3 bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
         <span>Post Review</span>
@@ -97,7 +97,8 @@
 
           <!-- Review Actions -->
           <div class="flex items-end space-x-6 pt-3 border-t border-gray-700 text-sm">
-            <button class="text-gray-400 hover:text-white flex items-center gap-x-2">
+            <button (click)="likeReview(review)"
+                    class="text-gray-400 hover:text-white flex items-center gap-x-2">
               <netflix-icon name="thumbs-up" size="16"></netflix-icon>
               <span>Helpful ({{ review.likes || 0 }})</span>
             </button>

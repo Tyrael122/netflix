@@ -31,7 +31,7 @@
 
   <!-- Reviews tab -->
   @if (activeTab === 'reviews') {
-    <netflix-reviews-tab></netflix-reviews-tab>
+    <netflix-reviews-tab [movie]="movie()"></netflix-reviews-tab>
   }
 
   <!-- Similar movies tab -->
