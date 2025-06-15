@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {User, UserCredentials} from '../../models/user.model';
 import {Router} from '@angular/router';
+import {AppRoutes} from '../../enums/app-routes';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.router.navigate(['/login']).catch(
+    this.router.navigate([AppRoutes.LOGIN]).catch(
       err => console.error('Navigation error:', err)
     );
     this.currentUser = this.createGuestUser();
@@ -75,7 +76,7 @@ export class AuthService {
   }
 
   private navigateToHomepage() {
-    this.router.navigate(['/']).catch(
+    this.router.navigate([AppRoutes.HOME]).catch(
       err => console.error('Navigation error:', err)
     );
   }

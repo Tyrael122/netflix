@@ -3,6 +3,7 @@ import {SearchBarComponent} from '../search-bar/search-bar.component';
 import {UserIconComponent} from '../user-icon/user-icon.component';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NetflixIconComponent} from '../netflix-icon/netflix-icon.component';
+import {AppRoutes} from '../../enums/app-routes';
 
 @Component({
   selector: 'netflix-navbar',
@@ -32,4 +33,6 @@ export class NavbarComponent {
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
   }
+
+  protected readonly AppRoutes = AppRoutes;
 }

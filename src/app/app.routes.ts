@@ -4,26 +4,34 @@ import {HomeComponent} from './pages/home/home.component';
 import {LoginComponent} from './pages/login/login.component';
 import {SignupComponent} from './pages/signup/signup.component';
 import {PlaylistsComponent} from './pages/playlists/playlists.component';
+import {AppRoutes} from './enums/app-routes';
+
+// Helper function to remove leading slash for Angular route config
+const cleanPath = (path: string) => path.startsWith('/') ? path.slice(1) : path;
 
 export const routes: Routes = [
   {
-    path: "movie/:id",
+    path: cleanPath(AppRoutes.MOVIE_DETAILS),
     component: MovieDetailsComponent
   },
   {
-    path: "playlists",
+    path: cleanPath(AppRoutes.PLAYLISTS),
     component: PlaylistsComponent
   },
   {
-    path: "login",
+    path: cleanPath(AppRoutes.LOGIN),
     component: LoginComponent
   },
   {
-    path: "signup",
+    path: cleanPath(AppRoutes.SIGNUP),
     component: SignupComponent
   },
   {
-    path: "",
+    path: cleanPath(AppRoutes.HOME),
     component: HomeComponent
+  },
+  {
+    path: '**',
+    redirectTo: AppRoutes.HOME
   }
 ];

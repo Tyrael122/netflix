@@ -2,12 +2,14 @@ import {Component, effect, inject, input} from '@angular/core';
 import {MoviePosterImageComponent} from '../../../../components/movie-poster-image/movie-poster-image.component';
 import {MovieListing} from '../../../../models/movie.model';
 import {UserMovieService} from '../../../../services/user/user-movie.service';
-import {Router} from '@angular/router';
+import {RouterLink} from '@angular/router';
+import {RouteParams} from '../../../../enums/app-routes';
 
 @Component({
   selector: 'netflix-similar-tab',
   imports: [
-    MoviePosterImageComponent
+    MoviePosterImageComponent,
+    RouterLink
   ],
   templateUrl: './similar-tab.component.html',
   styleUrl: './similar-tab.component.css'
@@ -18,19 +20,11 @@ export class SimilarTabComponent {
   similarMovies: MovieListing[] = [];
 
   private moviesService = inject(UserMovieService);
-  private router = inject(Router);
 
   constructor() {
     effect(() => {
       this.fetchSimilarMovies(this.movie().id);
     });
-  }
-
-  navigateToMovie(id: string) {
-    this.router.navigate(['/movie', id])
-      .catch(err => {
-        console.error('Navigation error:', err);
-      });
   }
 
   private fetchSimilarMovies(movieId: string) {
@@ -39,4 +33,6 @@ export class SimilarTabComponent {
       error: (err) => console.error('Error fetching similar movies:', err)
     });
   }
+
+  protected readonly RouteParams = RouteParams;
 }

@@ -4,6 +4,7 @@ import {NavbarContainerComponent} from "../../components/navbar-container/navbar
 import {NetflixIconComponent} from "../../components/netflix-icon/netflix-icon.component";
 import {RouterLink} from '@angular/router';
 import {Playlist, PlaylistService} from '../../services/playlist/playlist.service';
+import {RouteParams} from '../../enums/app-routes';
 
 @Component({
   selector: 'netflix-playlists',
@@ -33,4 +34,6 @@ export class PlaylistsComponent implements OnInit {
   getFirstMoviePoster(playlist: Playlist) {
     return playlist.coverImageUrl;
   }
+
+  protected readonly RouteParams = RouteParams;
 }

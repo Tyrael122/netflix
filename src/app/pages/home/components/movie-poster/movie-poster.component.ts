@@ -8,6 +8,7 @@ import {MovieOption, MovieOptionsButtonComponent} from '../movie-options-button/
 import {FavoritesService} from '../../../../services/favorites/favorites.service';
 import {WatchlaterService} from '../../../../services/watchlater/watchlater.service';
 import {AddToPlaylistModalComponent} from '../add-to-playlist-modal/add-to-playlist-modal.component';
+import {RouteParams} from '../../../../enums/app-routes';
 
 @Component({
   selector: 'netflix-movie-poster',
@@ -63,4 +64,6 @@ export class MoviePosterComponent {
   toggleAddToPlaylistModal() {
     this.showAddToPlaylistModal = !this.showAddToPlaylistModal;
   }
+
+  protected readonly RouteParams = RouteParams;
 }

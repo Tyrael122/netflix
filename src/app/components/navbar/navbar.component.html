@@ -2,7 +2,7 @@
   class="flex p-4 justify-between items-center bg-black bg-opacity-90 md:backdrop-blur-sm text-white shadow-md">
   <!-- Logo -->
   <div class="flex items-center justify-around md:justify-start w-full md:gap-x-5">
-    <span routerLink="/"
+    <span [routerLink]="AppRoutes.HOME"
           class="hidden md:block text-red-600 font-bold text-2xl sm:text-3xl cursor-pointer">NETFLIX</span>
 
     <netflix-search-bar (onSearchChanged)="searchMovies($event)" class="md:ml-4"></netflix-search-bar>
@@ -21,11 +21,11 @@
   <!-- Desktop Navigation -->
   <div class="hidden md:flex items-center gap-6">
     <div class="flex items-center gap-6">
-      <a routerLink="/" class="flex items-center group" routerLinkActive="text-red-500"
+      <a [routerLink]="AppRoutes.HOME" class="flex items-center group" routerLinkActive="text-red-500"
          [routerLinkActiveOptions]="{exact: true}">
         <span class="text-lg font-medium group-hover:text-red-500">Home</span>
       </a>
-      <a routerLink="/favorites" class="flex items-center group" routerLinkActive="text-red-500">
+      <a [routerLink]="AppRoutes.PLAYLISTS" class="flex items-center group" routerLinkActive="text-red-500">
         <span class="text-lg font-medium group-hover:text-red-500">Favorites</span>
       </a>
     </div>
@@ -37,11 +37,11 @@
 <div class="bg-black bg-opacity-90 md:hidden"
      [class.hidden]="!isMobileMenuOpen">
   <div class="flex flex-col p-4 space-y-4">
-    <a routerLink="/" class="text-white hover:text-red-500 py-2" (click)="closeMobileMenu()"
+    <a [routerLink]="AppRoutes.HOME" class="text-white hover:text-red-500 py-2" (click)="closeMobileMenu()"
        routerLinkActive="text-red-500">
       Home
     </a>
-    <a routerLink="/favorites" class="text-white hover:text-red-500 py-2" (click)="closeMobileMenu()"
+    <a [routerLink]="AppRoutes.PLAYLISTS" class="text-white hover:text-red-500 py-2" (click)="closeMobileMenu()"
        routerLinkActive="text-red-500">
       Favorites
     </a>
