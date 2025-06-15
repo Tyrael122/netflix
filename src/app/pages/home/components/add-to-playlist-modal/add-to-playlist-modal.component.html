@@ -12,14 +12,6 @@
     <!-- Playlist List -->
     @if (playlists | async; as playlists) {
       @if (playlists.length > 0) {
-        <!-- Search -->
-        <div class="p-4">
-          <input
-            type="text"
-            placeholder="Search playlists..."
-            class="w-full bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
-        </div>
-
         <div class="overflow-y-auto max-h-[40vh]">
           @for (playlist of playlists; track playlist.id) {
             <div

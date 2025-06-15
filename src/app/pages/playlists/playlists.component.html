@@ -1,0 +1,41 @@
+<netflix-navbar-container>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-white">Your Playlists</h1>
+    <button
+      (click)="createNewPlaylist()"
+      class="flex items-center justify-center bg-netflix-red hover:bg-netflix-red-dark text-white rounded-md px-4 py-2 transition-colors duration-200"
+    >
+      <netflix-icon name="plus" size="18" class="mr-2"></netflix-icon>
+      New Playlist
+    </button>
+  </div>
+
+  @if (playlists.length > 0) {
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      @for (playlist of playlists; track playlist.id) {
+        <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
+          <a [routerLink]="['/playlist', playlist.id]" class="block">
+            <!-- Playlist cover using first movie's poster -->
+            <div class="relative">
+              @if (getFirstMoviePoster(playlist)) {
+                <netflix-movie-poster-image
+                  [poster_path]="getFirstMoviePoster(playlist)"
+                  class="rounded-lg aspect-[2/3]"
+                ></netflix-movie-poster-image>
+              } @else {
+                <div class="bg-gray-800/50 rounded-lg aspect-[2/3] flex items-center justify-center">
+                  <netflix-icon name="popcorn" size="48" class="text-gray-500"></netflix-icon>
+                </div>
+              }
+              <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors rounded-lg"></div>
+              <div class="absolute bottom-2 left-2 right-2">
+                <p class="text-white font-bold drop-shadow-md">{{ playlist.name }}</p>
+                <p class="text-gray-300 text-sm drop-shadow-md">{{ playlist.movieIds.length }} items</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      }
+    </div>
+  }
+</netflix-navbar-container>

@@ -3,7 +3,7 @@ import {MovieDetailsComponent} from './pages/movie-details/movie-details.compone
 import {HomeComponent} from './pages/home/home.component';
 import {LoginComponent} from './pages/login/login.component';
 import {SignupComponent} from './pages/signup/signup.component';
-import {FavoritesComponent} from './pages/favorites/favorites.component';
+import {PlaylistsComponent} from './pages/playlists/playlists.component';
 
 export const routes: Routes = [
   {
@@ -11,8 +11,8 @@ export const routes: Routes = [
     component: MovieDetailsComponent
   },
   {
-    path: "favorites",
-    component: FavoritesComponent
+    path: "playlists",
+    component: PlaylistsComponent
   },
   {
     path: "login",

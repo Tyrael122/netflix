@@ -47,7 +47,7 @@ export class AddToPlaylistModalComponent implements OnInit {
 
   createAndAddToPlaylist() {
     if (this.newPlaylistName.trim()) {
-      const newPlaylist = this.playlistService.createPlaylist(this.newPlaylistName, this.movie().id);
+      const newPlaylist = this.playlistService.createPlaylist(this.newPlaylistName, this.movie());
       this.selectedPlaylists.push(newPlaylist.id);
       this.newPlaylistName = '';
     }
