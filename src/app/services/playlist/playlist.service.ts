@@ -9,7 +9,7 @@ export interface Playlist {
   name: string;
   movieIds: string[];
   isSystemPlaylist: boolean;
-  coverImageUrl?: string;
+  coverImageUrl?: string; // Cover image URL is gonna have the poster path of the first movie in the playlist.
 }
 
 @Injectable({
@@ -25,6 +25,12 @@ export class PlaylistService {
     return of(this.getCurrentUserPlaylists());
   }
 
+  getPlaylistById(playlistId: string): Observable<Playlist | undefined> {
+    const playlists = this.getCurrentUserPlaylists();
+    const playlist = playlists.find(pl => pl.id === playlistId);
+    return of(playlist);
+  }
+
   updateMoviePlaylists(movieId: string, newPlaylistIds: string[]): void {
     const playlists = this.getCurrentUserPlaylists();
 
@@ -38,7 +44,7 @@ export class PlaylistService {
         this.addMovieToPlaylist(playlist, movieId);
       }
 
-      // update cover image if needed
+      this.updatePlaylistCoverImage(playlist, movieId);
     });
   }
 
@@ -65,28 +71,39 @@ export class PlaylistService {
     return this.playlists.get(userId)!;
   }
 
-  private createSystemPlaylists() {
+  private updatePlaylistCoverImage(playlist: Playlist, movieId: string) {
+    if (playlist.coverImageUrl === undefined && playlist.movieIds.length > 0) {
+      this.movieService.getMovieDetails(movieId).subscribe(movie => {
+        if (movie.poster_path) {
+          playlist.coverImageUrl = movie.poster_path;
+        }
+      });
+    }
+
+    if (playlist.movieIds.length === 0) {
+      playlist.coverImageUrl = undefined; // Clear cover image if no movies are in the playlist
+    }
+  }
+
+  private createSystemPlaylists(): Playlist[] {
     return [
       {
         id: 'favorites',
         name: 'Favorites',
         movieIds: [],
-        isSystemPlaylist: true,
-        coverImageUrl: undefined
+        isSystemPlaylist: true
       },
       {
         id: 'watchlater',
         name: 'Watch Later',
         movieIds: [],
-        isSystemPlaylist: true,
-        coverImageUrl: undefined
+        isSystemPlaylist: true
       },
       {
         id: 'watched',
         name: 'Watched',
         movieIds: [],
-        isSystemPlaylist: true,
-        coverImageUrl: undefined
+        isSystemPlaylist: true
       }
     ]
   }

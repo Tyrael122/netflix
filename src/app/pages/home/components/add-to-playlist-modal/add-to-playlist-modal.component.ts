@@ -54,10 +54,8 @@ export class AddToPlaylistModalComponent implements OnInit {
   }
 
   confirmSelection() {
-    if (this.selectedPlaylists.length > 0) {
-      this.playlistService.updateMoviePlaylists(this.movie().id, this.selectedPlaylists);
-      this.closeModal();
-    }
+    this.playlistService.updateMoviePlaylists(this.movie().id, this.selectedPlaylists);
+    this.closeModal();
   }
 
   closeModal() {

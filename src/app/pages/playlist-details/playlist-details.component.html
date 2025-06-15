@@ -1,70 +1,65 @@
 <netflix-navbar-container>
-  <!-- Empty state messages -->
-  @if (favoriteMovies.length === 0 && !authService.isLoggedIn()) {
+  <h1 class="text-3xl font-bold text-white mb-6">
+    {{ playlist?.name }}
+  </h1>
+
+  @if (playlistMovies.length === 0 && !authService.isLoggedIn()) {
     <div class="text-center">
       <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
         <netflix-icon name="favorite" size="48" class="text-gray-500"/>
       </div>
-      <h2 class="text-2xl font-bold text-white mb-2">No favorites yet</h2>
+      <h2 class="text-2xl font-bold text-white mb-2">No movies yet</h2>
       <p class="text-gray-400 mb-6">
         You can save some temporarily — they'll stay until you close the browser
       </p>
       <a
-        [routerLink]="['/login']"
+        [routerLink]="AppRoutes.LOGIN"
         class="inline-flex items-center px-6 py-2 bg-netflix-red hover:bg-red-700 text-white font-medium rounded transition-colors"
       >
         Log in to save permanently
       </a>
     </div>
-  } @else if (favoriteMovies.length === 0 && authService.isLoggedIn()) {
+  } @else if (playlistMovies.length === 0 && authService.isLoggedIn()) {
     <div class="text-center">
       <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gray-800/50">
         <netflix-icon name="favorite" size="48" class="text-gray-500"/>
       </div>
-      <h2 class="text-2xl font-bold text-white mb-2">Your favorites list is empty</h2>
+      <h2 class="text-2xl font-bold text-white mb-2">Your playlist is empty</h2>
       <p class="text-gray-400 mb-6">
-        Start adding movies to your favorites while browsing
+        Start adding movies to your playlist while browsing
       </p>
       <a
-        [routerLink]="['/']"
+        [routerLink]="AppRoutes.HOME"
         class="inline-flex items-center px-6 py-2 bg-netflix-red hover:bg-red-700 text-white font-medium rounded transition-colors"
       >
         Browse Movies
       </a>
     </div>
-  } @else if (favoriteMovies.length > 0 && !authService.isLoggedIn()) {
+  } @else if (playlistMovies.length > 0 && !authService.isLoggedIn()) {
     <div class="bg-gray-800/50 rounded-lg p-4 mb-8 flex items-start border-l-4 border-yellow-400">
       <div class="flex items-start">
         <netflix-icon name="info" size="20" class="text-yellow-400 mt-0.5 mr-3 flex-shrink-0"/>
         <div>
-          <p class="text-yellow-400 font-medium mb-1">These favorites are temporary</p>
+          <p class="text-yellow-400 font-medium mb-1">This playlist is temporary</p>
           <p class="text-gray-300">
             <a
-              [routerLink]="['/login']"
+              [routerLink]="AppRoutes.LOGIN"
               class="text-netflix-red hover:underline font-medium inline-flex items-center"
             >
               Log in
-            </a> to save your favorites permanently across devices.
+            </a> to save your playlist permanently across devices.
           </p>
         </div>
       </div>
     </div>
   }
 
-  <!-- Favorites grid -->
-  @if (favoriteMovies.length > 0) {
-    <h1 class="text-3xl font-bold text-white mb-6">
-      @if (authService.isLoggedIn()) {
-        Your Favorites
-      } @else {
-        Temporary Favorites
-      }
-    </h1>
-
+  <!-- Playlist grid -->
+  @if (playlistMovies.length > 0) {
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      @for (movie of favoriteMovies; track movie.id) {
+      @for (movie of playlistMovies; track movie.id) {
         <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
-          <a [routerLink]="['/movie', movie.id]" class="block">
+          <a [routerLink]="RouteParams.movieDetails(movie.id)" class="block">
             <netflix-movie-poster-image
               [poster_path]="movie.poster_path"
               class="rounded-lg"
@@ -72,6 +67,7 @@
             <div class="mt-2">
               <p class="text-white font-medium text-sm truncate">{{ movie.title }}</p>
               <div class="absolute top-2 right-2">
+                <!--TODO: Create remove from playlist button -->
                 <netflix-favorite-button [movie]="movie"></netflix-favorite-button>
               </div>
             </div>

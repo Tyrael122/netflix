@@ -29,7 +29,7 @@ export class SimilarTabComponent {
 
   private fetchSimilarMovies(movieId: string) {
     this.moviesService.getSimilarMovies(movieId).subscribe({
-      next: (movies) => this.similarMovies = movies,
+      next: (pageableResponse) => this.similarMovies = pageableResponse.results,
       error: (err) => console.error('Error fetching similar movies:', err)
     });
   }

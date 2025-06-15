@@ -31,9 +31,5 @@ export class PlaylistsComponent implements OnInit {
   createNewPlaylist() {
   }
 
-  getFirstMoviePoster(playlist: Playlist) {
-    return playlist.coverImageUrl;
-  }
-
   protected readonly RouteParams = RouteParams;
 }

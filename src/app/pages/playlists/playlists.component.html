@@ -11,26 +11,24 @@
   </div>
 
   @if (playlists.length > 0) {
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-4">
       @for (playlist of playlists; track playlist.id) {
-        <div class="group relative transition-transform duration-300 hover:scale-105 hover:z-10">
+        <div class="group relative p-2 md:p-4 hover:bg-white/5 rounded-lg transition-colors duration-300">
           <a [routerLink]="RouteParams.playlistDetails(playlist.id)" class="block">
-            <!-- Playlist cover using first movie's poster -->
-            <div class="relative">
-              @if (getFirstMoviePoster(playlist)) {
+            <div class="relative overflow-hidden rounded-lg">
+              @if (playlist.coverImageUrl) {
                 <netflix-movie-poster-image
-                  [poster_path]="getFirstMoviePoster(playlist)"
-                  class="rounded-lg aspect-[2/3]"
+                  [poster_path]="playlist.coverImageUrl"
+                  class="aspect-[2/3]"
                 ></netflix-movie-poster-image>
               } @else {
-                <div class="bg-gray-800/50 rounded-lg aspect-[2/3] flex items-center justify-center">
+                <div class="bg-gray-800/50 aspect-[2/3] flex items-center justify-center">
                   <netflix-icon name="popcorn" size="48" class="text-gray-500"></netflix-icon>
                 </div>
               }
-              <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors rounded-lg"></div>
-              <div class="absolute bottom-2 left-2 right-2">
-                <p class="text-white font-bold drop-shadow-md text-sm md:text-base line-clamp-1">{{ playlist.name }}</p>
-                <p class="text-gray-300 text-xs md:text-sm drop-shadow-md">{{ playlist.movieIds.length }} items</p>
+              <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/70 to-transparent">
+                <p class="text-white font-bold text-sm md:text-base line-clamp-1">{{ playlist.name }}</p>
+                <p class="text-gray-300 text-xs md:text-sm">{{ playlist.movieIds.length }} items</p>
               </div>
             </div>
           </a>

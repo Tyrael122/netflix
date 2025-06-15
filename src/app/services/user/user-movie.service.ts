@@ -8,7 +8,7 @@ import {
 } from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
 import {FavoritesService} from '../favorites/favorites.service';
-import {from, map, mergeMap, Observable, toArray} from 'rxjs';
+import {map, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,52 +19,19 @@ export class UserMovieService {
 
   getPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
     return this.movieService.listPopularMovies(pageNumber).pipe(
-      // Map the response to convert Movie to UserMovie
-      map(pageableResponse => {
-        const userMovies: UserMovieListing[] = pageableResponse.results.map(
-          movie => this.enrichMovieWithUserMetadata(movie)
-        );
-
-        return {
-          ...pageableResponse,
-          results: userMovies
-        };
-      })
+      map(pageableResponse => this.enrichMovieListingWithUserMetadata(pageableResponse))
     )
   }
 
   searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
     return this.movieService.searchMovies(searchTerm, pageNumber).pipe(
-      map(pageableResponse => {
-        const userMovies: UserMovieListing[] = pageableResponse.results.map(
-          movie => this.enrichMovieWithUserMetadata(movie)
-        );
-
-        return {
-          ...pageableResponse,
-          results: userMovies
-        };
-      })
+      map(pageableResponse => this.enrichMovieListingWithUserMetadata(pageableResponse))
     );
   }
 
-  getSimilarMovies(id: string): Observable<UserMovieListing[]> {
+  getSimilarMovies(id: string): Observable<PageableResponse<UserMovieListing>> {
     return this.movieService.getSimilarMovies(id).pipe(
-      map(pageableResponse =>
-        pageableResponse.results.map(
-          movie => this.enrichMovieWithUserMetadata(movie))
-      )
-    );
-  }
-
-  getFavoriteMovies(): Observable<UserMovieDetails[]> {
-    return from(this.favoritesService.getFavorites()).pipe(
-      mergeMap(movieId =>
-        this.movieService.getMovieDetails(movieId).pipe(
-          map(movie => this.enrichMovieWithUserMetadata(movie))
-        )
-      ),
-      toArray() // Collect all emissions into a single array
+      map(pageableResponse => this.enrichMovieListingWithUserMetadata(pageableResponse))
     );
   }
 
@@ -72,6 +39,17 @@ export class UserMovieService {
     return this.movieService.getMovieDetails(id).pipe(
       map(movie => this.enrichMovieWithUserMetadata(movie))
     );
+  }
+
+  private enrichMovieListingWithUserMetadata(pageableResponse: PageableResponse<MovieListing>): PageableResponse<UserMovieListing> {
+    const userMovies = pageableResponse.results.map(
+      movie => this.enrichMovieWithUserMetadata(movie)
+    );
+
+    return {
+      ...pageableResponse,
+      results: userMovies
+    };
   }
 
   private enrichMovieWithUserMetadata<T extends MovieListing>(movie: T) {
