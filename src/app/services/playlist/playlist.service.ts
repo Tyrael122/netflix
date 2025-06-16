@@ -43,22 +43,27 @@ export class PlaylistService {
       } else if (!hasMovie && shouldHaveMovie) {
         this.addMovieToPlaylist(playlist, movieId);
       }
-
-      this.updatePlaylistCoverImage(playlist, movieId);
     });
   }
 
-  createPlaylist(name: string, movie: MovieListing): Playlist {
+  createPlaylist(name: string, movie?: MovieListing): Observable<Playlist> {
     const newPlaylist: Playlist = {
       id: this.generateUniqueId(),
-      name,
-      movieIds: movie.id ? [movie.id] : [],
+      name: name.trim(),
+      movieIds: movie?.id ? [movie.id] : [],
       isSystemPlaylist: false,
-      coverImageUrl: movie.poster_path
+      coverImageUrl: movie?.poster_path
     };
 
     this.getCurrentUserPlaylists().push(newPlaylist);
-    return newPlaylist;
+    return of(newPlaylist);
+  }
+
+  removeMovieFromPlaylist(playlist: Playlist, movieId: string): Observable<Playlist> {
+    playlist.movieIds = playlist.movieIds.filter(id => id !== movieId);
+    this.updatePlaylistCoverImage(playlist);
+
+    return of(playlist);
   }
 
   private getCurrentUserPlaylists(): Playlist[] {
@@ -71,17 +76,19 @@ export class PlaylistService {
     return this.playlists.get(userId)!;
   }
 
-  private updatePlaylistCoverImage(playlist: Playlist, movieId: string) {
-    if (playlist.coverImageUrl === undefined && playlist.movieIds.length > 0) {
+  private updatePlaylistCoverImage(playlist: Playlist) {
+    if (playlist.movieIds.length === 0) {
+      playlist.coverImageUrl = undefined; // Clear cover image if no movies are in the playlist
+      return;
+    }
+
+    if (playlist.movieIds.length > 0) {
+      const movieId = playlist.movieIds[0]; // Use the first movie in the playlist to set the cover image
       this.movieService.getMovieDetails(movieId).subscribe(movie => {
         if (movie.poster_path) {
           playlist.coverImageUrl = movie.poster_path;
         }
       });
-    }
-
-    if (playlist.movieIds.length === 0) {
-      playlist.coverImageUrl = undefined; // Clear cover image if no movies are in the playlist
     }
   }
 
@@ -110,10 +117,8 @@ export class PlaylistService {
 
   private addMovieToPlaylist(playlist: Playlist, movieId: string): void {
     playlist.movieIds.push(movieId);
-  }
 
-  private removeMovieFromPlaylist(playlist: Playlist, movieId: string): void {
-    playlist.movieIds = playlist.movieIds.filter(id => id !== movieId);
+    this.updatePlaylistCoverImage(playlist);
   }
 
   private generateUniqueId(): string {

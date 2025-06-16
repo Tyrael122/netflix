@@ -5,6 +5,7 @@ import {NetflixIconComponent} from "../../components/netflix-icon/netflix-icon.c
 import {RouterLink} from '@angular/router';
 import {Playlist, PlaylistService} from '../../services/playlist/playlist.service';
 import {RouteParams} from '../../enums/app-routes';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'netflix-playlists',
@@ -12,12 +13,16 @@ import {RouteParams} from '../../enums/app-routes';
     MoviePosterImageComponent,
     NavbarContainerComponent,
     NetflixIconComponent,
-    RouterLink
+    RouterLink,
+    FormsModule
   ],
   templateUrl: './playlists.component.html',
   styleUrl: './playlists.component.css'
 })
 export class PlaylistsComponent implements OnInit {
+  showNewPlaylistField: boolean = false;
+  newPlaylistName: string = '';
+
   private playlistService = inject(PlaylistService);
 
   playlists: Playlist[] = [];
@@ -28,7 +33,15 @@ export class PlaylistsComponent implements OnInit {
     });
   }
 
-  createNewPlaylist() {
+  createAndAddToPlaylist() {
+    if (this.newPlaylistName.trim() === '') {
+      return;
+    }
+
+    this.playlistService.createPlaylist(this.newPlaylistName).subscribe(() => {
+      this.newPlaylistName = '';
+      this.showNewPlaylistField = false;
+    });
   }
 
   protected readonly RouteParams = RouteParams;
