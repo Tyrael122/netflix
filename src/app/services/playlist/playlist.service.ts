@@ -83,7 +83,7 @@ export class PlaylistService {
     }
 
     if (playlist.movieIds.length > 0) {
-      const movieId = playlist.movieIds[0]; // Use the first movie in the playlist to set the cover image
+      const movieId = playlist.movieIds[playlist.movieIds.length - 1]; // Get the last movie in the playlist
       this.movieService.getMovieDetails(movieId).subscribe(movie => {
         if (movie.poster_path) {
           playlist.coverImageUrl = movie.poster_path;
