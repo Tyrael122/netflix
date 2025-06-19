@@ -4,7 +4,7 @@
 
     @if (!showNewPlaylistField) {
       <button
-        (click)="showNewPlaylistField = true"
+        (click)="enableNewPlaylistField()"
         class="flex items-center justify-center cursor-pointer bg-netflix-red hover:bg-netflix-red-dark text-white rounded-md px-3 py-1 md:px-4 md:py-2 transition-colors duration-200 text-sm md:text-base"
       >
         <netflix-icon name="plus" size="16" class="mr-1 md:mr-2"></netflix-icon>

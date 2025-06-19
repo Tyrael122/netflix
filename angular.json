@@ -27,6 +27,7 @@
               }
             ],
             "styles": [
+              "src/netflix-mat-theme.scss",
               "src/styles.css"
             ],
             "scripts": [],

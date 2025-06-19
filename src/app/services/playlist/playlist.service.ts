@@ -1,15 +1,17 @@
 import {inject, Injectable} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
-import {Observable, of} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {MovieListing} from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
+import {PlansService} from '../plans/plans.service';
+import {NetflixError, NetflixErrorCodes} from '../../models/errors.model';
 
 export interface Playlist {
   id: string;
   name: string;
   movieIds: string[];
   isSystemPlaylist: boolean;
-  coverImageUrl?: string; // Cover image URL is gonna have the poster path of the first movie in the playlist.
+  coverImageUrl?: string;
 }
 
 @Injectable({
@@ -18,8 +20,8 @@ export interface Playlist {
 export class PlaylistService {
   private readonly playlists = new Map<string, Playlist[]>(); // userId -> playlists
   private readonly authService = inject(AuthService);
-
   private readonly movieService = inject(MovieService);
+  private readonly plansService = inject(PlansService);
 
   getPlaylists(): Observable<Playlist[]> {
     return of(this.getCurrentUserPlaylists());
@@ -47,16 +49,18 @@ export class PlaylistService {
   }
 
   createPlaylist(name: string, movie?: MovieListing): Observable<Playlist> {
-    const newPlaylist: Playlist = {
-      id: this.generateUniqueId(),
-      name: name.trim(),
-      movieIds: movie?.id ? [movie.id] : [],
-      isSystemPlaylist: false,
-      coverImageUrl: movie?.poster_path
-    };
+    return this.validatePlaylistCreationLimit().pipe(() => {
+      const newPlaylist: Playlist = {
+        id: this.generateUniqueId(),
+        name: name.trim(),
+        movieIds: movie?.id ? [movie.id] : [],
+        isSystemPlaylist: false,
+        coverImageUrl: movie?.poster_path
+      };
 
-    this.getCurrentUserPlaylists().push(newPlaylist);
-    return of(newPlaylist);
+      this.getCurrentUserPlaylists().push(newPlaylist);
+      return of(newPlaylist);
+    })
   }
 
   removeMovieFromPlaylist(playlist: Playlist, movieId: string): Observable<Playlist> {
@@ -64,6 +68,33 @@ export class PlaylistService {
     this.updatePlaylistCoverImage(playlist);
 
     return of(playlist);
+  }
+
+  validatePlaylistCreationLimit() {
+    const playlistsLimit = this.plansService.getCurrentUserPlanDetails()?.features.playlistCreation.limit;
+    if (!playlistsLimit && playlistsLimit !== 0) {
+      return throwError((): NetflixError => ({
+        code: NetflixErrorCodes.PLAN_DATA_NOT_FOUND,
+        message: 'Unable to retrieve playlists limit from current user plan.'
+      }));
+    }
+
+    if (playlistsLimit === 0) {
+      return throwError((): NetflixError => ({
+        code: NetflixErrorCodes.PLAYLIST_LIMIT_REACHED,
+        message: 'You cannot create playlists with your current plan. Please upgrade your plan to create playlists.'
+      }));
+    }
+
+    const currentCustomPlaylists = this.getCurrentUserPlaylists().filter(playlist => !playlist.isSystemPlaylist);
+    if (currentCustomPlaylists.length >= playlistsLimit) {
+      return throwError((): NetflixError => ({
+        code: NetflixErrorCodes.PLAYLIST_LIMIT_REACHED,
+        message: `You have reached the limit of ${playlistsLimit} custom playlists for your current plan. Please upgrade your plan to create more playlists.`
+      }));
+    }
+
+    return of(true); // If all checks pass, return an observable indicating success
   }
 
   private getCurrentUserPlaylists(): Playlist[] {

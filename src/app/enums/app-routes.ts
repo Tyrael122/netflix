@@ -1,5 +1,6 @@
 export enum AppRoutes {
   HOME = '/',
+  PLANS = '/plans',
   MOVIE_DETAILS = '/movie/:id',
   PLAYLISTS = '/playlists',
   PLAYLIST_DETAILS = '/playlists/:id',
