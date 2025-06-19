@@ -48,13 +48,11 @@ export class PlaylistsComponent implements OnInit {
       return;
     }
 
-    this.playlistService.createPlaylist(this.newPlaylistName).subscribe({
-      next: () => {
+    this.playlistService.createPlaylist(this.newPlaylistName).subscribe(() => {
         this.newPlaylistName = '';
         this.showNewPlaylistField = false;
-      },
-      error: (error) => this.displayErrorMessage(error)
-    });
+      }
+    );
   }
 
   private displayErrorMessage(error: any) {

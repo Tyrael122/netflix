@@ -37,7 +37,7 @@ export const PLANS: Plan[] = [
     price: 0,
     features: {
       playlistCreation: {
-        limit: 0,
+        limit: 2,
         description: 'Create up to 2 playlists'
       },
       reviews: {

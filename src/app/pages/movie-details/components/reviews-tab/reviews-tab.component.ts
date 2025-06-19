@@ -28,19 +28,15 @@ export class ReviewsTabComponent {
     return this.reviewService.getReviewsList(this.movie().id);
   }
 
-  scrollToReviewForm(): void {
-    this.reviewForm.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-
-    setTimeout(() => {
-      const textarea = this.reviewForm.nativeElement.querySelector('textarea');
-      textarea?.focus();
-    }, 500);
+  get canWriteReview(): boolean {
+    return this.reviewService.hasSubmitReviewPermission();
   }
 
-  canSubmitReview() {
+  get canViewReviews(): boolean {
+    return this.reviewService.hasViewReviewsPermission();
+  }
+
+  isReviewFilled() {
     return this.currentReview.rating > 0 && this.currentReview.text.trim().length > 0;
   }
 
@@ -66,4 +62,29 @@ export class ReviewsTabComponent {
   likeReview(review: Review): void {
     this.reviewService.likeReview(this.movie().id, review.id);
   }
+
+  scrollToReviewForm(): void {
+    this.reviewForm.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+
+    setTimeout(() => {
+      const textarea = this.reviewForm.nativeElement.querySelector('textarea');
+      textarea?.focus();
+    }, 250);
+  }
+
+  getRatingsMap(): Record<number, string> {
+    return {
+      1: 'Terrible',
+      2: 'Bad',
+      3: 'Average',
+      4: 'Good',
+      5: 'Excellent'
+    };
+  }
+
+  protected readonly Object = Object;
+  protected readonly Number = Number;
 }

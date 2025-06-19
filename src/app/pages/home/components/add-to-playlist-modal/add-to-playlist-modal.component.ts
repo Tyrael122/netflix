@@ -4,6 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {UserMovieListing} from '../../../../models/movie.model';
 import {Playlist, PlaylistService} from '../../../../services/playlist/playlist.service';
 import {map, Observable, of} from 'rxjs';
+import {isNetflixError} from "../../../../models/errors.model";
+import {ToastService} from "../../../../services/toast/toast.service";
 
 @Component({
   selector: 'netflix-add-to-playlist-modal',
@@ -17,6 +19,7 @@ export class AddToPlaylistModalComponent implements OnInit {
   onCloseModal = output();
 
   playlistService = inject(PlaylistService);
+  toastService = inject(ToastService);
 
   playlists: Observable<Playlist[]> = of();
 
@@ -47,11 +50,13 @@ export class AddToPlaylistModalComponent implements OnInit {
 
   createAndAddToPlaylist() {
     if (this.newPlaylistName.trim()) {
-      this.playlistService.createPlaylist(this.newPlaylistName, this.movie()).subscribe((newPlaylist => {
-        this.selectedPlaylists.push(newPlaylist.id);
-        this.newPlaylistName = '';
-        this.showNewPlaylistField = false;
-      }))
+      this.playlistService.createPlaylist(this.newPlaylistName, this.movie()).subscribe(
+        newPlaylist => {
+          this.selectedPlaylists.push(newPlaylist.id);
+          this.newPlaylistName = '';
+          this.showNewPlaylistField = false;
+        }
+      )
     }
   }
 
@@ -62,5 +67,21 @@ export class AddToPlaylistModalComponent implements OnInit {
 
   closeModal() {
     this.onCloseModal.emit();
+  }
+
+  enableNewPlaylistField() {
+    this.playlistService.validatePlaylistCreationLimit().subscribe({
+      next: () => this.showNewPlaylistField = true,
+      error: (err) => this.displayErrorMessage(err)
+    })
+  }
+
+  private displayErrorMessage(error: any) {
+    if (isNetflixError(error)) {
+      this.toastService.showToast(error.message);
+    } else {
+      console.error('Error creating playlist:', error);
+      this.toastService.showToast('An error occurred while attempting to create the playlist.');
+    }
   }
 }

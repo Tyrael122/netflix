@@ -71,17 +71,10 @@ export class PlaylistService {
   }
 
   validatePlaylistCreationLimit() {
-    const playlistsLimit = this.plansService.getCurrentUserPlanDetails()?.features.playlistCreation.limit;
-    if (!playlistsLimit && playlistsLimit !== 0) {
-      return throwError((): NetflixError => ({
-        code: NetflixErrorCodes.PLAN_DATA_NOT_FOUND,
-        message: 'Unable to retrieve playlists limit from current user plan.'
-      }));
-    }
-
+    const playlistsLimit = this.plansService.getCurrentUserPlanDetails().features.playlistCreation.limit;
     if (playlistsLimit === 0) {
       return throwError((): NetflixError => ({
-        code: NetflixErrorCodes.PLAYLIST_LIMIT_REACHED,
+        code: NetflixErrorCodes.PLAYLIST_CREATION_LIMIT_REACHED,
         message: 'You cannot create playlists with your current plan. Please upgrade your plan to create playlists.'
       }));
     }
@@ -89,7 +82,7 @@ export class PlaylistService {
     const currentCustomPlaylists = this.getCurrentUserPlaylists().filter(playlist => !playlist.isSystemPlaylist);
     if (currentCustomPlaylists.length >= playlistsLimit) {
       return throwError((): NetflixError => ({
-        code: NetflixErrorCodes.PLAYLIST_LIMIT_REACHED,
+        code: NetflixErrorCodes.PLAYLIST_CREATION_LIMIT_REACHED,
         message: `You have reached the limit of ${playlistsLimit} custom playlists for your current plan. Please upgrade your plan to create more playlists.`
       }));
     }

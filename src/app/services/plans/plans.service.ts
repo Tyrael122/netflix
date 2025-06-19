@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {Plan, PLANS, Plans} from '../../models/plans.model';
+import {createNetflixError, NetflixErrorCodes} from '../../models/errors.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class PlansService {
 
   private authService = inject(AuthService);
 
-  public getCurrentUserPlanDetails(): Plan | null {
+  public getCurrentUserPlanDetails(): Plan {
     const user = this.authService.getCurrentUser();
     if (!user || user.isGuest) {
       return this.getDefaultPlan();
@@ -51,18 +52,21 @@ export class PlansService {
     return PLANS;
   }
 
-  private getDefaultPlan(): Plan | null {
+  private getDefaultPlan(): Plan {
     return this.getPlanDetailsById(Plans.Free);
   }
 
-  private getPlanDetailsById(planId: string): Plan | null {
+  private getPlanDetailsById(planId: string): Plan {
     for (const plan of this.getAvailablePlans()) {
       if (plan.id === planId) {
         return plan;
       }
     }
 
-    console.warn(`Plan with ID ${planId} not found, returning null.`);
-    return null;
+    console.error(`Plan with ID ${planId} not found.`);
+    throw createNetflixError(
+      NetflixErrorCodes.PLAN_DATA_NOT_FOUND,
+      `Plan details not found. Please contact support.`
+    )
   }
 }
