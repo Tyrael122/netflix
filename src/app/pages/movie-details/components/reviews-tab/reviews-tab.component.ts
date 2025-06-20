@@ -1,14 +1,15 @@
 import {Component, ElementRef, inject, input, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgOptimizedImage} from '@angular/common';
 import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
-import {Review, ReviewDraft, ReviewService} from '../../../../services/review/review.service';
+import {ReviewService} from '../../../../services/review/review.service';
 import {MovieListing} from '../../../../models/movie.model';
+import {Review, ReviewDraft} from '../../../../models/reviews.model';
 
 @Component({
   selector: 'netflix-reviews-tab',
   standalone: true,
-  imports: [NetflixIconComponent, FormsModule, DatePipe],
+  imports: [NetflixIconComponent, FormsModule, DatePipe, NgOptimizedImage],
   templateUrl: './reviews-tab.component.html',
   styleUrls: ['./reviews-tab.component.css']
 })
@@ -21,11 +22,11 @@ export class ReviewsTabComponent {
   hoverRating: number = 0;
 
   get currentReview(): ReviewDraft {
-    return this.reviewService.currentReview;
+    return this.reviewService.getCurrentReview(this.movie().id);
   }
 
   get reviews(): Review[] {
-    return this.reviewService.getReviewsList(this.movie().id);
+    return this.reviewService.getReviewsForMovie(this.movie().id);
   }
 
   get canWriteReview(): boolean {
@@ -49,11 +50,11 @@ export class ReviewsTabComponent {
       text = text.slice(0, 500);
     }
 
-    this.reviewService.updateCurrentReview(prev => ({...prev, text}));
+    this.reviewService.updateCurrentReview(this.movie().id, prev => ({...prev, text}));
   }
 
   updateUserRating(rating: number): void {
-    this.reviewService.updateCurrentReview(prev => ({
+    this.reviewService.updateCurrentReview(this.movie().id, prev => ({
       ...prev,
       rating
     }));

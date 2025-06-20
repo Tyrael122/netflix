@@ -67,7 +67,8 @@ export class AuthService {
   private createGuestUser(): User {
     const user = {
       id: crypto.randomUUID(),
-      isGuest: true
+      isGuest: true,
+      name: this.getRandomName()
     }
 
     this.users.push(user);
@@ -79,5 +80,10 @@ export class AuthService {
     this.router.navigate([AppRoutes.HOME]).catch(
       err => console.error('Navigation error:', err)
     );
+  }
+
+  private getRandomName(): string {
+    const name = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'];
+    return name[Math.floor(Math.random() * name.length)];
   }
 }

@@ -79,11 +79,16 @@
               <div class="flex items-center gap-x-3">
                 <div
                   class="w-10 h-10 rounded-full bg-gradient-to-br to-red-600 flex items-center justify-center flex-shrink-0">
-                  <netflix-icon name="user" class="text-white text-lg"></netflix-icon>
+                  @if (review.author.avatarUrl) {
+                    <img [ngSrc]="review.author.avatarUrl" alt="User Avatar"
+                         class="w-full h-full rounded-full object-cover" fill>
+                  } @else {
+                    <netflix-icon name="user" class="text-white text-lg"></netflix-icon>
+                  }
                 </div>
                 <div class="space-y-1">
                   <div class="flex items-center gap-x-2">
-                    <span class="font-medium text-white">{{ review.author }}</span>
+                    <span class="font-medium text-white">{{ review.author.name }}</span>
                     <span class="text-gray-500">•</span>
                     <span class="text-gray-400 text-sm">{{ review.created_at | date:'mediumDate' }}</span>
                   </div>
