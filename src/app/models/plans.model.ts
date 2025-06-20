@@ -5,10 +5,9 @@ export interface Plan {
   features: PlanFeatures;
 }
 
-interface PlanFeatures {
+export interface PlanFeatures {
   playlistCreation: {
     limit: number;
-    description: string;
   };
   reviews: {
     canView: boolean;
@@ -37,8 +36,7 @@ export const PLANS: Plan[] = [
     price: 0,
     features: {
       playlistCreation: {
-        limit: 2,
-        description: 'Create up to 2 playlists'
+        limit: 2
       },
       reviews: {
         canView: true,
@@ -60,8 +58,7 @@ export const PLANS: Plan[] = [
     price: 10,
     features: {
       playlistCreation: {
-        limit: 10,
-        description: 'Create up to 10 custom playlists'
+        limit: 10
       },
       reviews: {
         canView: true,
@@ -83,8 +80,7 @@ export const PLANS: Plan[] = [
     price: 15,
     features: {
       playlistCreation: {
-        limit: Infinity,
-        description: 'Unlimited custom playlists'
+        limit: Infinity
       },
       reviews: {
         canView: true,

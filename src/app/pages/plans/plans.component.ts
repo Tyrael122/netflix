@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {PlansService} from '../../services/plans/plans.service';
 import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
-import {Plan} from '../../models/plans.model';
+import {Plan, PlanFeatures} from '../../models/plans.model';
 import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
@@ -36,23 +36,41 @@ export class PlansComponent implements OnInit {
     }
   }
 
-  getFeatureList(features: any): string[] {
+  getFeatureList(features: PlanFeatures): string[] {
     const featureList: string[] = [];
-    if (features.playlistCreation) {
-      featureList.push(`Playlist Creation: ${features.playlistCreation.limit} playlists`);
+
+    // Playlist creation
+    if (features.playlistCreation.limit === Infinity) {
+      featureList.push('Unlimited playlists');
+    } else {
+      featureList.push(`Create up to ${features.playlistCreation.limit} playlists`);
     }
-    if (features.reviews) {
-      featureList.push(`Reviews: ${features.reviews.canView ? 'Can View' : 'Cannot View'}, ${features.reviews.canWrite ? 'Can Write' : 'Cannot Write'}, ${features.reviews.canReply ? 'Can Reply' : 'Cannot Reply'}`);
+
+    // Reviews
+    if (features.reviews.canWrite && features.reviews.canReply) {
+      featureList.push('Write reviews and reply to others');
+    } else if (features.reviews.canWrite) {
+      featureList.push('Write reviews (no replies)');
+    } else if (features.reviews.canView) {
+      featureList.push('Read reviews only');
     }
-    if (features.search) {
-      featureList.push(`Search: ${features.search.type}, Filters: ${features.search.hasFilters ? 'Yes' : 'No'}, Sorting: ${features.search.hasSorting ? 'Yes' : 'No'}`);
+
+    // Search
+    if (features.search.type === 'advanced') {
+      featureList.push('Advanced search with filters & sorting');
+    } else {
+      featureList.push('Basic search');
     }
+
+    // Additional features
     if (features.canSeeSimilarMovies) {
-      featureList.push('Can See Similar Movies');
+      featureList.push('"Similar movies" recommendations');
     }
-    if (features.trailers) {
-      featureList.push('Trailers Available');
+
+    if (features.canWatchTrailers) {
+      featureList.push('Watch movie trailers');
     }
+
     return featureList;
   }
 }
