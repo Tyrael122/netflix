@@ -1,6 +1,5 @@
 import {Component, input} from '@angular/core';
 import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
-import {UserMovieListing} from '../../../../models/movie.model';
 import {SingleDropdownOpenDirective} from '../../../../directives/single-dropdown-open.directive';
 
 export interface MovieOption {

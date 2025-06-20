@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoadingSpinnerIndicatorComponent } from './loading-spinner-indicator.component';
+import {LoadingSpinnerIndicatorComponent} from './loading-spinner-indicator.component';
 
 describe('LoadingSpinnerIndicatorComponent', () => {
   let component: LoadingSpinnerIndicatorComponent;

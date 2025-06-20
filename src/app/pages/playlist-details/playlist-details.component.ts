@@ -6,11 +6,12 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {UserMovieListing} from '../../models/movie.model';
 import {UserMovieService} from '../../services/user/user-movie.service';
 import {AuthService} from '../../services/auth/auth.service';
-import {Playlist, PlaylistService} from '../../services/playlist/playlist.service';
+import {PlaylistService} from '../../services/playlist/playlist.service';
 import {AppRoutes, RouteParams} from '../../enums/app-routes';
 import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
+import {Playlist} from '../../models/playlist.model';
 
 @Component({
   selector: 'netflix-playlist-details',
@@ -65,7 +66,7 @@ export class PlaylistDetailsComponent implements OnInit {
       return;
     }
 
-    this.playlistService.removeMovieFromPlaylist(this.playlist, id).subscribe((updatedPlaylist) => {
+    this.playlistService.toggleMovieInPlaylist(this.playlist.id, id).subscribe((updatedPlaylist) => {
       this.playlist = updatedPlaylist;
       this.playlistMovies = this.playlistMovies.filter(movie => movie.id !== id);
     });

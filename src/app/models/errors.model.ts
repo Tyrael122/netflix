@@ -9,6 +9,7 @@ export enum NetflixErrorCodes {
   REVIEW_CREATION_NOT_ALLOWED,
   REVIEW_VIEW_NOT_ALLOWED,
   SIMILAR_MOVIES_NOT_ALLOWED,
+  PLAYLIST_NOT_FOUND,
 }
 
 export const createNetflixError = (code: NetflixErrorCodes, message: string): NetflixError => {

@@ -2,10 +2,11 @@ import {Component, inject, input, OnInit, output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {UserMovieListing} from '../../../../models/movie.model';
-import {Playlist, PlaylistService} from '../../../../services/playlist/playlist.service';
+import {PlaylistService} from '../../../../services/playlist/playlist.service';
 import {map, Observable, of} from 'rxjs';
 import {isNetflixError} from "../../../../models/errors.model";
 import {ToastService} from "../../../../services/toast/toast.service";
+import {Playlist} from '../../../../models/playlist.model';
 
 @Component({
   selector: 'netflix-add-to-playlist-modal',

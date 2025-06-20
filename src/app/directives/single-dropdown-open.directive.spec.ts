@@ -1,4 +1,4 @@
-import { SingleDropdownOpenDirective } from './single-dropdown-open.directive';
+import {SingleDropdownOpenDirective} from './single-dropdown-open.directive';
 
 describe('SingleDropdownOpenDirective', () => {
   it('should create an instance', () => {

@@ -4,7 +4,6 @@ import {ActivatedRoute} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {MoviePosterImageComponent} from '../../components/movie-poster-image/movie-poster-image.component';
 import {UserMovieService} from '../../services/user/user-movie.service';
-import {FavoriteButtonComponent} from '../../components/favorite-button/favorite-button.component';
 import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.component';
 import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
 import {
@@ -13,13 +12,14 @@ import {
 import {FormsModule} from '@angular/forms';
 import {MovieRatingComponent} from './components/movie-rating/movie-rating.component';
 import {MovieDetailsTabsComponent} from './components/movie-details-tabs/movie-details-tabs.component';
+import {PlaylistService} from '../../services/playlist/playlist.service';
+import {SystemPlaylistIds} from '../../models/playlist.model';
 
 @Component({
   selector: 'netflix-movie-details',
   imports: [
     MoviePosterImageComponent,
     DatePipe,
-    FavoriteButtonComponent,
     NetflixIconComponent,
     NavbarContainerComponent,
     LoadingSpinnerIndicatorComponent,
@@ -35,6 +35,8 @@ export class MovieDetailsComponent implements OnInit {
 
   private movieService = inject(UserMovieService);
   private activatedRoute = inject(ActivatedRoute);
+  private playlistService = inject(PlaylistService);
+
   isLoading: boolean = true;
 
   ngOnInit() {
@@ -45,4 +47,25 @@ export class MovieDetailsComponent implements OnInit {
       });
     });
   }
+
+  toggleMoviePlaylist($event: MouseEvent, playlistId: SystemPlaylistIds, movie?: UserMovieDetails) {
+    $event.stopPropagation();
+    $event.preventDefault();
+
+    if (!movie) {
+      return;
+    }
+
+    this.playlistService.toggleMovieInPlaylist(playlistId, movie.id)
+      .subscribe((updatedPlaylist) => {
+        const isAdded = updatedPlaylist.movieIds.includes(movie.id);
+        if (playlistId === SystemPlaylistIds.Favorites) {
+          movie.isFavorite = isAdded;
+        } else if (playlistId === SystemPlaylistIds.WatchLater) {
+          movie.isWatchlater = isAdded;
+        }
+      });
+  }
+
+  protected readonly SystemPlaylistIds = SystemPlaylistIds;
 }

@@ -10,12 +10,24 @@
         ></netflix-movie-poster-image>
 
         <div class="mt-4 flex justify-between items-center">
-          <netflix-favorite-button
-            [movie]="movie"
-            [alwaysShow]="true"
-            class="text-3xl hover:scale-110 transition-transform"
-          ></netflix-favorite-button>
+          <div class="flex items-center gap-3">
+            <netflix-icon
+              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.Favorites, movie)"
+              name="favorite"
+              size="24"
+              fill="{{ movie.isFavorite ? 'currentColor' : 'none' }}"
+              [class.text-red-600]="movie.isFavorite"
+              [class.text-gray-400]="!movie.isFavorite"
+            />
 
+            <netflix-icon
+              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.WatchLater, movie)"
+              name="clock"
+              size="24"
+              [class.text-red-600]="movie.isWatchlater"
+              [class.text-gray-400]="!movie.isWatchlater"
+            />
+          </div>
           <netflix-movie-rating [vote_average]="movie.vote_average"></netflix-movie-rating>
         </div>
       </div>

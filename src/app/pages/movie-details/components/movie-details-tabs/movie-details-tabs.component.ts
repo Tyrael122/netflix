@@ -1,5 +1,5 @@
-import {Component, input, Input} from '@angular/core';
-import {MovieDetails, UserMovieDetails, UserMovieMetadata} from '../../../../models/movie.model';
+import {Component, input} from '@angular/core';
+import {MovieDetails, UserMovieMetadata} from '../../../../models/movie.model';
 import {DetailsTabComponent} from '../details-tab/details-tab.component';
 import {ReviewsTabComponent} from '../reviews-tab/reviews-tab.component';
 import {SimilarTabComponent} from '../similar-tab/similar-tab.component';

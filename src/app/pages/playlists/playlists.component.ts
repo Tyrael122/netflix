@@ -3,11 +3,12 @@ import {MoviePosterImageComponent} from "../../components/movie-poster-image/mov
 import {NavbarContainerComponent} from "../../components/navbar-container/navbar-container.component";
 import {NetflixIconComponent} from "../../components/netflix-icon/netflix-icon.component";
 import {RouterLink} from '@angular/router';
-import {Playlist, PlaylistService} from '../../services/playlist/playlist.service';
+import {PlaylistService} from '../../services/playlist/playlist.service';
 import {RouteParams} from '../../enums/app-routes';
 import {FormsModule} from '@angular/forms';
 import {ToastService} from '../../services/toast/toast.service';
 import {isNetflixError} from '../../models/errors.model';
+import {Playlist} from '../../models/playlist.model';
 
 @Component({
   selector: 'netflix-playlists',

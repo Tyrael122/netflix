@@ -1,11 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { UserMovieListing } from '../../models/movie.model';
-import { UserMovieService } from '../../services/user/user-movie.service';
-import { FormsModule } from '@angular/forms';
-import { MoviePosterComponent } from './components/movie-poster/movie-poster.component';
-import { NavbarContainerComponent } from '../../components/navbar-container/navbar-container.component';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import {Component, inject, OnInit} from '@angular/core';
+import {UserMovieListing} from '../../models/movie.model';
+import {UserMovieService} from '../../services/user/user-movie.service';
+import {FormsModule} from '@angular/forms';
+import {MoviePosterComponent} from './components/movie-poster/movie-poster.component';
+import {NavbarContainerComponent} from '../../components/navbar-container/navbar-container.component';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
 import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';

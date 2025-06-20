@@ -5,10 +5,10 @@ import {MoviePosterImageComponent} from '../../../../components/movie-poster-ima
 import {MovieRatingComponent} from '../../../movie-details/components/movie-rating/movie-rating.component';
 import {DatePipe} from '@angular/common';
 import {MovieOption, MovieOptionsButtonComponent} from '../movie-options-button/movie-options-button.component';
-import {FavoritesService} from '../../../../services/favorites/favorites.service';
-import {WatchlaterService} from '../../../../services/watchlater/watchlater.service';
 import {AddToPlaylistModalComponent} from '../add-to-playlist-modal/add-to-playlist-modal.component';
 import {RouteParams} from '../../../../enums/app-routes';
+import {PlaylistService} from '../../../../services/playlist/playlist.service';
+import {SystemPlaylistIds} from '../../../../models/playlist.model';
 
 @Component({
   selector: 'netflix-movie-poster',
@@ -26,8 +26,8 @@ import {RouteParams} from '../../../../enums/app-routes';
 export class MoviePosterComponent {
   movie = input.required<UserMovieListing>()
 
-  favoritesService = inject(FavoritesService);
-  watchlaterService = inject(WatchlaterService);
+  private playlistService = inject(PlaylistService);
+
   showAddToPlaylistModal: boolean = false;
 
   get movieOptions(): MovieOption[] {
@@ -36,7 +36,7 @@ export class MoviePosterComponent {
 
     return [
       {
-        icon: 'watch-later',
+        icon: 'clock',
         label: watchLaterLabel,
         action: () => this.toggleWatchlater()
       },
@@ -54,11 +54,19 @@ export class MoviePosterComponent {
   }
 
   toggleWatchlater() {
-    this.movie().isWatchlater = this.watchlaterService.toggleWatchlater(this.movie().id);
+    this.playlistService.toggleMovieInPlaylist(SystemPlaylistIds.WatchLater, this.movie().id).subscribe(
+      updatedPlaylist => {
+        this.movie().isWatchlater = updatedPlaylist.movieIds.includes(this.movie().id);
+      }
+    );
   }
 
   toggleFavorites() {
-    this.movie().isFavorite = this.favoritesService.toggleFavorite(this.movie().id);
+    this.playlistService.toggleMovieInPlaylist(SystemPlaylistIds.Favorites, this.movie().id).subscribe(
+      updatedPlaylist => {
+        this.movie().isFavorite = updatedPlaylist.movieIds.includes(this.movie().id);
+      }
+    );
   }
 
   toggleAddToPlaylistModal() {

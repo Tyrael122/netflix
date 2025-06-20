@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AddToPlaylistModalComponent } from './add-to-playlist-modal.component';
+import {AddToPlaylistModalComponent} from './add-to-playlist-modal.component';
 
 describe('AddToPlaylistModalComponent', () => {
   let component: AddToPlaylistModalComponent;

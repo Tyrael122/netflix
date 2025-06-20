@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MovieOptionsButtonComponent } from './movie-options-button.component';
+import {MovieOptionsButtonComponent} from './movie-options-button.component';
 
 describe('MovieOptionsButtonComponent', () => {
   let component: MovieOptionsButtonComponent;

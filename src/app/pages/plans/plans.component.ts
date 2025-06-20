@@ -20,7 +20,7 @@ import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.c
 export class PlansComponent implements OnInit {
 
   plans: Plan[] = [];
-  currentPlan!: Plan;
+  currentPlan?: Plan;
 
   private plansService = inject(PlansService);
   isLoading: boolean = false;

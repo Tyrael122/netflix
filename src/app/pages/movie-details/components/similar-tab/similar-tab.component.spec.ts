@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SimilarTabComponent } from './similar-tab.component';
+import {SimilarTabComponent} from './similar-tab.component';
 
 describe('SimilarTabComponent', () => {
   let component: SimilarTabComponent;
