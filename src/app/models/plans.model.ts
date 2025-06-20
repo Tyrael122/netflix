@@ -21,7 +21,7 @@ interface PlanFeatures {
     hasSorting: boolean;
   };
   canSeeSimilarMovies: boolean;
-  trailers: boolean;
+  canWatchTrailers: boolean;
 }
 
 export enum Plans {
@@ -51,7 +51,7 @@ export const PLANS: Plan[] = [
         hasSorting: false
       },
       canSeeSimilarMovies: false,
-      trailers: false
+      canWatchTrailers: false
     }
   },
   {
@@ -74,7 +74,7 @@ export const PLANS: Plan[] = [
         hasSorting: false
       },
       canSeeSimilarMovies: true,
-      trailers: true
+      canWatchTrailers: true
     }
   },
   {
@@ -97,7 +97,7 @@ export const PLANS: Plan[] = [
         hasSorting: true
       },
       canSeeSimilarMovies: true,
-      trailers: true
+      canWatchTrailers: true
     }
   }
 ];

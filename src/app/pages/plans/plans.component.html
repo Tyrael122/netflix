@@ -1,1 +1,77 @@
-<p>plans works!</p>
+<netflix-navbar-container>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Page header -->
+    <div class="mb-16 text-center">
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Choose Your Plan</h1>
+      @if (currentPlan) {
+        <p class="text-lg text-gray-300">
+          You're currently on: <span class="text-netflix-red font-medium">{{ currentPlan.name }}</span>
+        </p>
+      }
+    </div>
+
+    <!-- Plans grid -->
+    @if (plans.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (plan of plans; track plan.id) {
+          <div
+            class="relative rounded-2xl overflow-hidden transition-all duration-300 flex flex-col
+                  bg-gradient-to-b from-gray-800 to-gray-900
+                  {{ currentPlan?.id === plan.id ?
+                    'ring-2 ring-netflix-red ring-inset shadow-[0_0_15px_rgba(229,9,20,0.5)]' :
+                    'hover:ring-2 hover:ring-netflix-red hover:ring-inset hover:shadow-[0_0_15px_rgba(229,9,20,0.5)]' }}"
+          >
+            <!-- Plan content -->
+            <div class="flex-1 p-8">
+              <!-- Plan header -->
+              <div class="mb-6">
+                <h2 class="text-2xl font-bold mb-2 text-white">{{ plan.name }}</h2>
+                <p class="text-4xl font-bold text-white">
+                  ${{ plan.price }}
+                  <span class="text-lg text-gray-400">/month</span>
+                </p>
+              </div>
+
+              <!-- Plan features -->
+              <ul class="space-y-3 mb-6">
+                @for (feature of getFeatureList(plan.features); track feature) {
+                  <li class="flex items-start">
+                    <netflix-icon name="check" class="text-netflix-red mt-1 mr-2 flex-shrink-0"/>
+                    <span class="text-gray-300">{{ feature }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Plan selection button -->
+            <div class="p-6 pt-0 mt-auto">
+              <button
+                (click)="switchPlan(plan.id)"
+                class="w-full py-4 px-6 rounded-full font-bold transition-all
+                      {{ currentPlan?.id === plan.id ?
+                        'bg-gray-700 text-gray-400 cursor-not-allowed' :
+                        'bg-netflix-red hover:bg-netflix-red-dark text-white hover:shadow-lg' }}"
+                [disabled]="currentPlan?.id === plan.id"
+              >
+                {{ currentPlan?.id === plan.id ? 'Current Plan' : 'Get Started' }}
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- Loading/error state -->
+      @if (isLoading) {
+        <div class="flex justify-center py-12">
+          <netflix-loading-spinner-indicator></netflix-loading-spinner-indicator>
+        </div>
+      } @else {
+        <div class="text-center py-12">
+          <netflix-icon name="alert-triangle" size="48" class="mx-auto text-yellow-500 mb-4"/>
+          <h2 class="text-2xl font-bold mb-2">Error loading plans</h2>
+          <p class="text-gray-400">We couldn't load the available plans. Please try again later.</p>
+        </div>
+      }
+    }
+  </div>
+</netflix-navbar-container>

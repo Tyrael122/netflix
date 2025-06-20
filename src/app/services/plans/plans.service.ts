@@ -12,9 +12,9 @@ export class PlansService {
 
   public getCurrentUserPlanDetails(): Plan {
     const user = this.authService.getCurrentUser();
-    if (!user || user.isGuest) {
-      return this.getDefaultPlan();
-    }
+    // if (!user || user.isGuest) {
+    //   return this.getDefaultPlan();
+    // }
 
     const planId = user.planId;
     if (!planId) {
@@ -33,10 +33,9 @@ export class PlansService {
 
   public changeUserPlan(planId: string): boolean {
     const user = this.authService.getCurrentUser();
-    if (!user || user.isGuest) {
-      return false; // Cannot change plan for guest users
-    }
-
+    // if (!user || user.isGuest) {
+    //   return false; // Cannot change plan for guest users
+    // }
 
     const plan = this.getPlanDetailsById(planId);
     if (!plan) {
