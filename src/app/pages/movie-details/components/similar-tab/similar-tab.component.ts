@@ -27,11 +27,14 @@ export class SimilarTabComponent {
     });
   }
 
+  get canSeeSimilarMovies(): boolean {
+    return this.moviesService.hasPermissionToSeeSimilarMovies();
+  }
+
   private fetchSimilarMovies(movieId: string) {
-    this.moviesService.getSimilarMovies(movieId).subscribe({
-      next: (pageableResponse) => this.similarMovies = pageableResponse.results,
-      error: (err) => console.error('Error fetching similar movies:', err)
-    });
+    this.moviesService.getSimilarMovies(movieId).subscribe(
+      (pageableResponse) => this.similarMovies = pageableResponse.results,
+    );
   }
 
   protected readonly RouteParams = RouteParams;

@@ -1,7 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {MovieDetails, MovieListing, PageableResponse} from '../../models/movie.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {map, Observable, throwError} from 'rxjs';
+import {createNetflixError, NetflixErrorCodes} from '../../models/errors.model';
+import {PlansService} from '../plans/plans.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,7 @@ import {map, Observable} from 'rxjs';
 export class MovieService {
 
   private http = inject(HttpClient);
+  private plansService = inject(PlansService);
 
   private headers = new HttpHeaders({
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMTI5NmE1MGJmNGRiODk2M2JhY2JmODZlM2QyOTMwMyIsIm5iZiI6MTc0ODk0OTQ0MS45NDcsInN1YiI6IjY4M2VkOWMxZWQ1OTU0NzM4ZGYyYmFiZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rOT4FeOukmjES8Y1QwM8SQsxLvVjtcFPbDmrin8Ebdg',
@@ -26,6 +29,13 @@ export class MovieService {
   }
 
   getSimilarMovies(movieId: string) {
+    if (!this.plansService.getCurrentUserPlanDetails().features.canSeeSimilarMovies) {
+      return throwError(() => createNetflixError(
+        NetflixErrorCodes.SIMILAR_MOVIES_NOT_ALLOWED,
+        'You are not allowed to see similar movies with your current plan.'
+      ));
+    }
+
     const url = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?language=en-US&page=1`;
     return this.fetchMovieListing(url);
   }

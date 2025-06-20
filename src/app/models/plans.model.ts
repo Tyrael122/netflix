@@ -20,7 +20,7 @@ interface PlanFeatures {
     hasFilters: boolean;
     hasSorting: boolean;
   };
-  similarMovies: boolean;
+  canSeeSimilarMovies: boolean;
   trailers: boolean;
 }
 
@@ -50,7 +50,7 @@ export const PLANS: Plan[] = [
         hasFilters: false,
         hasSorting: false
       },
-      similarMovies: false,
+      canSeeSimilarMovies: false,
       trailers: false
     }
   },
@@ -73,7 +73,7 @@ export const PLANS: Plan[] = [
         hasFilters: false,
         hasSorting: false
       },
-      similarMovies: true,
+      canSeeSimilarMovies: true,
       trailers: true
     }
   },
@@ -96,7 +96,7 @@ export const PLANS: Plan[] = [
         hasFilters: true,
         hasSorting: true
       },
-      similarMovies: true,
+      canSeeSimilarMovies: true,
       trailers: true
     }
   }

@@ -9,6 +9,7 @@ import {
 import {MovieService} from '../movie/movie.service';
 import {FavoritesService} from '../favorites/favorites.service';
 import {map, Observable} from 'rxjs';
+import {PlansService} from '../plans/plans.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import {map, Observable} from 'rxjs';
 export class UserMovieService {
   private movieService = inject(MovieService);
   private favoritesService = inject(FavoritesService);
+  private plansService = inject(PlansService);
 
   getPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
     return this.movieService.listPopularMovies(pageNumber).pipe(
@@ -39,6 +41,10 @@ export class UserMovieService {
     return this.movieService.getMovieDetails(id).pipe(
       map(movie => this.enrichMovieWithUserMetadata(movie))
     );
+  }
+
+  hasPermissionToSeeSimilarMovies(): boolean {
+    return this.plansService.getCurrentUserPlanDetails().features.canSeeSimilarMovies;
   }
 
   private enrichMovieListingWithUserMetadata(pageableResponse: PageableResponse<MovieListing>): PageableResponse<UserMovieListing> {

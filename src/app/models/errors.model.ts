@@ -8,6 +8,7 @@ export enum NetflixErrorCodes {
   PLAYLIST_CREATION_LIMIT_REACHED,
   REVIEW_CREATION_NOT_ALLOWED,
   REVIEW_VIEW_NOT_ALLOWED,
+  SIMILAR_MOVIES_NOT_ALLOWED,
 }
 
 export const createNetflixError = (code: NetflixErrorCodes, message: string): NetflixError => {
