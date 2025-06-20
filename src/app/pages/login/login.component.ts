@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {RouterLink} from '@angular/router';
+import {ToastService} from '../../services/toast/toast.service';
 
 @Component({
   selector: 'netflix-login',
@@ -16,20 +17,24 @@ export class LoginComponent {
   email: string = "";
   password: string = "";
 
+  @ViewChild('loginForm') loginForm!: NgForm;
+
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
 
   login() {
-    // Here you would typically call a service to handle the login logic
     console.log('Login attempted with:', this.email, this.password);
 
-    const user = { username: this.email, password: this.password };
+    if (!this.loginForm.valid) {
+      return;
+    }
+
+    const user = {username: this.email, password: this.password};
 
     if (this.authService.login(user)) {
       console.log('Login successful');
-      // Redirect to home or another page
     } else {
-      console.error('Login failed');
-      // Show an error message
+      this.toastService.showToast("Login failed. Please check your credentials.");
     }
   }
 }

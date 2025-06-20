@@ -9,6 +9,7 @@ import {AddToPlaylistModalComponent} from '../add-to-playlist-modal/add-to-playl
 import {RouteParams} from '../../../../enums/app-routes';
 import {PlaylistService} from '../../../../services/playlist/playlist.service';
 import {SystemPlaylistIds} from '../../../../models/playlist.model';
+import {ToastService} from '../../../../services/toast/toast.service';
 
 @Component({
   selector: 'netflix-movie-poster',
@@ -27,6 +28,7 @@ export class MoviePosterComponent {
   movie = input.required<UserMovieListing>()
 
   private playlistService = inject(PlaylistService);
+  private toastService = inject(ToastService);
 
   showAddToPlaylistModal: boolean = false;
 
@@ -56,7 +58,9 @@ export class MoviePosterComponent {
   toggleWatchlater() {
     this.playlistService.toggleMovieInPlaylist(SystemPlaylistIds.WatchLater, this.movie().id).subscribe(
       updatedPlaylist => {
-        this.movie().isWatchlater = updatedPlaylist.movieIds.includes(this.movie().id);
+        const isAdded = updatedPlaylist.movieIds.includes(this.movie().id);
+        this.movie().isWatchlater = isAdded;
+        this.toastService.showToast(isAdded ? "Movie added to watch later" : "Movie removed from watch later");
       }
     );
   }
@@ -64,7 +68,9 @@ export class MoviePosterComponent {
   toggleFavorites() {
     this.playlistService.toggleMovieInPlaylist(SystemPlaylistIds.Favorites, this.movie().id).subscribe(
       updatedPlaylist => {
-        this.movie().isFavorite = updatedPlaylist.movieIds.includes(this.movie().id);
+        const isAdded = updatedPlaylist.movieIds.includes(this.movie().id);
+        this.movie().isFavorite = isAdded;
+        this.toastService.showToast(isAdded ? "Movie added to favorites" : "Movie removed from favorites");
       }
     );
   }
