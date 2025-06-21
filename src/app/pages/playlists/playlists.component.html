@@ -18,7 +18,7 @@
           placeholder="Playlist name"
           class="flex-1 bg-gray-800 text-white px-3 py-2 rounded-md text-sm">
         <button
-          class="bg-red-700 text-white px-3 py-2 rounded-md text-sm disabled:opacity-50 hover:bg-red-800"
+          class="bg-red-700 text-white px-3 py-2 rounded-md text-sm disabled:opacity-50 hover:bg-red-800 cursor-pointer"
           [disabled]="!newPlaylistName.trim()"
           (click)="createAndAddToPlaylist()">
           Create

@@ -1,7 +1,7 @@
 @if (this.authService.isLoggedIn()) {
-  <div class="user-icon-logged-in relative">
+  <div class="relative">
     <button
-      class="flex items-center space-x-2 hover:text-red-500 transition-colors group"
+      class="flex items-center space-x-2 hover:text-red-500 transition-colors group cursor-pointer"
       (click)="showDropdown = !showDropdown"
       type="button"
     >
@@ -16,7 +16,7 @@
       <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-gray-700 z-50 overflow-hidden">
         <button
           (click)="authService.logout()"
-          class="dropdown-item flex items-center px-4 py-2 text-sm text-white hover:bg-gray-700 w-full text-left hover:text-red-500 group"
+          class="dropdown-item flex items-center px-4 py-2 text-sm text-white hover:bg-gray-700 w-full text-left hover:text-red-500 group cursor-pointer"
         >
           <netflix-icon name="logout" size="16" class="mr-2 text-gray-400 group-hover:text-red-500" />
           Logout

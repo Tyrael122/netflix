@@ -12,6 +12,7 @@
         <div class="mt-4 flex justify-between items-center">
           <div class="flex items-center gap-3">
             <netflix-icon
+              class="cursor-pointer"
               (click)="toggleMoviePlaylist($event, SystemPlaylistIds.Favorites, movie)"
               name="favorite"
               size="24"
@@ -21,6 +22,7 @@
             />
 
             <netflix-icon
+              class="cursor-pointer"
               (click)="toggleMoviePlaylist($event, SystemPlaylistIds.WatchLater, movie)"
               name="clock"
               size="24"

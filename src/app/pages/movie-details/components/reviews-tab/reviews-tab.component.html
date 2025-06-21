@@ -56,7 +56,7 @@
         <button
           (click)="submitReview()"
           [disabled]="!isReviewFilled()"
-          class="flex items-center gap-x-3 bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          class="flex items-center gap-x-3 bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
         >
           <span>Post Review</span>
           <netflix-icon name="send"></netflix-icon>
@@ -129,7 +129,7 @@
           @if (canWriteReview) {
             <button
               (click)="scrollToReviewForm()"
-              class="mt-4 text-netflix-red hover:text-red-400 font-medium inline-flex items-center"
+              class="mt-4 text-netflix-red hover:text-red-400 font-medium inline-flex items-center cursor-pointer"
             >
               Write a review
               <netflix-icon name="arrow-right" class="ml-1"></netflix-icon>

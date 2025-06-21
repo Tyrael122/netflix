@@ -2,18 +2,21 @@
 <div class="border-b border-gray-700 mb-6">
   <nav class="flex space-x-8">
     <button
+      class="cursor-pointer"
       (click)="activeTab = 'details'"
       [class]="activeTab === 'details' ? 'border-netflix-red text-white border-b-2 px-1 py-2 font-medium' : 'text-gray-400 hover:text-white px-1 py-2 font-medium'"
     >
       Details
     </button>
     <button
+      class="cursor-pointer"
       (click)="activeTab = 'reviews'"
       [class]="activeTab === 'reviews' ? 'border-netflix-red text-white border-b-2 px-1 py-2 font-medium' : 'text-gray-400 hover:text-white px-1 py-2 font-medium'"
     >
       Reviews
     </button>
     <button
+      class="cursor-pointer"
       (click)="activeTab = 'similar'"
       [class]="activeTab === 'similar' ? 'border-netflix-red text-white border-b-2 px-1 py-2 font-medium' : 'text-gray-400 hover:text-white px-1 py-2 font-medium'"
     >
