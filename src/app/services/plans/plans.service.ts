@@ -2,6 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {Plan, PLANS, Plans} from '../../models/plans.model';
 import {createNetflixError, NetflixErrorCodes} from '../../models/errors.model';
+import {Observable, of, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class PlansService {
 
   public getCurrentUserPlanDetails(): Plan {
     const user = this.authService.getCurrentUser();
-    // if (!user || user.isGuest) {
-    //   return this.getDefaultPlan();
-    // }
+    if (!user || user.isGuest) {
+      return this.getDefaultPlan();
+    }
 
     const planId = user.planId;
     if (!planId) {
@@ -31,20 +32,26 @@ export class PlansService {
     return plan;
   }
 
-  public changeUserPlan(planId: string): boolean {
+  public changeUserPlan(planId: string): Observable<Plan> {
     const user = this.authService.getCurrentUser();
-    // if (!user || user.isGuest) {
-    //   return false; // Cannot change plan for guest users
-    // }
+
+    console.log(user);
+
+    if (user.isGuest) {
+      return throwError(() => createNetflixError(
+        NetflixErrorCodes.PLAN_CHANGE_NOT_ALLOWED,
+        `Guest users cannot change plans. Please log in to change your plan.`
+      ));
+    }
 
     const plan = this.getPlanDetailsById(planId);
     if (!plan) {
-      return false; // Plan not found
+      throw this.createPlanDataNotFoundException(planId);
     }
 
     user.planId = plan.id.toString();
     console.log(`User ${user.credentials?.username} changed to plan: ${plan.name}`);
-    return true;
+    return of(plan);
   }
 
   public getAvailablePlans(): Plan[] {
@@ -62,10 +69,15 @@ export class PlansService {
       }
     }
 
+    throw this.createPlanDataNotFoundException(planId);
+  }
+
+  private createPlanDataNotFoundException(planId: string) {
     console.error(`Plan with ID ${planId} not found.`);
-    throw createNetflixError(
+
+    return createNetflixError(
       NetflixErrorCodes.PLAN_DATA_NOT_FOUND,
       `Plan details not found. Please contact support.`
-    )
+    );
   }
 }

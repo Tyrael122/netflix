@@ -6,6 +6,8 @@ import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
 import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.component';
+import {ToastService} from '../../services/toast/toast.service';
+import {isNetflixErrorWithCode, NetflixErrorCodes} from '../../models/errors.model';
 
 @Component({
   selector: 'netflix-plans',
@@ -23,6 +25,8 @@ export class PlansComponent implements OnInit {
   currentPlan?: Plan;
 
   private plansService = inject(PlansService);
+  private toastService = inject(ToastService);
+
   isLoading: boolean = false;
 
   ngOnInit() {
@@ -31,9 +35,14 @@ export class PlansComponent implements OnInit {
   }
 
   switchPlan(id: string) {
-    if (this.plansService.changeUserPlan(id)) {
-      this.currentPlan = this.plansService.getCurrentUserPlanDetails();
-    }
+    this.plansService.changeUserPlan(id).subscribe({
+      next: plan => this.currentPlan = plan,
+      error: err => {
+        if (isNetflixErrorWithCode(err, NetflixErrorCodes.PLAN_CHANGE_NOT_ALLOWED)) {
+          this.toastService.showToast('Plan change not allowed, please log in to change your plan.');
+        }
+      }
+    });
   }
 
   getFeatureList(features: PlanFeatures): string[] {

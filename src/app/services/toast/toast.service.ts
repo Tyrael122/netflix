@@ -15,4 +15,8 @@ export class ToastService {
       horizontalPosition: 'right',
     });
   }
+
+  showError(message: string, action: string = 'Close', duration: number = 5000) {
+    this.showToast(message, action, duration);
+  }
 }
