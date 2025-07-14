@@ -67,11 +67,6 @@ export class ReviewService {
   }
 
   hasSubmitReviewPermission(): boolean {
-    const currentUser = this.authService.getCurrentUser();
-    if (currentUser.isGuest) {
-      return false; // Guests cannot write reviews
-    }
-
     const plan = this.plansService.getCurrentUserPlanDetails();
     return plan.features.reviews.canWrite;
   }

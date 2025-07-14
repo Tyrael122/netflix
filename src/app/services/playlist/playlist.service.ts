@@ -69,7 +69,7 @@ export class PlaylistService {
   }
 
   validatePlaylistCreationLimit(): Observable<boolean> {
-    const {limit} = this.plansService.getCurrentUserPlanDetails().features.playlistCreation;
+    const limit = this.plansService.getCurrentUserPlanDetails().features.playlistCreation.limit;
     const currentCustomPlaylists = this.getCustomPlaylists();
 
     if (limit === 0) {
