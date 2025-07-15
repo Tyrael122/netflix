@@ -124,8 +124,7 @@
       } @else {
         <div class="bg-gray-800 p-8 rounded-xl text-center">
           <netflix-icon name="no-video" class="text-4xl text-gray-600 mx-auto mb-3"></netflix-icon>
-          <p class="text-gray-400">No reviews
-            yet. {{ canWriteReview ? 'Be the first to share your thoughts!' : '' }} </p>
+          <p class="text-gray-400">No reviews yet. {{ canWriteReview ? 'Be the first to share your thoughts!' : '' }} </p>
           @if (canWriteReview) {
             <button
               (click)="scrollToReviewForm()"

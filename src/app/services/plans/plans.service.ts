@@ -19,13 +19,13 @@ export class PlansService {
 
     const planId = user.planId;
     if (!planId) {
-      console.warn(`User ${user.credentials?.username} has no plan assigned, returning default plan.`);
+      console.warn(`User ${user.id} has no plan assigned, returning default plan.`);
       return this.getDefaultPlan(); // Return default plan if no plan is assigned
     }
 
     const plan = this.getPlanDetailsById(planId);
     if (!plan) {
-      console.error(`Plan with ID ${planId} not found for user ${user.credentials?.username}`);
+      console.error(`Plan with ID ${planId} not found for user ${user.id}`);
       return this.getDefaultPlan(); // Return default plan if the specified plan is not found
     }
 
@@ -50,7 +50,7 @@ export class PlansService {
     }
 
     user.planId = plan.id.toString();
-    console.log(`User ${user.credentials?.username} changed to plan: ${plan.name}`);
+    console.log(`User ${user.id} changed to plan: ${plan.name}`);
     return of(plan);
   }
 

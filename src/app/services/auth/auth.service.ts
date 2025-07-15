@@ -13,10 +13,10 @@ export class AuthService {
   private router = inject(Router);
 
   signup(userCredentials: UserCredentials): boolean {
-    if (!userCredentials.username || !userCredentials.password) return false;
+    if (!userCredentials.email || !userCredentials.password) return false;
 
     // Check if the username already exists
-    const existingUser = this.users.find(u => u.credentials?.username === userCredentials.username);
+    const existingUser = this.users.find(u => u.credentials?.email === userCredentials.email);
     if (existingUser) {
       return false; // Username already exists
     }
@@ -32,11 +32,11 @@ export class AuthService {
   }
 
   login(user: UserCredentials): boolean {
-    if (!user.username || !user.password) return false;
+    if (!user.email || !user.password) return false;
 
     // Find the user by username and password
     const found = this.users.find(u =>
-      u.credentials?.username === user.username &&
+      u.credentials?.email === user.email &&
       u.credentials?.password === user.password
     );
 

@@ -18,6 +18,6 @@ export class UserIconComponent {
 
   getUsername() {
     const user = this.authService.getCurrentUser();
-    return user?.credentials?.username || 'Guest';
+    return user?.name;
   }
 }
