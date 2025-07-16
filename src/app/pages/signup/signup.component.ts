@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
+import {ToastService} from '../../services/toast/toast.service';
 
 @Component({
   selector: 'netflix-signup',
@@ -18,6 +19,7 @@ export class SignupComponent {
   confirmPassword: string = "";
 
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
 
   signup() {
     if (this.password !== this.confirmPassword) {
@@ -25,13 +27,17 @@ export class SignupComponent {
       return;
     }
 
-    const user = {username: this.email, password: this.password};
-    if (this.authService.signup(user)) {
-      console.log('Signup successful');
-      // Redirect to home or another page
-    } else {
-      console.error('Signup failed');
-      // Show an error message
-    }
+    const userCredentials = {
+      email: this.email,
+      password: this.password,
+      confirmPassword: this.confirmPassword
+    };
+
+    this.authService.signup(userCredentials).subscribe({
+      error: error => {
+        console.error('Login failed:', error);
+        this.toastService.showToast(error.error.friendlyMessage); // TODO: Improve error handling
+      }
+    })
   }
 }

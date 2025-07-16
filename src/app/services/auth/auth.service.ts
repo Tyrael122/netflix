@@ -2,58 +2,56 @@ import {inject, Injectable} from '@angular/core';
 import {User, UserCredentials} from '../../models/user.model';
 import {Router} from '@angular/router';
 import {AppRoutes} from '../../enums/app-routes';
+import {HttpClient} from '@angular/common/http';
+import {map, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private users: User[] = []; // This should be stored in a database in a real application
-  private currentUser: User = this.createGuestUser();
+  private currentUser!: User;
 
   private router = inject(Router);
 
-  signup(userCredentials: UserCredentials): boolean {
-    if (!userCredentials.email || !userCredentials.password) return false;
+  private http = inject(HttpClient);
 
-    // Check if the username already exists
-    const existingUser = this.users.find(u => u.credentials?.email === userCredentials.email);
-    if (existingUser) {
-      return false; // Username already exists
-    }
-
-    this.currentUser.credentials = userCredentials;
-    this.currentUser.isGuest = false;
-
-    console.log('User signed up:', this.currentUser);
-
-    this.navigateToHomepage();
-
-    return true;
+  public AuthService() {
+    this.requestGuestUser();
   }
 
-  login(user: UserCredentials): boolean {
-    if (!user.email || !user.password) return false;
+  signup(userCredentials: UserCredentials): Observable<User> {
+    return this.http.post<User>("/auth/register", {
+      ...userCredentials,
+      name: this.getRandomName()
+    }).pipe(
+      map(response => {
+        this.currentUser = response;
 
-    // Find the user by username and password
-    const found = this.users.find(u =>
-      u.credentials?.email === user.email &&
-      u.credentials?.password === user.password
-    );
+        this.navigateToHomepage();
 
-    if (!found) {
-      return false; // User not found
-    }
-    this.currentUser = found;
-    this.navigateToHomepage(); // Redirect to home page after login
+        return response;
+      })
+    )
+  }
 
-    return true;
+  login(userCredentails: UserCredentials): Observable<User> {
+    return this.http.post<User>("/auth/login", userCredentails)
+      .pipe(
+        map(response => {
+          this.currentUser = response;
+
+          this.navigateToHomepage();
+
+          return response;
+        })
+      );
   }
 
   logout(): void {
     this.router.navigate([AppRoutes.LOGIN]).catch(
       err => console.error('Navigation error:', err)
     );
-    this.currentUser = this.createGuestUser();
+    this.requestGuestUser();
   }
 
   isLoggedIn(): boolean {
@@ -64,16 +62,8 @@ export class AuthService {
     return this.currentUser;
   }
 
-  private createGuestUser(): User {
-    const user = {
-      id: crypto.randomUUID(),
-      isGuest: true,
-      name: this.getRandomName()
-    }
-
-    this.users.push(user);
-
-    return user;
+  private requestGuestUser() {
+    this.http.get<User>("/auth/guest").subscribe(user => this.currentUser = user);
   }
 
   private navigateToHomepage() {

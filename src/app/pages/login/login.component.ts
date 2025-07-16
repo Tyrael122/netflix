@@ -23,18 +23,20 @@ export class LoginComponent {
   private toastService = inject(ToastService);
 
   login() {
-    console.log('Login attempted with:', this.email, this.password);
-
     if (!this.loginForm.valid) {
       return;
     }
 
-    const user = {username: this.email, password: this.password};
+    const userCredentials = {
+      email: this.email,
+      password: this.password
+    };
 
-    if (this.authService.login(user)) {
-      console.log('Login successful');
-    } else {
-      this.toastService.showToast("Login failed. Please check your credentials.");
-    }
+    this.authService.login(userCredentials).subscribe({
+      error: error => {
+        console.error('Login failed:', error);
+        this.toastService.showToast("Login failed. Please check your credentials.");
+      }
+    })
   }
 }

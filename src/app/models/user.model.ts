@@ -1,7 +1,7 @@
 export interface User {
   id: string;
   name: string;
-  credentials?: UserCredentials;
+  email: string;
   isGuest: boolean;
   planId?: string;
   avatarUrl?: string; // Optional, can be undefined if not provided
@@ -10,4 +10,5 @@ export interface User {
 export interface UserCredentials {
   email: string;
   password: string;
+  confirmPassword?: string; // Optional, used during signup
 }
