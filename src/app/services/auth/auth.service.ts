@@ -9,13 +9,13 @@ import {map, Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser!: User;
+  private currentUser?: User;
 
   private router = inject(Router);
 
   private http = inject(HttpClient);
 
-  public AuthService() {
+  constructor() {
     this.requestGuestUser();
   }
 
@@ -55,10 +55,20 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !this.currentUser.isGuest;
+    if (!this.currentUser) {
+      return false;
+    }
+
+    return !this.currentUser.is_guest;
   }
 
   getCurrentUser(): User {
+    if (!this.currentUser) {
+      console.warn("No user is currently logged in.");
+
+      return {id: '', name: 'Guest', email: '', is_guest: true};
+    }
+
     return this.currentUser;
   }
 

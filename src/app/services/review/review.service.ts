@@ -104,7 +104,7 @@ export class ReviewService {
       author: {
         id: currentUser.id,
         name: currentUser.name,
-        avatarUrl: currentUser.avatarUrl
+        avatarUrl: currentUser.avatar_url
       },
       rating: draft.rating,
       content: draft.text,

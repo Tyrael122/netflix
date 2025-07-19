@@ -1,9 +1,14 @@
 import {inject, Injectable} from '@angular/core';
-import {MovieDetails, MovieListing, PageableResponse} from '../../models/movie.model';
+import {
+  MovieDetails,
+  MovieListing,
+  PageableResponse,
+  UserMovieDetails,
+  UserMovieListing
+} from '../../models/movie.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, Observable, throwError} from 'rxjs';
-import {createNetflixError, NetflixErrorCodes} from '../../models/errors.model';
-import {PlansService} from '../plans/plans.service';
+import {NetflixApiMovieResponse} from '../../models/netflix-api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,62 +16,44 @@ import {PlansService} from '../plans/plans.service';
 export class MovieService {
 
   private http = inject(HttpClient);
-  private plansService = inject(PlansService);
 
-  private headers = new HttpHeaders({
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMTI5NmE1MGJmNGRiODk2M2JhY2JmODZlM2QyOTMwMyIsIm5iZiI6MTc0ODk0OTQ0MS45NDcsInN1YiI6IjY4M2VkOWMxZWQ1OTU0NzM4ZGYyYmFiZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rOT4FeOukmjES8Y1QwM8SQsxLvVjtcFPbDmrin8Ebdg',
-    'accept': 'application/json'
-  });
-
-  listPopularMovies(pageNumber: number): Observable<PageableResponse<MovieListing>> {
-    const url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${pageNumber}`;
+  listPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
+    const url = `/movies/popular?page=${pageNumber}`;
     return this.fetchMovieListing(url);
   }
 
-  searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<MovieListing>> {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchTerm)}&language=en-US&page=${pageNumber}&include_adult=false`;
+  searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
+    const url = `/movies/search?query=${encodeURIComponent(searchTerm)}&page=${pageNumber}`;
     return this.fetchMovieListing(url);
   }
 
-  getSimilarMovies(movieId: string) {
-    if (!this.plansService.getCurrentUserPlanDetails().features.canSeeSimilarMovies) {
-      return throwError(() => createNetflixError(
-        NetflixErrorCodes.SIMILAR_MOVIES_NOT_ALLOWED,
-        'You are not allowed to see similar movies with your current plan.'
-      ));
-    }
-
-    const url = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?language=en-US&page=1`;
+  getSimilarMovies(movieId: string): Observable<PageableResponse<UserMovieListing>> {
+    const url = `/movies/${movieId}/similar`;
     return this.fetchMovieListing(url);
   }
 
-  getMovieDetails(movieId: string): Observable<MovieDetails> {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
-
-    return this.http.get<MovieDetails>(url, {headers: this.headers})
-      .pipe(
-        map(movie => this.parseMovieListing(movie, 'original'))
-      );
+  getMovieDetails(movieId: string): Observable<UserMovieDetails> {
+    const url = `/movies/${movieId}`;
+    return this.http.get<NetflixApiMovieResponse>(url).pipe(
+      map(response => this.parseApiMovieResponse(response))
+    );
   }
 
-  private fetchMovieListing(url: string): Observable<PageableResponse<MovieListing>> {
-    return this.http.get<PageableResponse<MovieListing>>(url, {headers: this.headers})
+  private fetchMovieListing(url: string): Observable<PageableResponse<UserMovieListing>> {
+    return this.http.get<PageableResponse<NetflixApiMovieResponse>>(url)
       .pipe(
         map(pageableResponse => ({
           ...pageableResponse,
-          results: pageableResponse.results.map(movie => this.parseMovieListing(movie))
+          results: pageableResponse.results.map(movie => this.parseApiMovieResponse(movie))
         }))
       );
   }
 
-  private parseMovieListing<T extends MovieListing>(movie: T, posterResolution: string = 'w500'): T {
+  private parseApiMovieResponse(movie: NetflixApiMovieResponse): UserMovieDetails {
     return {
-      ...movie,
-      poster_path: this.parsePosterPath(movie.poster_path, posterResolution)
+      ...movie.movie_listing,
+      ...movie.movie_details,
+      ...movie.user_movie_metadata
     };
-  }
-
-  private parsePosterPath(posterPath: string | undefined, resolution: string): string | undefined {
-    return posterPath ? `https://image.tmdb.org/t/p/${resolution}${posterPath}` : undefined;
   }
 }

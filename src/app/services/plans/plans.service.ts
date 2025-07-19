@@ -13,11 +13,11 @@ export class PlansService {
 
   public getCurrentUserPlanDetails(): Plan {
     const user = this.authService.getCurrentUser();
-    if (!user || user.isGuest) {
+    if (!user || user.is_guest) {
       return this.getDefaultPlan();
     }
 
-    const planId = user.planId;
+    const planId = user.plan_id;
     if (!planId) {
       console.warn(`User ${user.id} has no plan assigned, returning default plan.`);
       return this.getDefaultPlan(); // Return default plan if no plan is assigned
@@ -37,7 +37,7 @@ export class PlansService {
 
     console.log(user);
 
-    if (user.isGuest) {
+    if (user.is_guest) {
       return throwError(() => createNetflixError(
         NetflixErrorCodes.PLAN_CHANGE_NOT_ALLOWED,
         `Guest users cannot change plans. Please log in to change your plan.`
@@ -49,7 +49,7 @@ export class PlansService {
       throw this.createPlanDataNotFoundException(planId);
     }
 
-    user.planId = plan.id.toString();
+    user.plan_id = plan.id.toString();
     console.log(`User ${user.id} changed to plan: ${plan.name}`);
     return of(plan);
   }
