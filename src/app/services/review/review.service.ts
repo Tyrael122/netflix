@@ -98,21 +98,21 @@ export class ReviewService {
 
   // Private helper methods - Review operations
   private createNewReview(movieId: string, draft: ReviewDraft): void {
-    const currentUser = this.authService.getCurrentUser();
-    const newReview: Review = {
-      id: crypto.randomUUID(),
-      author: {
-        id: currentUser.id,
-        name: currentUser.name,
-        avatarUrl: currentUser.avatarUrl
-      },
-      rating: draft.rating,
-      content: draft.text,
-      likes: 0,
-      created_at: new Date().toISOString()
-    };
-
-    this.getReviewsForMovie(movieId).unshift(newReview);
+    // const currentUser = this.authService.getCurrentUser();
+    // const newReview: Review = {
+    //   id: crypto.randomUUID(),
+    //   author: {
+    //     id: currentUser.id,
+    //     name: currentUser.name,
+    //     avatarUrl: currentUser.avatarUrl
+    //   },
+    //   rating: draft.rating,
+    //   content: draft.text,
+    //   likes: 0,
+    //   created_at: new Date().toISOString()
+    // };
+    //
+    // this.getReviewsForMovie(movieId).unshift(newReview);
   }
 
   private updateExistingReview(existingReview: Review, draft: ReviewDraft): void {
@@ -137,9 +137,11 @@ export class ReviewService {
 
   // Private helper methods - Finding reviews
   private findExistingUserReview(movieId: string): Review | undefined {
-    const currentUser = this.authService.getCurrentUser();
-    return this.getReviewsForMovie(movieId)
-      .find(review => review.author.id === currentUser.id);
+    // const currentUser = this.authService.getCurrentUser();
+    // return this.getReviewsForMovie(movieId)
+    //   .find(review => review.author.id === currentUser.id);
+
+    return undefined; // Placeholder, replace with actual logic to find user's review
   }
 
   private findReviewById(movieId: string, reviewId: string): Review | undefined {

@@ -29,17 +29,14 @@ export class AddToPlaylistModalComponent implements OnInit {
   showNewPlaylistField = false;
 
   ngOnInit() {
-    this.playlistService.getPlaylists().pipe(
-      map(playlists => {
-          this.selectedPlaylists = playlists
-            .filter(playlist => playlist.movieIds.includes(this.movie().id))
-            .map(playlist => playlist.id);
+    this.playlistService.getPlaylists().subscribe(
+      playlists => {
+        this.selectedPlaylists = playlists
+          .filter(playlist => playlist.movieIds.includes(this.movie().id))
+          .map(playlist => playlist.id);
 
-          this.playlists = playlists;
-
-          return playlists;
-        }
-      )
+        this.playlists = playlists;
+      }
     );
   }
 
@@ -56,6 +53,8 @@ export class AddToPlaylistModalComponent implements OnInit {
       this.playlistService.createPlaylist(this.newPlaylistName, this.movie()).subscribe(
         newPlaylist => {
           this.selectedPlaylists.push(newPlaylist.id);
+          this.playlists.push(newPlaylist);
+
           this.newPlaylistName = '';
           this.showNewPlaylistField = false;
         }

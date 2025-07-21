@@ -1,40 +1,43 @@
 import {inject, Injectable} from '@angular/core';
 import {
-  MovieDetails,
-  MovieListing,
   PageableResponse,
   UserMovieDetails,
   UserMovieListing
 } from '../../models/movie.model';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map, Observable, throwError} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {map, Observable, switchMap} from 'rxjs';
 import {NetflixApiMovieResponse} from '../../models/netflix-api.model';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  private http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+  private readonly http = inject(HttpClient);
 
   listPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
-    const url = `/movies/popular?page=${this.getPageNumber(pageNumber)}`;
-    return this.fetchMovieListing(url);
+    return this.buildUrl(`/popular?page=${this.getPageNumber(pageNumber)}`).pipe(
+      switchMap(url => this.fetchMovieListing(url))
+    );
   }
 
   searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
-    const url = `/movies/search?query=${encodeURIComponent(searchTerm)}&page=${this.getPageNumber(pageNumber)}`;
-    return this.fetchMovieListing(url);
+    return this.buildUrl(`/search?query=${encodeURIComponent(searchTerm)}&page=${this.getPageNumber(pageNumber)}`).pipe(
+      switchMap(url => this.fetchMovieListing(url))
+    );
   }
 
   getSimilarMovies(movieId: string): Observable<PageableResponse<UserMovieListing>> {
-    const url = `/movies/${movieId}/similar`;
-    return this.fetchMovieListing(url);
+    return this.buildUrl(`/${movieId}/similar`).pipe(
+      switchMap(url => this.fetchMovieListing(url))
+    );
   }
 
   getMovieDetails(movieId: string): Observable<UserMovieDetails> {
-    const url = `/movies/${movieId}`;
-    return this.http.get<NetflixApiMovieResponse>(url).pipe(
+    return this.buildUrl(`/${movieId}`).pipe(
+      switchMap(url => this.http.get<NetflixApiMovieResponse>(url)),
       map(response => this.parseApiMovieResponse(response))
     );
   }
@@ -61,5 +64,11 @@ export class MovieService {
 
   private getPageNumber(pageNumber: number) {
     return pageNumber - 1; // Adjusting to 0-based index
+  }
+
+  private buildUrl(endpoint: string): Observable<string> {
+    return this.authService.getCurrentUser().pipe(
+      map(user => `/movies/${user.id}${endpoint}`)
+    );
   }
 }

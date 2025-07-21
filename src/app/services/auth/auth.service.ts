@@ -3,13 +3,13 @@ import {User, UserCredentials} from '../../models/user.model';
 import {Router} from '@angular/router';
 import {AppRoutes} from '../../enums/app-routes';
 import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {BehaviorSubject, filter, map, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser?: User;
+  private currentUserSubject = new BehaviorSubject<User | undefined>(undefined);
 
   private router = inject(Router);
 
@@ -25,7 +25,7 @@ export class AuthService {
       name: this.getRandomName()
     }).pipe(
       map(response => {
-        this.currentUser = response;
+        this.currentUserSubject.next(response);
 
         this.navigateToHomepage();
 
@@ -34,11 +34,11 @@ export class AuthService {
     )
   }
 
-  login(userCredentails: UserCredentials): Observable<User> {
-    return this.http.post<User>("/auth/login", userCredentails)
+  login(userCredentials: UserCredentials): Observable<User> {
+    return this.http.post<User>("/auth/login", userCredentials)
       .pipe(
         map(response => {
-          this.currentUser = response;
+          this.currentUserSubject.next(response);
 
           this.navigateToHomepage();
 
@@ -55,25 +55,22 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    if (!this.currentUser) {
+    const currentUser = this.currentUserSubject.getValue();
+    if (!currentUser) {
       return false;
     }
 
-    return !this.currentUser.isGuest;
+    return !currentUser.isGuest;
   }
 
-  getCurrentUser(): User {
-    if (!this.currentUser) {
-      console.warn("No user is currently logged in.");
-
-      return {id: '', name: 'Guest', email: '', isGuest: true};
-    }
-
-    return this.currentUser;
+  getCurrentUser(): Observable<User> {
+    return this.currentUserSubject.asObservable().pipe(
+      filter((user): user is User => user !== undefined)
+    );
   }
 
   private requestGuestUser() {
-    this.http.get<User>("/auth/guest").subscribe(user => this.currentUser = user);
+    this.http.get<User>("/auth/guest").subscribe(user => this.currentUserSubject.next(user));
   }
 
   private navigateToHomepage() {

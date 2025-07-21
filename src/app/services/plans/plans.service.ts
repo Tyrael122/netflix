@@ -12,46 +12,50 @@ export class PlansService {
   private authService = inject(AuthService);
 
   public getCurrentUserPlanDetails(): Plan {
-    const user = this.authService.getCurrentUser();
-    if (!user || user.isGuest) {
-      return this.getDefaultPlan();
-    }
+    return this.getDefaultPlan(); // Return default plan if no plan is assigned
 
-    const planId = user.planId;
-    if (!planId) {
-      console.warn(`User ${user.id} has no plan assigned, returning default plan.`);
-      return this.getDefaultPlan(); // Return default plan if no plan is assigned
-    }
-
-    const plan = this.getPlanDetailsById(planId);
-    if (!plan) {
-      console.error(`Plan with ID ${planId} not found for user ${user.id}`);
-      return this.getDefaultPlan(); // Return default plan if the specified plan is not found
-    }
-
-    return plan;
+    // const user = this.authService.getCurrentUser();
+    // if (!user || user.isGuest) {
+    //   return this.getDefaultPlan();
+    // }
+    //
+    // const planId = user.planId;
+    // if (!planId) {
+    //   console.warn(`User ${user.id} has no plan assigned, returning default plan.`);
+    //   return this.getDefaultPlan(); // Return default plan if no plan is assigned
+    // }
+    //
+    // const plan = this.getPlanDetailsById(planId);
+    // if (!plan) {
+    //   console.error(`Plan with ID ${planId} not found for user ${user.id}`);
+    //   return this.getDefaultPlan(); // Return default plan if the specified plan is not found
+    // }
+    //
+    // return plan;
   }
 
   public changeUserPlan(planId: string): Observable<Plan> {
-    const user = this.authService.getCurrentUser();
+    return of(this.getDefaultPlan());
 
-    console.log(user);
-
-    if (user.isGuest) {
-      return throwError(() => createNetflixError(
-        NetflixErrorCodes.PLAN_CHANGE_NOT_ALLOWED,
-        `Guest users cannot change plans. Please log in to change your plan.`
-      ));
-    }
-
-    const plan = this.getPlanDetailsById(planId);
-    if (!plan) {
-      throw this.createPlanDataNotFoundException(planId);
-    }
-
-    user.planId = plan.id.toString();
-    console.log(`User ${user.id} changed to plan: ${plan.name}`);
-    return of(plan);
+    // const user = this.authService.getCurrentUser();
+    //
+    // console.log(user);
+    //
+    // if (user.isGuest) {
+    //   return throwError(() => createNetflixError(
+    //     NetflixErrorCodes.PLAN_CHANGE_NOT_ALLOWED,
+    //     `Guest users cannot change plans. Please log in to change your plan.`
+    //   ));
+    // }
+    //
+    // const plan = this.getPlanDetailsById(planId);
+    // if (!plan) {
+    //   throw this.createPlanDataNotFoundException(planId);
+    // }
+    //
+    // user.planId = plan.id.toString();
+    // console.log(`User ${user.id} changed to plan: ${plan.name}`);
+    // return of(plan);
   }
 
   public getAvailablePlans(): Plan[] {

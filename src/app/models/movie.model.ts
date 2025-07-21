@@ -31,7 +31,7 @@ export interface MovieDetails extends MovieListing {
 
 export interface UserMovieMetadata {
   isFavorite: boolean;
-  isWatchlater: boolean;
+  isWatchLater: boolean;
   isWatched: boolean;
 }
 

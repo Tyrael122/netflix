@@ -61,7 +61,7 @@ export class MovieDetailsComponent implements OnInit {
 
     if (playlistId === SystemPlaylistIds.WatchLater) {
       this.toggleMovieInPlaylist(movie.id, playlistId, isAlreadyAdded)
-        .subscribe(() => movie.isWatchlater = !isAlreadyAdded);
+        .subscribe(() => movie.isWatchLater = !isAlreadyAdded);
       return;
     }
   }

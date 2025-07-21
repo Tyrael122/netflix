@@ -23,11 +23,11 @@
 
             <netflix-icon
               class="cursor-pointer"
-              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.WatchLater, movie!, movie!.isWatchlater)"
+              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.WatchLater, movie!, movie!.isWatchLater)"
               name="clock"
               size="24"
-              [class.text-red-600]="movie.isWatchlater"
-              [class.text-gray-400]="!movie.isWatchlater"
+              [class.text-red-600]="movie.isWatchLater"
+              [class.text-gray-400]="!movie.isWatchLater"
             />
           </div>
           <netflix-movie-rating [vote_average]="movie.voteAverage"></netflix-movie-rating>

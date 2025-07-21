@@ -2,7 +2,7 @@ export interface Playlist {
   id: string;
   name: string;
   movieIds: string[];
-  isSystemPlaylist: boolean;
+  systemPlaylistId?: string;
   coverImageUrl?: string;
 }
 
@@ -11,24 +11,3 @@ export enum SystemPlaylistIds {
   WatchLater = 'watch_later',
   Watched = 'watched'
 }
-
-export const SYSTEM_PLAYLISTS: Playlist[] = [
-  {
-    id: SystemPlaylistIds.Favorites,
-    name: 'Favorites',
-    movieIds: [],
-    isSystemPlaylist: true
-  },
-  {
-    id: SystemPlaylistIds.WatchLater,
-    name: 'Watch Later',
-    movieIds: [],
-    isSystemPlaylist: true
-  },
-  {
-    id: SystemPlaylistIds.Watched,
-    name: 'Watched',
-    movieIds: [],
-    isSystemPlaylist: true
-  }
-];

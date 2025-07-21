@@ -1,16 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 import {
-  MovieListing,
   PageableResponse,
   UserMovieDetails,
-  UserMovieListing,
-  UserMovieMetadata
+  UserMovieListing
 } from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
-import {forkJoin, map, Observable, switchMap} from 'rxjs';
+import {Observable} from 'rxjs';
 import {PlansService} from '../plans/plans.service';
-import {PlaylistService} from '../playlist/playlist.service';
-import {SystemPlaylistIds} from '../../models/playlist.model';
 
 @Injectable({
   providedIn: 'root'

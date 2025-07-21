@@ -33,14 +33,14 @@ export class MoviePosterComponent {
   showAddToPlaylistModal: boolean = false;
 
   get movieOptions(): MovieOption[] {
-    const watchLaterLabel = this.movie().isWatchlater ? 'Remove from watch later' : 'Add to watch later';
+    const watchLaterLabel = this.movie().isWatchLater ? 'Remove from watch later' : 'Add to watch later';
     const favoriteLabel = this.movie().isFavorite ? 'Remove from favorites' : 'Add to favorites';
 
     return [
       {
         icon: 'clock',
         label: watchLaterLabel,
-        action: () => this.toggleWatchlater(this.movie().isWatchlater)
+        action: () => this.toggleWatchlater(this.movie().isWatchLater)
       },
       {
         icon: 'favorite',
@@ -61,15 +61,15 @@ export class MoviePosterComponent {
     if (isAlreadyInWatchLater) {
       this.playlistService.removeMovieFromPlaylists(movieId, [SystemPlaylistIds.WatchLater]).subscribe(
         () => {
-          this.movie().isWatchlater = false;
+          this.movie().isWatchLater = false;
           this.toastService.showToast("Movie removed from watch later");
         }
       )
     } else {
       this.playlistService.addMovieToPlaylists(movieId, [SystemPlaylistIds.WatchLater]).subscribe(
         () => {
-          this.movie().isWatchlater = true;
-          this.toastService.showToast("Movie added from watch later");
+          this.movie().isWatchLater = true;
+          this.toastService.showToast("Movie added to watch later");
         }
       )
     }
