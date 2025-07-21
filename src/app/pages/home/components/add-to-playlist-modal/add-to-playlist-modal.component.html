@@ -10,7 +10,7 @@
     </div>
 
     <!-- Playlist List -->
-    @if (playlists | async; as playlists) {
+    @if (playlists; as playlists) {
       @if (playlists.length > 0) {
         <div class="overflow-y-auto max-h-[40vh]">
           @for (playlist of playlists; track playlist.id) {

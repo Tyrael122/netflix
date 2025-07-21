@@ -14,6 +14,7 @@ import {MovieRatingComponent} from './components/movie-rating/movie-rating.compo
 import {MovieDetailsTabsComponent} from './components/movie-details-tabs/movie-details-tabs.component';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import {SystemPlaylistIds} from '../../models/playlist.model';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'netflix-movie-details',
@@ -48,23 +49,29 @@ export class MovieDetailsComponent implements OnInit {
     });
   }
 
-  toggleMoviePlaylist($event: MouseEvent, playlistId: SystemPlaylistIds, movie?: UserMovieDetails) {
+  toggleMoviePlaylist($event: MouseEvent, playlistId: SystemPlaylistIds, movie: UserMovieDetails, isAlreadyAdded: boolean) {
     $event.stopPropagation();
     $event.preventDefault();
 
-    if (!movie) {
+    if (playlistId === SystemPlaylistIds.Favorites) {
+      this.toggleMovieInPlaylist(movie.id, playlistId, isAlreadyAdded)
+        .subscribe(() => movie.isFavorite = !isAlreadyAdded);
       return;
     }
 
-    this.playlistService.toggleMovieInPlaylist(playlistId, movie.id)
-      .subscribe((updatedPlaylist) => {
-        const isAdded = updatedPlaylist.movieIds.includes(movie.id);
-        if (playlistId === SystemPlaylistIds.Favorites) {
-          movie.isFavorite = isAdded;
-        } else if (playlistId === SystemPlaylistIds.WatchLater) {
-          movie.isWatchlater = isAdded;
-        }
-      });
+    if (playlistId === SystemPlaylistIds.WatchLater) {
+      this.toggleMovieInPlaylist(movie.id, playlistId, isAlreadyAdded)
+        .subscribe(() => movie.isWatchlater = !isAlreadyAdded);
+      return;
+    }
+  }
+
+  private toggleMovieInPlaylist(movieId: string, playlistId: SystemPlaylistIds, isAlreadyAdded: boolean): Observable<void> {
+    if (isAlreadyAdded) {
+      return this.playlistService.removeMovieFromPlaylists(movieId, [playlistId]);
+    } else {
+      return this.playlistService.addMovieToPlaylists(movieId, [playlistId]);
+    }
   }
 
   protected readonly SystemPlaylistIds = SystemPlaylistIds;

@@ -1,11 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {MovieListing} from '../../models/movie.model';
-import {MovieService} from '../movie/movie.service';
 import {PlansService} from '../plans/plans.service';
 import {NetflixError, NetflixErrorCodes} from '../../models/errors.model';
 import {Playlist, SYSTEM_PLAYLISTS} from '../../models/playlist.model';
 import {AuthService} from '../auth/auth.service';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,58 +13,55 @@ import {AuthService} from '../auth/auth.service';
 export class PlaylistService {
   private readonly playlists = new Map<string, Playlist[]>(); // userId -> playlists
   private readonly authService = inject(AuthService);
-  private readonly movieService = inject(MovieService);
   private readonly plansService = inject(PlansService);
 
+  private readonly http = inject(HttpClient);
+
   getPlaylists(): Observable<Playlist[]> {
-    return of(this.getCurrentUserPlaylists());
+    let userId = this.authService.getCurrentUser().id;
+
+    return this.http.get<Playlist[]>(`/playlists/${userId}`);
   }
 
   getPlaylistById(playlistId: string): Observable<Playlist | undefined> {
-    const playlist = this.findPlaylistById(playlistId);
-    return of(playlist);
+    let userId = this.authService.getCurrentUser().id;
+
+    return this.http.get<Playlist>(`/playlists/${userId}/${playlistId}`);
   }
 
-  getMoviePlaylists(movieId: string): Observable<Playlist[]> {
-    const playlists = this.getCurrentUserPlaylists().filter(playlist =>
-      playlist.movieIds.includes(movieId)
-    );
+  addMovieToPlaylists(movieId: string, playlistIds: string[]) {
+    let userId = this.authService.getCurrentUser().id;
 
-    return of(playlists);
-  }
-
-  toggleMovieInPlaylist(playlistId: string, movieId: string): Observable<Playlist> {
-    const playlist = this.findPlaylistById(playlistId);
-
-    if (!playlist) {
-      return this.throwPlaylistNotFoundError();
-    }
-
-    return playlist.movieIds.includes(movieId)
-      ? this.removeMovieFromPlaylist(playlist, movieId)
-      : this.addMovieToPlaylist(playlist, movieId);
-  }
-
-  updateMoviePlaylists(movieId: string, newPlaylistIds: string[]): void {
-    const playlists = this.getCurrentUserPlaylists();
-
-    playlists.forEach(playlist => {
-      const hasMovie = playlist.movieIds.includes(movieId);
-      const shouldHaveMovie = newPlaylistIds.includes(playlist.id);
-
-      if (hasMovie && !shouldHaveMovie) {
-        this.removeMovieFromPlaylist(playlist, movieId);
-      } else if (!hasMovie && shouldHaveMovie) {
-        this.addMovieToPlaylist(playlist, movieId);
-      }
+    return this.http.put<void>(`/playlists/${userId}/movies/${movieId}`, {
+      playlistsToAdd: playlistIds
     });
   }
 
+  removeMovieFromPlaylists(movieId: string, playlistIds: string[]) {
+    let userId = this.authService.getCurrentUser().id;
+
+    return this.http.put<void>(`/playlists/${userId}/movies/${movieId}`, {
+      playlistsToRemove: playlistIds
+    });
+  }
+
+  updateMoviePlaylists(movieId: string, playlistIds: string[], playlistsToAdd: string[]): void {
+    let playlistsToRemove = playlistIds.filter(id => !playlistsToAdd.includes(id));
+
+    if (playlistsToRemove.length > 0) {
+      this.removeMovieFromPlaylists(movieId, playlistsToRemove).subscribe();
+    }
+    if (playlistsToAdd.length > 0) {
+      this.addMovieToPlaylists(movieId, playlistsToAdd).subscribe();
+    }
+  }
+
   createPlaylist(name: string, movie?: MovieListing): Observable<Playlist> {
-    return this.validatePlaylistCreationLimit().pipe(() => {
-      const newPlaylist = this.createNewPlaylist(name, movie);
-      this.getCurrentUserPlaylists().push(newPlaylist);
-      return of(newPlaylist);
+    let userId = this.authService.getCurrentUser().id;
+
+    return this.http.post<Playlist>(`/playlists/${userId}`, {
+      name: name.trim(),
+      movieIdsToAdd: [movie?.id]
     });
   }
 
@@ -87,32 +84,6 @@ export class PlaylistService {
     return of(true);
   }
 
-  private findPlaylistById(playlistId: string): Playlist | undefined {
-    return this.getCurrentUserPlaylists().find(pl => pl.id === playlistId);
-  }
-
-  private removeMovieFromPlaylist(playlist: Playlist, movieId: string): Observable<Playlist> {
-    playlist.movieIds = playlist.movieIds.filter(id => id !== movieId);
-    this.updatePlaylistCoverImage(playlist);
-    return of(playlist);
-  }
-
-  private addMovieToPlaylist(playlist: Playlist, movieId: string): Observable<Playlist> {
-    playlist.movieIds.push(movieId);
-    this.updatePlaylistCoverImage(playlist);
-    return of(playlist);
-  }
-
-  private createNewPlaylist(name: string, movie?: MovieListing): Playlist {
-    return {
-      id: this.generateUniqueId(),
-      name: name.trim(),
-      movieIds: movie?.id ? [movie.id] : [],
-      isSystemPlaylist: false,
-      coverImageUrl: movie?.poster_path
-    };
-  }
-
   private getCustomPlaylists(): Playlist[] {
     return this.getCurrentUserPlaylists().filter(playlist => !playlist.isSystemPlaylist);
   }
@@ -127,31 +98,8 @@ export class PlaylistService {
     return this.playlists.get(userId)!;
   }
 
-  private updatePlaylistCoverImage(playlist: Playlist): void {
-    if (playlist.movieIds.length === 0) {
-      playlist.coverImageUrl = undefined;
-      return;
-    }
-
-    const lastMovieId = playlist.movieIds[playlist.movieIds.length - 1];
-    this.movieService.getMovieDetails(lastMovieId).subscribe(movie => {
-      playlist.coverImageUrl = movie.poster_path ?? undefined;
-    });
-  }
-
   private createSystemPlaylists(): Playlist[] {
     return [...SYSTEM_PLAYLISTS];
-  }
-
-  private generateUniqueId(): string {
-    return crypto.randomUUID();
-  }
-
-  private throwPlaylistNotFoundError(): Observable<never> {
-    return throwError((): NetflixError => ({
-      code: NetflixErrorCodes.PLAYLIST_NOT_FOUND,
-      message: 'There was an error while trying to toggle movie in playlist.'
-    }));
   }
 
   private throwPlaylistCreationError(message: string): Observable<never> {

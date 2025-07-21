@@ -40,12 +40,12 @@ export class MoviePosterComponent {
       {
         icon: 'clock',
         label: watchLaterLabel,
-        action: () => this.toggleWatchlater()
+        action: () => this.toggleWatchlater(this.movie().isWatchlater)
       },
       {
         icon: 'favorite',
         label: favoriteLabel,
-        action: () => this.toggleFavorites()
+        action: () => this.toggleFavorites(this.movie().isFavorite)
       },
       {
         icon: 'bookmark',
@@ -55,24 +55,42 @@ export class MoviePosterComponent {
     ];
   }
 
-  toggleWatchlater() {
-    this.playlistService.toggleMovieInPlaylist(SystemPlaylistIds.WatchLater, this.movie().id).subscribe(
-      updatedPlaylist => {
-        const isAdded = updatedPlaylist.movieIds.includes(this.movie().id);
-        this.movie().isWatchlater = isAdded;
-        this.toastService.showToast(isAdded ? "Movie added to watch later" : "Movie removed from watch later");
-      }
-    );
+  toggleWatchlater(isAlreadyInWatchLater: boolean) {
+    let movieId = this.movie().id;
+
+    if (isAlreadyInWatchLater) {
+      this.playlistService.removeMovieFromPlaylists(movieId, [SystemPlaylistIds.WatchLater]).subscribe(
+        () => {
+          this.movie().isWatchlater = false;
+          this.toastService.showToast("Movie removed from watch later");
+        }
+      )
+    } else {
+      this.playlistService.addMovieToPlaylists(movieId, [SystemPlaylistIds.WatchLater]).subscribe(
+        () => {
+          this.movie().isWatchlater = true;
+          this.toastService.showToast("Movie added from watch later");
+        }
+      )
+    }
   }
 
-  toggleFavorites() {
-    this.playlistService.toggleMovieInPlaylist(SystemPlaylistIds.Favorites, this.movie().id).subscribe(
-      updatedPlaylist => {
-        const isAdded = updatedPlaylist.movieIds.includes(this.movie().id);
-        this.movie().isFavorite = isAdded;
-        this.toastService.showToast(isAdded ? "Movie added to favorites" : "Movie removed from favorites");
-      }
-    );
+  toggleFavorites(isAlreadyInFavorites: boolean) {
+    if (isAlreadyInFavorites) {
+      this.playlistService.removeMovieFromPlaylists(this.movie().id, [SystemPlaylistIds.Favorites]).subscribe(
+        () => {
+          this.movie().isFavorite = false;
+          this.toastService.showToast("Movie removed from favorites");
+        }
+      );
+    } else {
+      this.playlistService.addMovieToPlaylists(this.movie().id, [SystemPlaylistIds.Favorites]).subscribe(
+        () => {
+          this.movie().isFavorite = true;
+          this.toastService.showToast("Movie added to favorites");
+        }
+      );
+    }
   }
 
   toggleAddToPlaylistModal() {

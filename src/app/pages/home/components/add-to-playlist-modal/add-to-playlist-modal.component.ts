@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {UserMovieListing} from '../../../../models/movie.model';
 import {PlaylistService} from '../../../../services/playlist/playlist.service';
-import {map, Observable, of} from 'rxjs';
+import {map} from 'rxjs';
 import {isNetflixError} from "../../../../models/errors.model";
 import {ToastService} from "../../../../services/toast/toast.service";
 import {Playlist} from '../../../../models/playlist.model';
@@ -22,18 +22,20 @@ export class AddToPlaylistModalComponent implements OnInit {
   playlistService = inject(PlaylistService);
   toastService = inject(ToastService);
 
-  playlists: Observable<Playlist[]> = of();
+  playlists: Playlist[] = [];
 
   selectedPlaylists: string[] = [];
   newPlaylistName = '';
   showNewPlaylistField = false;
 
   ngOnInit() {
-    this.playlists = this.playlistService.getPlaylists().pipe(
+    this.playlistService.getPlaylists().pipe(
       map(playlists => {
           this.selectedPlaylists = playlists
             .filter(playlist => playlist.movieIds.includes(this.movie().id))
             .map(playlist => playlist.id);
+
+          this.playlists = playlists;
 
           return playlists;
         }
@@ -62,7 +64,7 @@ export class AddToPlaylistModalComponent implements OnInit {
   }
 
   confirmSelection() {
-    this.playlistService.updateMoviePlaylists(this.movie().id, this.selectedPlaylists);
+    this.playlistService.updateMoviePlaylists(this.movie().id, this.playlists.map(p => p.id), this.selectedPlaylists);
     this.closeModal();
   }
 

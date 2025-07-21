@@ -58,7 +58,7 @@ export class PlaylistDetailsComponent implements OnInit {
     }
   }
 
-  removeFromPlaylist(id: string, $event: MouseEvent) {
+  removeFromPlaylist(movieId: string, $event: MouseEvent) {
     $event.preventDefault();
     $event.stopPropagation();
 
@@ -66,9 +66,8 @@ export class PlaylistDetailsComponent implements OnInit {
       return;
     }
 
-    this.playlistService.toggleMovieInPlaylist(this.playlist.id, id).subscribe((updatedPlaylist) => {
-      this.playlist = updatedPlaylist;
-      this.playlistMovies = this.playlistMovies.filter(movie => movie.id !== id);
+    this.playlistService.removeMovieFromPlaylists(movieId, [this.playlist.id]).subscribe(() => {
+      this.playlistMovies = this.playlistMovies.filter(movie => movie.id !== movieId);
     });
   }
 

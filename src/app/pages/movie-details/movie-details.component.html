@@ -13,7 +13,7 @@
           <div class="flex items-center gap-3">
             <netflix-icon
               class="cursor-pointer"
-              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.Favorites, movie)"
+              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.Favorites, movie!, movie!.isFavorite)"
               name="favorite"
               size="24"
               fill="{{ movie.isFavorite ? 'currentColor' : 'none' }}"
@@ -23,7 +23,7 @@
 
             <netflix-icon
               class="cursor-pointer"
-              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.WatchLater, movie)"
+              (click)="toggleMoviePlaylist($event, SystemPlaylistIds.WatchLater, movie!, movie!.isWatchlater)"
               name="clock"
               size="24"
               [class.text-red-600]="movie.isWatchlater"
