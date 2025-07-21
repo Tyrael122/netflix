@@ -1,31 +1,31 @@
 export interface PageableResponse<T> {
   page: number;
-  total_pages: number;
-  total_results: number;
+  totalPages: number;
+  totalResults: number;
   results: T[];
 }
 
 export interface MovieListing {
   id: string;
   title: string;
-  poster_path?: string;
+  posterPath?: string;
   overview: string;
-  release_date: string;
-  vote_average: number;
+  releaseDate: string;
+  voteAverage: number;
   genres?: { id: number; name: string }[];
 }
 
 export interface MovieDetails extends MovieListing {
   runtime: number;
-  original_language: string;
+  originalLanguage: string;
   tagline?: string;
   homepage?: string;
   status?: string;
-  production_companies?: { id: number; name: string; logo_path?: string; origin_country: string }[];
-  spoken_languages?: { iso_639_1: string; name: string }[];
+  productionCompanies?: { id: number; name: string; logoPath?: string; originCountry: string }[];
+  spokenLanguages?: { iso6391: string; name: string }[];
   credits?: {
-    cast: { id: number; name: string; character: string; profile_path?: string }[];
-    crew: { id: number; name: string; job: string; profile_path?: string }[];
+    cast: { id: number; name: string; character: string; profilePath?: string }[];
+    crew: { id: number; name: string; job: string; profilePath?: string }[];
   };
 }
 

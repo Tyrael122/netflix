@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit {
 
     observable.subscribe({
       next: (movieList) => {
+        console.log("Fetched movies: ", movieList);
         this.movies = [...this.movies, ...movieList.results];
         this.currentPage++;
         this.hasMore = movieList.results.length > 0;

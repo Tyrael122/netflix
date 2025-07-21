@@ -6,7 +6,7 @@
         @for (similar of similarMovies; track similar.id) {
           <div class="cursor-pointer" [routerLink]="RouteParams.movieDetails(similar.id)">
             <netflix-movie-poster-image
-              [poster_path]="similar.poster_path"
+              [poster_path]="similar.posterPath"
               class="rounded-lg shadow-md w-full h-auto hover:scale-105 transition-transform"
             ></netflix-movie-poster-image>
             <h3 class="mt-2 text-sm font-medium truncate">{{ similar.title }}</h3>

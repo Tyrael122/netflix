@@ -59,14 +59,14 @@ export class AuthService {
       return false;
     }
 
-    return !this.currentUser.is_guest;
+    return !this.currentUser.isGuest;
   }
 
   getCurrentUser(): User {
     if (!this.currentUser) {
       console.warn("No user is currently logged in.");
 
-      return {id: '', name: 'Guest', email: '', is_guest: true};
+      return {id: '', name: 'Guest', email: '', isGuest: true};
     }
 
     return this.currentUser;

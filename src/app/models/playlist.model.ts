@@ -8,7 +8,7 @@ export interface Playlist {
 
 export enum SystemPlaylistIds {
   Favorites = 'favorites',
-  WatchLater = 'watchlater',
+  WatchLater = 'watch_later',
   Watched = 'watched'
 }
 

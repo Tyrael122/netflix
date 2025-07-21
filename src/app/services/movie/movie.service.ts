@@ -18,12 +18,12 @@ export class MovieService {
   private http = inject(HttpClient);
 
   listPopularMovies(pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
-    const url = `/movies/popular?page=${pageNumber}`;
+    const url = `/movies/popular?page=${this.getPageNumber(pageNumber)}`;
     return this.fetchMovieListing(url);
   }
 
   searchMovies(searchTerm: string, pageNumber: number): Observable<PageableResponse<UserMovieListing>> {
-    const url = `/movies/search?query=${encodeURIComponent(searchTerm)}&page=${pageNumber}`;
+    const url = `/movies/search?query=${encodeURIComponent(searchTerm)}&page=${this.getPageNumber(pageNumber)}`;
     return this.fetchMovieListing(url);
   }
 
@@ -42,18 +42,24 @@ export class MovieService {
   private fetchMovieListing(url: string): Observable<PageableResponse<UserMovieListing>> {
     return this.http.get<PageableResponse<NetflixApiMovieResponse>>(url)
       .pipe(
-        map(pageableResponse => ({
-          ...pageableResponse,
-          results: pageableResponse.results.map(movie => this.parseApiMovieResponse(movie))
-        }))
+        map(pageableResponse => {
+          return {
+            ...pageableResponse,
+            results: pageableResponse.results.map(movie => this.parseApiMovieResponse(movie))
+          }
+        })
       );
   }
 
   private parseApiMovieResponse(movie: NetflixApiMovieResponse): UserMovieDetails {
     return {
-      ...movie.movie_listing,
-      ...movie.movie_details,
-      ...movie.user_movie_metadata
+      ...movie.movieListing,
+      ...movie.movieDetails,
+      ...movie.userMovieMetadata
     };
+  }
+
+  private getPageNumber(pageNumber: number) {
+    return pageNumber - 1; // Adjusting to 0-based index
   }
 }
