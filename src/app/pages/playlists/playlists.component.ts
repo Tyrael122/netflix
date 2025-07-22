@@ -44,12 +44,13 @@ export class PlaylistsComponent implements OnInit {
     })
   }
 
-  createAndAddToPlaylist() {
+  createPlaylist() {
     if (this.newPlaylistName.trim() === '') {
       return;
     }
 
-    this.playlistService.createPlaylist(this.newPlaylistName).subscribe(() => {
+    this.playlistService.createPlaylist(this.newPlaylistName).subscribe((playlist) => {
+        this.playlists.push(playlist);
         this.newPlaylistName = '';
         this.showNewPlaylistField = false;
       }

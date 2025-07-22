@@ -56,7 +56,7 @@ export class PlaylistService {
     return this.buildUrl('').pipe(
       switchMap(url => this.http.post<Playlist>(url, {
         name: name.trim(),
-        movieIdsToAdd: [movie?.id]
+        movieIdsToAdd: movie ? [movie.id] : []
       }))
     );
   }
