@@ -1,10 +1,11 @@
-import {Component, ElementRef, inject, input, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, input, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DatePipe, NgOptimizedImage} from '@angular/common';
 import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
 import {ReviewService} from '../../../../services/review/review.service';
 import {MovieListing} from '../../../../models/movie.model';
 import {Review, ReviewDraft} from '../../../../models/reviews.model';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
 
 @Component({
   selector: 'netflix-reviews-tab',
@@ -13,20 +14,38 @@ import {Review, ReviewDraft} from '../../../../models/reviews.model';
   templateUrl: './reviews-tab.component.html',
   styleUrls: ['./reviews-tab.component.css']
 })
-export class ReviewsTabComponent {
+export class ReviewsTabComponent implements OnInit {
   movie = input.required<MovieListing>();
 
   @ViewChild('reviewForm') reviewForm!: ElementRef<HTMLFormElement>;
 
+  private currentReviewSubject = new Subject<ReviewDraft>();
+  currentReview: ReviewDraft = {
+    rating: 0,
+    content: ''
+  }
+
+  reviews: Review[] = [];
+
   readonly reviewService = inject(ReviewService);
   hoverRating: number = 0;
 
-  get currentReview(): ReviewDraft {
-    return this.reviewService.getCurrentReview(this.movie().id);
-  }
+  ngOnInit(): void {
+    this.reviewService.getCurrentReview(this.movie().id).subscribe(review => {
+      this.currentReview = review;
+    })
 
-  get reviews(): Review[] {
-    return this.reviewService.getReviewsForMovie(this.movie().id);
+    this.loadReviews();
+
+    this.currentReviewSubject
+      .pipe(
+        debounceTime(2000),
+        distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+      )
+      .subscribe(review => {
+        console.log("Received review update: ", review);
+        this.reviewService.updateCurrentReview(this.movie().id, review);
+      });
   }
 
   get canWriteReview(): boolean {
@@ -42,7 +61,9 @@ export class ReviewsTabComponent {
   }
 
   submitReview(): void {
-    this.reviewService.submitCurrentReview(this.movie().id);
+    this.reviewService.submitCurrentReview(this.movie().id, this.currentReview).subscribe(() => {
+      this.loadReviews();
+    })
   }
 
   updateReviewText(text: string): void {
@@ -50,14 +71,17 @@ export class ReviewsTabComponent {
       text = text.slice(0, 500);
     }
 
-    this.reviewService.updateCurrentReview(this.movie().id, prev => ({...prev, content: text}));
+    this.updateCurrectReviewDraft({
+      ...this.currentReview,
+      content: text
+    });
   }
 
   updateUserRating(rating: number): void {
-    this.reviewService.updateCurrentReview(this.movie().id, prev => ({
-      ...prev,
-      rating
-    }));
+    this.updateCurrectReviewDraft({
+      ...this.currentReview,
+      rating: rating
+    });
   }
 
   likeReview(review: Review): void {
@@ -84,6 +108,18 @@ export class ReviewsTabComponent {
       4: 'Good',
       5: 'Excellent'
     };
+  }
+
+  private loadReviews() {
+    this.reviewService.getReviewsForMovie(this.movie().id).subscribe(reviews => {
+      this.reviews = reviews;
+    })
+  }
+
+  private updateCurrectReviewDraft(newDraft: ReviewDraft) {
+    this.currentReview = newDraft;
+    console.log("Updating current review draft: ", newDraft);
+    this.currentReviewSubject.next(newDraft);
   }
 
   protected readonly Object = Object;

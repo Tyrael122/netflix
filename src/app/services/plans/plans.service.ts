@@ -63,7 +63,7 @@ export class PlansService {
   }
 
   private getDefaultPlan(): Plan {
-    return this.getPlanDetailsById(Plans.Free);
+    return this.getPlanDetailsById(Plans.Premium);
   }
 
   private getPlanDetailsById(planId: string): Plan {
