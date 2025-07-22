@@ -41,13 +41,13 @@
       <div class="mb-6">
         <label class="block text-gray-300 mb-2 text-sm font-medium">Your Review</label>
         <textarea
-          [ngModel]="currentReview.text"
+          [ngModel]="currentReview.content"
           (ngModelChange)="updateReviewText($event)"
           placeholder="What did you think of this movie? Share your detailed thoughts..."
           class="w-full bg-gray-700 text-white p-4 rounded-lg min-h-[120px] border border-transparent focus:border-netflix-red focus:ring-1 focus:ring-netflix-red transition-all duration-200"
         ></textarea>
         <div class="text-xs text-gray-400 text-right">
-          {{ currentReview.text.length || 0 }}/500
+          {{ currentReview.content.length || 0 }}/500
         </div>
       </div>
 
@@ -90,7 +90,7 @@
                   <div class="flex items-center gap-x-2">
                     <span class="font-medium text-white">{{ review.author.name }}</span>
                     <span class="text-gray-500">•</span>
-                    <span class="text-gray-400 text-sm">{{ review.created_at | date:'mediumDate' }}</span>
+                    <span class="text-gray-400 text-sm">{{ review.createdAt | date:'mediumDate' }}</span>
                   </div>
                   <div class="flex gap-x-0.5">
                     @for (star of [1, 2, 3, 4, 5]; track star) {

@@ -47,7 +47,7 @@ export class ReviewService {
     this.validateReviewDraft(currentDraft);
     this.verifySubmitReviewPermission();
 
-    if (currentDraft.original_review_id) {
+    if (currentDraft.originalReviewId) {
       this.handleReviewUpdate(movieId, currentDraft);
       return;
     }
@@ -80,7 +80,7 @@ export class ReviewService {
   private createNewDraft(movieId: string): ReviewDraft {
     const draft: ReviewDraft = {
       rating: 0,
-      text: ''
+      content: ''
     };
     this.reviewDrafts.set(movieId, draft);
     return draft;
@@ -88,9 +88,9 @@ export class ReviewService {
 
   private createDraftFromExistingReview(movieId: string, review: Review): ReviewDraft {
     const draft: ReviewDraft = {
-      original_review_id: review.id,
+      originalReviewId: review.id,
       rating: review.rating,
-      text: review.content
+      content: review.content
     };
     this.reviewDrafts.set(movieId, draft);
     return draft;
@@ -118,18 +118,18 @@ export class ReviewService {
   private updateExistingReview(existingReview: Review, draft: ReviewDraft): void {
     console.warn('Updating existing review instead of creating a new one');
     existingReview.rating = draft.rating;
-    existingReview.content = draft.text;
+    existingReview.content = draft.content;
     existingReview.likes = 0; // Reset likes on update
   }
 
   private handleReviewUpdate(movieId: string, draft: ReviewDraft): void {
-    if (!draft.original_review_id) {
+    if (!draft.originalReviewId) {
       throw new Error('Original review ID is required for updates');
     }
 
-    const existingReview = this.findReviewById(movieId, draft.original_review_id);
+    const existingReview = this.findReviewById(movieId, draft.originalReviewId);
     if (!existingReview) {
-      throw new Error(`Original review not found: ${draft.original_review_id}`);
+      throw new Error(`Original review not found: ${draft.originalReviewId}`);
     }
 
     this.updateExistingReview(existingReview, draft);
@@ -150,7 +150,7 @@ export class ReviewService {
 
   // Private helper methods - Validation and permissions
   private validateReviewDraft(draft: ReviewDraft): void {
-    if (draft.rating <= 0 || !draft.text.trim()) {
+    if (draft.rating <= 0 || !draft.content.trim()) {
       throw new Error('Invalid review submission: Rating and text are required');
     }
   }

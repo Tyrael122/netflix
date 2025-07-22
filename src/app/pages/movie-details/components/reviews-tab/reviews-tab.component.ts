@@ -38,7 +38,7 @@ export class ReviewsTabComponent {
   }
 
   isReviewFilled() {
-    return this.currentReview.rating > 0 && this.currentReview.text.trim().length > 0;
+    return this.currentReview.rating > 0 && this.currentReview.content.trim().length > 0;
   }
 
   submitReview(): void {
@@ -50,7 +50,7 @@ export class ReviewsTabComponent {
       text = text.slice(0, 500);
     }
 
-    this.reviewService.updateCurrentReview(this.movie().id, prev => ({...prev, text}));
+    this.reviewService.updateCurrentReview(this.movie().id, prev => ({...prev, content: text}));
   }
 
   updateUserRating(rating: number): void {

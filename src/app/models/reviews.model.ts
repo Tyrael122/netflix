@@ -11,11 +11,11 @@ export interface Review {
   rating: number;
   content: string;
   likes: number;
-  created_at: string;
+  createdAt: string;
 }
 
 export interface ReviewDraft {
-  readonly original_review_id?: string;
+  readonly originalReviewId?: string;
   readonly rating: number;
-  readonly text: string;
+  readonly content: string;
 }
