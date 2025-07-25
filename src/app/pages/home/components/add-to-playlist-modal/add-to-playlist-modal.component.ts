@@ -3,9 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {UserMovieListing} from '../../../../models/movie.model';
 import {PlaylistService} from '../../../../services/playlist/playlist.service';
-import {map} from 'rxjs';
-import {isNetflixError} from "../../../../models/errors.model";
-import {ToastService} from "../../../../services/toast/toast.service";
 import {Playlist} from '../../../../models/playlist.model';
 
 @Component({
@@ -20,7 +17,6 @@ export class AddToPlaylistModalComponent implements OnInit {
   onCloseModal = output();
 
   playlistService = inject(PlaylistService);
-  toastService = inject(ToastService);
 
   playlists: Playlist[] = [];
 
@@ -72,18 +68,6 @@ export class AddToPlaylistModalComponent implements OnInit {
   }
 
   enableNewPlaylistField() {
-    this.playlistService.validatePlaylistCreationLimit().subscribe({
-      next: () => this.showNewPlaylistField = true,
-      error: (err) => this.displayErrorMessage(err)
-    })
-  }
-
-  private displayErrorMessage(error: any) {
-    if (isNetflixError(error)) {
-      this.toastService.showToast(error.message);
-    } else {
-      console.error('Error creating playlist:', error);
-      this.toastService.showToast('An error occurred while attempting to create the playlist.');
-    }
+    this.playlistService.validatePlaylistCreationLimit().subscribe(() => this.showNewPlaylistField = true)
   }
 }

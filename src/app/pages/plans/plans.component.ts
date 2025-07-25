@@ -6,8 +6,6 @@ import {
   LoadingSpinnerIndicatorComponent
 } from '../../components/loading-spinner-indicator/loading-spinner-indicator.component';
 import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.component';
-import {ToastService} from '../../services/toast/toast.service';
-import {isNetflixErrorWithCode, NetflixErrorCodes} from '../../models/errors.model';
 import {combineLatest} from 'rxjs';
 
 @Component({
@@ -26,7 +24,6 @@ export class PlansComponent implements OnInit {
   currentPlan?: Plan;
 
   private plansService = inject(PlansService);
-  private toastService = inject(ToastService);
 
   isLoading: boolean = true;
 
@@ -47,14 +44,12 @@ export class PlansComponent implements OnInit {
   }
 
   switchPlan(id: string) {
-    this.plansService.changeUserPlan(id).subscribe({
-      next: plan => this.currentPlan = plan,
-      error: err => {
-        if (isNetflixErrorWithCode(err, NetflixErrorCodes.PLAN_CHANGE_NOT_ALLOWED)) {
-          this.toastService.showToast('Plan change not allowed, please log in to change your plan.');
-        }
+    this.plansService.changeUserPlan(id).subscribe(
+      newPlan => {
+        console.log("New user plan: ", newPlan);
+        return this.currentPlan = newPlan;
       }
-    });
+    );
   }
 
   getFeatureList(features: PlanFeatures): string[] {

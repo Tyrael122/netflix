@@ -6,8 +6,6 @@ import {RouterLink} from '@angular/router';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import {RouteParams} from '../../enums/app-routes';
 import {FormsModule} from '@angular/forms';
-import {ToastService} from '../../services/toast/toast.service';
-import {isNetflixError} from '../../models/errors.model';
 import {Playlist} from '../../models/playlist.model';
 
 @Component({
@@ -27,7 +25,6 @@ export class PlaylistsComponent implements OnInit {
   newPlaylistName: string = '';
 
   private playlistService = inject(PlaylistService);
-  private toastService = inject(ToastService);
 
   playlists: Playlist[] = [];
 
@@ -38,10 +35,7 @@ export class PlaylistsComponent implements OnInit {
   }
 
   enableNewPlaylistField() {
-    this.playlistService.validatePlaylistCreationLimit().subscribe({
-      next: () => this.showNewPlaylistField = true,
-      error: error => this.displayErrorMessage(error)
-    })
+    this.playlistService.validatePlaylistCreationLimit().subscribe(() => this.showNewPlaylistField = true)
   }
 
   createPlaylist() {
@@ -55,15 +49,6 @@ export class PlaylistsComponent implements OnInit {
         this.showNewPlaylistField = false;
       }
     );
-  }
-
-  private displayErrorMessage(error: any) {
-    if (isNetflixError(error)) {
-      this.toastService.showToast(error.message);
-    } else {
-      console.error('Error creating playlist:', error);
-      this.toastService.showToast('An error occurred while attempting to create the playlist.');
-    }
   }
 
   protected readonly RouteParams = RouteParams;

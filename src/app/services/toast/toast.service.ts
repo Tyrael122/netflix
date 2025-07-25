@@ -15,4 +15,12 @@ export class ToastService {
       horizontalPosition: 'right',
     });
   }
+
+  showError(message: string, action: string = 'Close', duration: number = 3000) {
+    this.snackBar.open(message, action, {
+      duration: duration,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right',
+    });
+  }
 }
