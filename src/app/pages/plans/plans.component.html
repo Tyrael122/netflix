@@ -45,12 +45,12 @@
             </div>
 
             <!-- Plan selection button -->
-            <div class="p-6 pt-0 mt-auto cursor-pointer">
+            <div class="p-6 pt-0 mt-auto">
               <button
                 class="w-full py-4 px-6 rounded-full font-bold transition-all
                       {{ currentPlan?.id === plan.id ?
                         'bg-gray-700 text-gray-400 cursor-not-allowed' :
-                        'bg-netflix-red hover:bg-netflix-red-dark text-white hover:shadow-lg' }}"
+                        'bg-netflix-red hover:bg-netflix-red-dark text-white hover:shadow-lg cursor-pointer' }}"
                 [disabled]="currentPlan?.id === plan.id"
               >
                 {{ currentPlan?.id === plan.id ? 'Current Plan' : 'Get Started' }}

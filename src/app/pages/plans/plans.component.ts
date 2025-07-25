@@ -8,6 +8,7 @@ import {
 import {NetflixIconComponent} from '../../components/netflix-icon/netflix-icon.component';
 import {ToastService} from '../../services/toast/toast.service';
 import {isNetflixErrorWithCode, NetflixErrorCodes} from '../../models/errors.model';
+import {combineLatest} from 'rxjs';
 
 @Component({
   selector: 'netflix-plans',
@@ -27,11 +28,22 @@ export class PlansComponent implements OnInit {
   private plansService = inject(PlansService);
   private toastService = inject(ToastService);
 
-  isLoading: boolean = false;
+  isLoading: boolean = true;
 
   ngOnInit() {
-    this.plans = this.plansService.getAvailablePlans();
-    this.currentPlan = this.plansService.getCurrentUserPlanDetails();
+    console.log("Loading Plans Component");
+
+    combineLatest([
+      this.plansService.getAvailablePlans(),
+      this.plansService.getCurrentUserPlanDetails()
+    ]).subscribe(([plans, plan]) => {
+      console.log("Available plans:", plans);
+      console.log("Current user plan:", plan);
+
+      this.plans = plans;
+      this.currentPlan = plan;
+      this.isLoading = false;
+    });
   }
 
   switchPlan(id: string) {
@@ -49,7 +61,7 @@ export class PlansComponent implements OnInit {
     const featureList: string[] = [];
 
     // Playlist creation
-    if (features.playlistCreation.limit === Infinity) {
+    if (features.playlistCreation.limit > 10000) {
       featureList.push('Unlimited playlists');
     } else {
       featureList.push(`Create up to ${features.playlistCreation.limit} playlists`);

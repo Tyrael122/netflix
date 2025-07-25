@@ -5,7 +5,7 @@ import {
   UserMovieListing
 } from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {PlansService} from '../plans/plans.service';
 
 @Injectable({
@@ -31,7 +31,9 @@ export class UserMovieService {
     return this.movieService.getMovieDetails(id);
   }
 
-  hasPermissionToSeeSimilarMovies(): boolean {
-    return this.plansService.getCurrentUserPlanDetails().features.canSeeSimilarMovies;
+  hasPermissionToSeeSimilarMovies(): Observable<boolean> {
+    return this.plansService.getCurrentUserPlanDetails().pipe(
+      map(plan => plan.features.canSeeSimilarMovies)
+    );
   }
 }

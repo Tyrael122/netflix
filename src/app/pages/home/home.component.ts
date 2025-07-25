@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(searchTerm => {
+      console.log("Search term changed: ", searchTerm);
+
       this.currentSearchTerm = searchTerm;
       this.currentPage = 1;
       this.movies = [];
@@ -54,6 +56,8 @@ export class HomeComponent implements OnInit {
 
     this.isLoading = true;
 
+    console.log("Loading movies for page: ", this.currentPage, " with search term: ", this.currentSearchTerm);
+
     const observable = this.currentSearchTerm.trim() === ''
       ? this.userMovieService.getPopularMovies(this.currentPage)
       : this.userMovieService.searchMovies(this.currentSearchTerm, this.currentPage);
@@ -64,9 +68,9 @@ export class HomeComponent implements OnInit {
         this.movies = [...this.movies, ...movieList.results];
         this.currentPage++;
         this.hasMore = movieList.results.length > 0;
+        this.isLoading = false;
       },
-      error: (err) => console.error(err),
-      complete: () => this.isLoading = false
+      error: (err) => console.error(err)
     });
   }
 

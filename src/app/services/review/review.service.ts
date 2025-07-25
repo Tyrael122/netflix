@@ -42,14 +42,16 @@ export class ReviewService {
     // No-op, implement in a future release.
   }
 
-  hasSubmitReviewPermission(): boolean {
-    const plan = this.plansService.getCurrentUserPlanDetails();
-    return plan.features.reviews.canWrite;
+  hasSubmitReviewPermission(): Observable<boolean> {
+    return this.plansService.getCurrentUserPlanDetails().pipe(
+      map(plan => plan.features.reviews.canWrite)
+    );
   }
 
-  hasViewReviewsPermission(): boolean {
-    const plan = this.plansService.getCurrentUserPlanDetails();
-    return plan.features.reviews.canView;
+  hasViewReviewsPermission(): Observable<boolean> {
+    return this.plansService.getCurrentUserPlanDetails().pipe(
+      map(plan => plan.features.reviews.canView)
+    );
   }
 
   private buildUrl(movieId: string, endpoint: string): Observable<string> {

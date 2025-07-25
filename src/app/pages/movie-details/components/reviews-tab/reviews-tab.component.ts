@@ -1,16 +1,16 @@
 import {Component, ElementRef, inject, input, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgOptimizedImage} from '@angular/common';
+import {AsyncPipe, DatePipe, NgOptimizedImage} from '@angular/common';
 import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
 import {ReviewService} from '../../../../services/review/review.service';
 import {MovieListing} from '../../../../models/movie.model';
 import {Review, ReviewDraft} from '../../../../models/reviews.model';
-import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'netflix-reviews-tab',
   standalone: true,
-  imports: [NetflixIconComponent, FormsModule, DatePipe, NgOptimizedImage],
+  imports: [NetflixIconComponent, FormsModule, DatePipe, NgOptimizedImage, AsyncPipe],
   templateUrl: './reviews-tab.component.html',
   styleUrls: ['./reviews-tab.component.css']
 })
@@ -48,11 +48,11 @@ export class ReviewsTabComponent implements OnInit {
       });
   }
 
-  get canWriteReview(): boolean {
+  get canWriteReview(): Observable<boolean> {
     return this.reviewService.hasSubmitReviewPermission();
   }
 
-  get canViewReviews(): boolean {
+  get canViewReviews(): Observable<boolean> {
     return this.reviewService.hasViewReviewsPermission();
   }
 

@@ -1,4 +1,4 @@
-@if (canSeeSimilarMovies) {
+@if (canSeeSimilarMovies | async) {
   <div>
     <h2 class="text-xl font-bold mb-4">Similar Movies</h2>
     @if (similarMovies && similarMovies.length > 0) {
