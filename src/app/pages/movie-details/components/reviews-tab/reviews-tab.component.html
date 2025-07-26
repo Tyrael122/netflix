@@ -44,23 +44,28 @@
           [ngModel]="currentReview.content"
           (ngModelChange)="updateReviewText($event)"
           placeholder="What did you think of this movie? Share your detailed thoughts..."
-          class="w-full bg-gray-700 text-white p-4 rounded-lg min-h-[120px] border border-transparent focus:border-netflix-red focus:ring-1 focus:ring-netflix-red transition-all duration-200"
+          class="w-full bg-gray-700 text-white placeholder:text-gray-400 p-4 rounded-lg min-h-[120px]
+            focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600 transition-all duration-200"
         ></textarea>
         <div class="text-xs text-gray-400 text-right">
           {{ currentReview.content.length || 0 }}/500
         </div>
       </div>
 
-      <!-- Submit Button -->
       <div class="flex justify-end">
-        <button
-          (click)="submitReview()"
-          [disabled]="!isReviewFilled()"
-          class="flex items-center gap-x-3 bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
-        >
-          <span>Post Review</span>
-          <netflix-icon name="send"></netflix-icon>
-        </button>
+        <div class="flex items-center w-fit text-gray-400 text-sm mb-2 gap-x-4">
+          <span>{{ draftReviewInfoMessage }}</span>
+
+          <!-- Submit Button -->
+          <button
+            (click)="submitReview()"
+            [disabled]="!isReviewFilled()"
+            class="flex items-center gap-x-3 bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+          >
+            <span>Post Review</span>
+            <netflix-icon name="send"></netflix-icon>
+          </button>
+        </div>
       </div>
     </div>
   } @else {
@@ -124,7 +129,8 @@
       } @else {
         <div class="bg-gray-800 p-8 rounded-xl text-center">
           <netflix-icon name="no-video" class="text-4xl text-gray-600 mx-auto mb-3"></netflix-icon>
-          <p class="text-gray-400">No reviews yet. {{ (canWriteReview) ? 'Be the first to share your thoughts!' : '' }} </p>
+          <p class="text-gray-400">No reviews
+            yet. {{ (canWriteReview) ? 'Be the first to share your thoughts!' : '' }} </p>
           @if (canWriteReview) {
             <button
               (click)="scrollToReviewForm()"

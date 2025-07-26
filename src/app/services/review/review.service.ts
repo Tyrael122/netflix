@@ -20,10 +20,10 @@ export class ReviewService {
     )
   }
 
-  updateCurrentReview(movieId: string, draft: ReviewDraft): void {
-    this.buildUrl(movieId, "/draft").pipe(
+  updateCurrentReview(movieId: string, draft: ReviewDraft): Observable<ReviewDraft> {
+    return this.buildUrl(movieId, "/draft").pipe(
       switchMap((url) => this.http.put<ReviewDraft>(url, draft))
-    ).subscribe();
+    )
   }
 
   getReviewsForMovie(movieId: string): Observable<Review[]> {

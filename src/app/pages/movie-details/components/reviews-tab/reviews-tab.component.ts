@@ -25,6 +25,8 @@ export class ReviewsTabComponent implements OnInit {
     content: ''
   }
 
+  draftReviewInfoMessage: string = '';
+
   reviews: Review[] = [];
 
   readonly reviewService = inject(ReviewService);
@@ -40,8 +42,10 @@ export class ReviewsTabComponent implements OnInit {
         distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
       )
       .subscribe(review => {
-        console.log("Received review update: ", review);
-        this.reviewService.updateCurrentReview(this.movie().id, review);
+        this.reviewService.updateCurrentReview(this.movie().id, review)
+          .subscribe(() => {
+            this.draftReviewInfoMessage = 'Draft saved';
+          })
       });
 
     this.reviewService.hasSubmitReviewPermission().subscribe(hasPermission => {
@@ -123,8 +127,13 @@ export class ReviewsTabComponent implements OnInit {
   }
 
   private updateCurrectReviewDraft(newDraft: ReviewDraft) {
+
+    // Add a small delay to allow transition
+    setTimeout(() => {
+      this.draftReviewInfoMessage = 'Changes are being saved...';
+    }, 300);
+
     this.currentReview = newDraft;
-    console.log("Updating current review draft: ", newDraft);
     this.currentReviewSubject.next(newDraft);
   }
 
