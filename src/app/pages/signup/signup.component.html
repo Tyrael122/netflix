@@ -66,8 +66,8 @@
                  focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600"
           placeholder="Confirm Password"
         />
-        @if (signupForm.submitted && signupForm.form.controls['confirmPassword'].errors) {
-          <p class="mt-1 text-netflix-red text-sm">Please confirm your password.</p>
+        @if (signupForm.submitted && !doPasswordsMatch()) {
+          <p class="mt-1 text-netflix-red text-sm">Passwords don't match.</p>
         }
       </div>
 

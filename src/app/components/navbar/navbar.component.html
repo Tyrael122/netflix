@@ -8,7 +8,7 @@
     <netflix-search-bar (onSearchChanged)="searchMovies($event)" class="md:ml-4"></netflix-search-bar>
 
     <div class="md:hidden ml-4">
-      <button (click)="toggleMobileMenu()" class="text-gray-300 hover:text-red-500 focus:outline-none">
+      <button (click)="toggleMobileMenu()" class="text-gray-300 hover:text-red-500 focus:outline-none cursor-pointer">
         @if (isMobileMenuOpen) {
           <netflix-icon name="close" size="24"></netflix-icon>
         } @else {

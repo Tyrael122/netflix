@@ -24,7 +24,7 @@ export class SignupComponent {
   private toastService = inject(ToastService);
 
   signup() {
-    if (!this.signupForm.valid) {
+    if (!this.signupForm.valid || !this.doPasswordsMatch()) {
       return;
     }
 
@@ -35,10 +35,11 @@ export class SignupComponent {
     };
 
     this.authService.signup(userCredentials).subscribe({
-      error: error => {
-        console.error('Login failed:', error);
-        this.toastService.showToast(error.error.friendlyMessage); // TODO: Improve error handling
-      }
+      error: error => this.toastService.showToast(error.error.friendlyMessage)
     })
+  }
+
+  doPasswordsMatch() {
+    return this.password === this.confirmPassword;
   }
 }
