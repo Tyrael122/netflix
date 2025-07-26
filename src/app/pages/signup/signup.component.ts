@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {ToastService} from '../../services/toast/toast.service';
 
@@ -18,12 +18,13 @@ export class SignupComponent {
   password: string = "";
   confirmPassword: string = "";
 
+  @ViewChild('signupForm') signupForm!: NgForm;
+
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
 
   signup() {
-    if (this.password !== this.confirmPassword) {
-      console.error('Passwords do not match');
+    if (!this.signupForm.valid) {
       return;
     }
 

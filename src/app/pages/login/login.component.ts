@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {RouterLink} from '@angular/router';
