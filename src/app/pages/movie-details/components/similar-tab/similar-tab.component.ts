@@ -4,15 +4,12 @@ import {MovieListing} from '../../../../models/movie.model';
 import {UserMovieService} from '../../../../services/user/user-movie.service';
 import {RouterLink} from '@angular/router';
 import {RouteParams} from '../../../../enums/app-routes';
-import {AsyncPipe} from '@angular/common';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'netflix-similar-tab',
   imports: [
     MoviePosterImageComponent,
-    RouterLink,
-    AsyncPipe
+    RouterLink
   ],
   templateUrl: './similar-tab.component.html',
   styleUrl: './similar-tab.component.css'
@@ -21,6 +18,7 @@ export class SimilarTabComponent {
   movie = input.required<MovieListing>();
 
   similarMovies: MovieListing[] = [];
+  canSeeSimilarMovies = false;
 
   private moviesService = inject(UserMovieService);
 
@@ -28,10 +26,10 @@ export class SimilarTabComponent {
     effect(() => {
       this.fetchSimilarMovies(this.movie().id);
     });
-  }
 
-  get canSeeSimilarMovies(): Observable<boolean> {
-    return this.moviesService.hasPermissionToSeeSimilarMovies();
+    this.moviesService.hasPermissionToSeeSimilarMovies().subscribe(
+      (hasPermission) => this.canSeeSimilarMovies = hasPermission
+    );
   }
 
   private fetchSimilarMovies(movieId: string) {

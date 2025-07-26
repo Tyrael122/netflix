@@ -2,7 +2,7 @@
   <h2 class="text-2xl font-bold mb-3 text-white">User Reviews</h2>
 
   <!-- Add review form -->
-  @if (canWriteReview | async) {
+  @if (canWriteReview) {
     <div #reviewForm class="bg-gray-800 p-4 rounded-xl mb-8 shadow-lg transition-all duration-300 hover:shadow-xl">
       <h3 class="text-xl font-semibold mb-4 text-white">Share Your Thoughts</h3>
 
@@ -70,7 +70,7 @@
   }
 
   <!-- Reviews list -->
-  @if (canViewReviews | async) {
+  @if (canViewReviews) {
     <div class="space-y-6">
       @if (reviews && reviews.length > 0) {
         @for (review of reviews; track review.id) {
@@ -124,8 +124,8 @@
       } @else {
         <div class="bg-gray-800 p-8 rounded-xl text-center">
           <netflix-icon name="no-video" class="text-4xl text-gray-600 mx-auto mb-3"></netflix-icon>
-          <p class="text-gray-400">No reviews yet. {{ (canWriteReview | async) ? 'Be the first to share your thoughts!' : '' }} </p>
-          @if (canWriteReview | async) {
+          <p class="text-gray-400">No reviews yet. {{ (canWriteReview) ? 'Be the first to share your thoughts!' : '' }} </p>
+          @if (canWriteReview) {
             <button
               (click)="scrollToReviewForm()"
               class="mt-4 text-netflix-red hover:text-red-400 font-medium inline-flex items-center cursor-pointer"

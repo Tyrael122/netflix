@@ -1,16 +1,16 @@
 import {Component, ElementRef, inject, input, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {AsyncPipe, DatePipe, NgOptimizedImage} from '@angular/common';
+import {DatePipe, NgOptimizedImage} from '@angular/common';
 import {NetflixIconComponent} from '../../../../components/netflix-icon/netflix-icon.component';
 import {ReviewService} from '../../../../services/review/review.service';
 import {MovieListing} from '../../../../models/movie.model';
 import {Review, ReviewDraft} from '../../../../models/reviews.model';
-import {debounceTime, distinctUntilChanged, Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
 
 @Component({
   selector: 'netflix-reviews-tab',
   standalone: true,
-  imports: [NetflixIconComponent, FormsModule, DatePipe, NgOptimizedImage, AsyncPipe],
+  imports: [NetflixIconComponent, FormsModule, DatePipe, NgOptimizedImage],
   templateUrl: './reviews-tab.component.html',
   styleUrls: ['./reviews-tab.component.css']
 })
@@ -30,13 +30,10 @@ export class ReviewsTabComponent implements OnInit {
   readonly reviewService = inject(ReviewService);
   hoverRating: number = 0;
 
+  canWriteReview = false;
+  canViewReviews = false;
+
   ngOnInit(): void {
-    this.reviewService.getCurrentReview(this.movie().id).subscribe(review => {
-      this.currentReview = review;
-    })
-
-    this.loadReviews();
-
     this.currentReviewSubject
       .pipe(
         debounceTime(2000),
@@ -46,14 +43,23 @@ export class ReviewsTabComponent implements OnInit {
         console.log("Received review update: ", review);
         this.reviewService.updateCurrentReview(this.movie().id, review);
       });
-  }
 
-  get canWriteReview(): Observable<boolean> {
-    return this.reviewService.hasSubmitReviewPermission();
-  }
+    this.reviewService.hasSubmitReviewPermission().subscribe(hasPermission => {
+      this.canWriteReview = hasPermission;
 
-  get canViewReviews(): Observable<boolean> {
-    return this.reviewService.hasViewReviewsPermission();
+      if (hasPermission) {
+        this.reviewService.getCurrentReview(this.movie().id).subscribe(review => {
+          this.currentReview = review;
+        })
+      }
+    });
+
+    this.reviewService.hasViewReviewsPermission().subscribe(hasPermission => {
+      this.canViewReviews = hasPermission;
+      if (hasPermission) {
+        this.loadReviews();
+      }
+    });
   }
 
   isReviewFilled() {
