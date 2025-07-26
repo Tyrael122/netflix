@@ -1,9 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  PageableResponse,
-  UserMovieDetails,
-  UserMovieListing
-} from '../../models/movie.model';
+import {PageableResponse, UserMovieDetails, UserMovieListing} from '../../models/movie.model';
 import {MovieService} from '../movie/movie.service';
 import {map, Observable} from 'rxjs';
 import {PlansService} from '../plans/plans.service';

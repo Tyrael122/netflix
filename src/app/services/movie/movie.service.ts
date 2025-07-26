@@ -1,9 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  PageableResponse,
-  UserMovieDetails,
-  UserMovieListing
-} from '../../models/movie.model';
+import {PageableResponse, UserMovieDetails, UserMovieListing} from '../../models/movie.model';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable, switchMap} from 'rxjs';
 import {NetflixApiMovieResponse} from '../../models/netflix-api.model';
