@@ -3,7 +3,7 @@
 
   <!-- Add review form -->
   @if (canWriteReview) {
-    <div #reviewForm class="bg-gray-800 p-4 rounded-xl mb-8 shadow-lg transition-all duration-300 hover:shadow-xl">
+    <div #reviewForm class="bg-gray-900 p-4 rounded-xl mb-8 shadow-lg transition-all duration-300 hover:shadow-xl">
       <h3 class="text-xl font-semibold mb-4 text-white">Share Your Thoughts</h3>
 
       <!-- Rating Section -->
@@ -44,8 +44,7 @@
           [ngModel]="currentReview.content"
           (ngModelChange)="updateReviewText($event)"
           placeholder="What did you think of this movie? Share your detailed thoughts..."
-          class="w-full bg-gray-700 text-white placeholder:text-gray-400 p-4 rounded-lg min-h-[120px]
-            focus:outline-none focus:ring-2 focus:ring-netflix-red border border-gray-600 transition-all duration-200"
+          class="w-full p-4 min-h-[120px] rounded-lg netflix-input"
         ></textarea>
         <div class="text-xs text-gray-400 text-right">
           {{ currentReview.content.length || 0 }}/500
@@ -69,7 +68,7 @@
       </div>
     </div>
   } @else {
-    <div class="bg-gray-800 p-6 rounded-xl mb-8 text-center text-gray-400">
+    <div class="bg-gray-900 p-6 rounded-xl mb-8 text-center text-gray-400">
       <p>Your current plan does not allow posting reviews.</p>
     </div>
   }
@@ -79,7 +78,7 @@
     <div class="space-y-6">
       @if (reviews && reviews.length > 0) {
         @for (review of reviews; track review.id) {
-          <div class="bg-gray-800 p-4 space-y-4 rounded-xl">
+          <div class="bg-gray-900 p-4 space-y-4 rounded-xl">
             <div class="space-y-6">
               <div class="flex items-center gap-x-3">
                 <div
@@ -127,7 +126,7 @@
           </div>
         }
       } @else {
-        <div class="bg-gray-800 p-8 rounded-xl text-center">
+        <div class="bg-gray-900 p-8 rounded-xl text-center">
           <netflix-icon name="no-video" class="text-4xl text-gray-600 mx-auto mb-3"></netflix-icon>
           <p class="text-gray-400">No reviews
             yet. {{ (canWriteReview) ? 'Be the first to share your thoughts!' : '' }} </p>
@@ -144,7 +143,7 @@
       }
     </div>
   } @else {
-    <div class="bg-gray-800 p-6 rounded-xl text-center text-gray-400">
+    <div class="bg-gray-900 p-6 rounded-xl text-center text-gray-400">
       <p>Your current plan does not allow viewing reviews.</p>
     </div>
   }
