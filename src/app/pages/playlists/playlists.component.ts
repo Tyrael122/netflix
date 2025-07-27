@@ -35,7 +35,7 @@ export class PlaylistsComponent implements OnInit {
   }
 
   enableNewPlaylistField() {
-    this.playlistService.validatePlaylistCreationLimit().subscribe(() => this.showNewPlaylistField = true)
+    this.showNewPlaylistField = true
   }
 
   createPlaylist() {

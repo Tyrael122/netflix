@@ -2,7 +2,6 @@ import {Component, inject, ViewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {FormsModule, NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
-import {ToastService} from '../../services/toast/toast.service';
 
 @Component({
   selector: 'netflix-signup',
@@ -21,7 +20,6 @@ export class SignupComponent {
   @ViewChild('signupForm') signupForm!: NgForm;
 
   private authService = inject(AuthService);
-  private toastService = inject(ToastService);
 
   signup() {
     if (!this.signupForm.valid || !this.doPasswordsMatch()) {
@@ -34,9 +32,7 @@ export class SignupComponent {
       confirmPassword: this.confirmPassword
     };
 
-    this.authService.signup(userCredentials).subscribe({
-      error: error => this.toastService.showToast(error.error.friendlyMessage)
-    })
+    this.authService.signup(userCredentials).subscribe();
   }
 
   doPasswordsMatch() {

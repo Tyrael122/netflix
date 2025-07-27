@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {map, Observable, of, switchMap} from 'rxjs';
+import {map, Observable, switchMap} from 'rxjs';
 import {MovieListing} from '../../models/movie.model';
 import {Playlist} from '../../models/playlist.model';
 import {AuthService} from '../auth/auth.service';
@@ -59,10 +59,6 @@ export class PlaylistService {
         movieIdsToAdd: movie ? [movie.id] : []
       }))
     );
-  }
-
-  validatePlaylistCreationLimit(): Observable<boolean> {
-    return of(true);
   }
 
   private buildUrl(endpoint: string): Observable<string> {

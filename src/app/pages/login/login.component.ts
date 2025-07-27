@@ -2,7 +2,6 @@ import {Component, inject, ViewChild} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {RouterLink} from '@angular/router';
-import {ToastService} from '../../services/toast/toast.service';
 
 @Component({
   selector: 'netflix-login',
@@ -20,7 +19,6 @@ export class LoginComponent {
   @ViewChild('loginForm') loginForm!: NgForm;
 
   private authService = inject(AuthService);
-  private toastService = inject(ToastService);
 
   login() {
     if (!this.loginForm.valid) {
@@ -32,11 +30,6 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.authService.login(userCredentials).subscribe({
-      error: error => {
-        console.error('Login failed:', error);
-        this.toastService.showToast("Login failed. Please check your credentials.");
-      }
-    })
+    this.authService.login(userCredentials).subscribe();
   }
 }

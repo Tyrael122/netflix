@@ -68,6 +68,6 @@ export class AddToPlaylistModalComponent implements OnInit {
   }
 
   enableNewPlaylistField() {
-    this.playlistService.validatePlaylistCreationLimit().subscribe(() => this.showNewPlaylistField = true)
+    this.showNewPlaylistField = true
   }
 }

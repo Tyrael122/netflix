@@ -3,7 +3,7 @@ import {User, UserCredentials} from '../../models/user.model';
 import {Router} from '@angular/router';
 import {AppRoutes} from '../../enums/app-routes';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, filter, map, Observable} from 'rxjs';
+import {BehaviorSubject, filter, map, Observable, of, take} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +24,12 @@ export class AuthService {
       ...userCredentials,
       name: this.getRandomName()
     }).pipe(
-      map(response => {
-        this.currentUserSubject.next(response);
+      map(user => {
+        this.emitNewUser(user);
 
         this.navigateToHomepage();
 
-        return response;
+        return user;
       })
     )
   }
@@ -37,21 +37,22 @@ export class AuthService {
   login(userCredentials: UserCredentials): Observable<User> {
     return this.http.post<User>("/auth/login", userCredentials)
       .pipe(
-        map(response => {
-          this.currentUserSubject.next(response);
+        map(user => {
+          this.emitNewUser(user);
 
           this.navigateToHomepage();
 
-          return response;
+          return user;
         })
       );
   }
 
   logout(): void {
-    this.router.navigate([AppRoutes.LOGIN]).catch(
-      err => console.error('Navigation error:', err)
-    );
-    this.requestGuestUser();
+    this.router.navigate([AppRoutes.LOGIN])
+      .then(() => this.requestGuestUser())
+      .catch(
+        err => console.error('Navigation error:', err)
+      );
   }
 
   isLoggedIn(): boolean {
@@ -65,12 +66,13 @@ export class AuthService {
 
   getCurrentUser(): Observable<User> {
     return this.currentUserSubject.asObservable().pipe(
-      filter((user): user is User => user !== undefined)
+      filter((user): user is User => user !== undefined),
+      take(1)
     );
   }
 
   private requestGuestUser() {
-    this.http.get<User>("/auth/guest").subscribe(user => this.currentUserSubject.next(user));
+    this.http.get<User>("/auth/guest").subscribe(user => this.emitNewUser(user));
   }
 
   private navigateToHomepage() {
@@ -82,5 +84,9 @@ export class AuthService {
   private getRandomName(): string {
     const name = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'];
     return name[Math.floor(Math.random() * name.length)];
+  }
+
+  private emitNewUser(user: User) {
+    this.currentUserSubject.next(user);
   }
 }
