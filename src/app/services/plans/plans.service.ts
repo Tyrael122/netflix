@@ -27,8 +27,6 @@ export class PlansService {
   }
 
   public getAvailablePlans(): Observable<Plan[]> {
-    console.log("Fetching available plans");
-
     return this.buildUrl("/available").pipe(
       switchMap(url => this.http.get<Plan[]>(url))
     );

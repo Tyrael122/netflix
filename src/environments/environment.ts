@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/netflix'
+  apiUrl: 'http://192.168.1.101:8080/netflix'
 };

@@ -12,7 +12,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       const apiError = httpError.error as ApiError;
 
       // Determine the message to show (prioritize friendly message)
-      const errorMessage = apiError?.friendlyMessage || 'An unexpected error occurred';
+      const errorMessage = apiError?.friendlyMessage || 'An unexpected error occurred. Please, try again later.';
       toastService.showError(errorMessage);
 
       if (apiError?.validationErrors) {

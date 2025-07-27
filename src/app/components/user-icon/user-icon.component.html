@@ -1,34 +1,47 @@
 @if (this.authService.isLoggedIn()) {
-  <div class="relative">
+  <div class="relative flex md:block items-center justify-between space-x-6">
     <button
       class="flex items-center space-x-2 hover:text-red-500 transition-colors group cursor-pointer"
       (click)="showDropdown = !showDropdown"
       type="button"
     >
-      <div class="relative">
-        <netflix-icon name="user" size="20" class="text-gray-300 group-hover:text-red-500" />
-        <div class="absolute -bottom-1 -right-1 bg-red-600 rounded-full w-2 h-2 border border-gray-900"></div>
-      </div>
+      <netflix-icon name="user" size="20" class="text-gray-300 group-hover:text-red-500"/>
       <span class="username font-medium">{{ getUsername() | async }}</span>
-      <netflix-icon name="chevron-down" size="16" class="text-gray-400 group-hover:text-red-500" />
+      <div class="hidden md:block text-gray-400 group-hover:text-red-500">
+        <netflix-icon name="chevron-down" size="16"/>
+      </div>
     </button>
+
+    <!--Desktop dropdown-->
     @if (showDropdown) {
-      <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-gray-700 z-50 overflow-hidden">
+      <div
+        class="hidden md:block dropdown-menu absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-900 ring-1 ring-gray-700 z-50 overflow-hidden">
         <button
           (click)="authService.logout()"
-          class="dropdown-item flex items-center px-4 py-2 text-sm text-white hover:bg-gray-700 w-full text-left hover:text-red-500 group cursor-pointer"
+          class="dropdown-item flex items-center px-4 py-2 text-sm text-white hover:bg-gray-800 w-full text-left hover:text-red-500 group cursor-pointer"
         >
-          <netflix-icon name="logout" size="16" class="mr-2 text-gray-400 group-hover:text-red-500" />
+          <netflix-icon name="logout" size="16" class="mr-2 text-gray-400 group-hover:text-red-500"/>
           Logout
         </button>
       </div>
     }
+
+    <!--Mobile button-->
+    <div class="md:hidden">
+      <button
+        (click)="authService.logout()"
+        class="flex items-center space-x-2 hover:text-red-500 transition-colors group cursor-pointer"
+      >
+        <netflix-icon name="logout" size="20" class="text-gray-300 group-hover:text-red-500"/>
+        <span class="text-nowrap font-medium">Logout</span>
+      </button>
+    </div>
   </div>
 } @else {
   <div class="user-icon-logged-out">
     <a routerLink="/login" class="flex items-center space-x-2 hover:text-red-500 transition-colors group">
-      <netflix-icon name="login" size="20" class="text-gray-300 group-hover:text-red-500" />
-      <span class="text-nowrap text-lg font-normal">Sign In</span>
+      <netflix-icon name="login" size="20" class="text-gray-300 group-hover:text-red-500"/>
+      <span class="text-nowrap font-medium">Sign In</span>
     </a>
   </div>
 }
