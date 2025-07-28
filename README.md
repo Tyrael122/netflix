@@ -1,6 +1,6 @@
 # Netflix Clone - Angular Frontend
 
-A **streaming platform interface** built with Angular that lets users browse movies, create playlists, write reviews, and manage subscription. Inspired by Netflix.  
+A **fully responsive streaming platform interface** built with Angular that works seamlessly on both mobile and desktop devices. Lets users browse movies, create playlists, write reviews, and manage subscriptions. Inspired by Netflix.
 
 *Note: Requires our [Spring Boot backend service](https://github.com/borgeskauan/netflix-backend) to be running for full functionality.*
 
