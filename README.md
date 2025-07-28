@@ -1,59 +1,56 @@
-# Netflix
+# Netflix Clone - Angular Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.13.
+A **streaming platform interface** built with Angular that lets users browse movies, create playlists, write reviews, and manage subscription. Inspired by Netflix.
 
-## Development server
+## Key Features
 
-To start a local development server, run:
+### For Movie Lovers
+- Browse popular movies in a beautiful grid layout
+- See movie details with:
+  - Cast information
+  - Similar recommendations
+  - User reviews and ratings
+- Search movies instantly as you type
 
-```bash
-ng serve
-```
+### Personal Collections
+- Create custom playlists (like "90s Classics" or "Action Movies")
+- Special system playlists:
+  - ❤️ **Favorites** - Save movies you love
+  - ⏱️ **Watch Later** - Bookmark movies to watch
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Community Features
+- Write and edit your movie reviews
+- Rate movies with a 5-star system
+- See what others are saying
 
-## Code scaffolding
+### Account Management
+- Three subscription plans:
+  - **Free** - Basic access
+  - **Pro** ($10) - More features
+  - **Elite** ($15) - Full experience
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Easy signup/login:
+  - Regular accounts
+  - Guest access (no registration needed)
+    - Can upgrade to a full account later
 
-```bash
-ng generate component component-name
-```
+## Screenshots & Demo
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+[//]: # (Leave space here to add YouTube demo video or screenshot gallery later)
+*Demo video coming soon!*
 
-```bash
-ng generate --help
-```
+## Built With
 
-## Building
+- **Angular** - Frontend framework
+- **Tailwind CSS** - Modern styling
+- **TMDB API** - Movie database
+- **Spring Boot Backend** - Handles all data
 
-To build the project run:
+## Setup for Developers
 
-```bash
-ng build
-```
+1. Clone the repository
+2. Run `npm install`
+3. Configure your environment file
+4. Start with `npm start`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+*Note: Requires our [Spring Boot backend service](https://github.com/borgeskauan/netflix-backend) to be running for full functionality.*
