@@ -44,6 +44,7 @@
           [ngModel]="currentReview.content"
           (ngModelChange)="updateReviewText($event)"
           placeholder="What did you think of this movie? Share your detailed thoughts..."
+          maxlength="500"
           class="w-full p-4 min-h-[120px] rounded-lg netflix-input"
         ></textarea>
         <div class="text-xs text-gray-400 text-right">

@@ -77,10 +77,6 @@ export class ReviewsTabComponent implements OnInit {
   }
 
   updateReviewText(text: string): void {
-    if (text.length > 500) {
-      text = text.slice(0, 500);
-    }
-
     this.updateCurrectReviewDraft({
       ...this.currentReview,
       content: text
