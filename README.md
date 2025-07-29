@@ -9,7 +9,6 @@ A **fully responsive streaming platform interface** built with Angular that work
 ### For Movie Lovers
 - Browse popular movies in a beautiful grid layout
 - See movie details with:
-  - Cast information
   - Similar recommendations
   - User reviews and ratings
 - Search movies instantly as you type
