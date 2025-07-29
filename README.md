@@ -1,4 +1,4 @@
-<img width="750" height="1333" alt="localhost_4200_(iPhone SE) 1" src="https://github.com/user-attachments/assets/7dc6c997-81fb-4bf7-883a-fddea1516432" /># Netflix Clone - Angular Frontend
+# Netflix Clone - Angular Frontend
 
 A **fully responsive streaming platform interface** built with Angular that works seamlessly on both mobile and desktop devices. Lets users browse movies, create playlists, write reviews, and manage subscriptions. Inspired by Netflix.
 
