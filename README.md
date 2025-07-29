@@ -52,8 +52,10 @@ A **fully responsive streaming platform interface** built with Angular that work
 
 ## Screenshots & Demo
 
-### Homepage
+### Homepage (desktop)
 <img width="1280" height="720" alt="Pasted image 20250728195133" src="https://github.com/user-attachments/assets/8317486e-3e0f-4f1c-aca5-7b2da5f6a419" />
+
+### Homepage (mobile)
 <img width="250" height="445" alt="homepage" src="https://github.com/user-attachments/assets/e6353412-13cd-4aef-88be-ca04c9171a38" />
 
 ### Homepage - menu
