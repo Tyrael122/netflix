@@ -52,7 +52,7 @@ A **fully responsive streaming platform interface** built with Angular that work
 ## Screenshots & Demo
 
 ### Video demo
-[![Watch the video](https://img.youtube.com/vi/Eg7Yh2MguWI/default.jpg)](https://youtu.be/Eg7Yh2MguWI)
+[![Watch the video](https://img.youtube.com/vi/t3txOpTqblg/default.jpg)](https://youtu.be/t3txOpTqblg)
 
 ### Homepage (desktop)
 <img width="1280" height="720" alt="Pasted image 20250728195133" src="https://github.com/user-attachments/assets/8317486e-3e0f-4f1c-aca5-7b2da5f6a419" />
